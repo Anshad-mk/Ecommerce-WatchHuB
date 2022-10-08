@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{!-- croper js --}}
+  <link href="/path/to/cropper.css" rel="stylesheet">
+
+
+
+
+  <link rel="apple-touch-icon" href="/images/icon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/images/watch-compare-s8-202209_GEO_IN.jpg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <!-- Load fonts style after rendering the layout styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  {{!--
+  <link rel="stylesheet" href="assets/css/fontawesome.min.css"> --}}
+
+  <!-- Bootstrap CSS -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/tailwind.output.css" />
+
+  <link rel="stylesheet" href="/assets/css/templatemo.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Watch HuB</title>
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+
+  {{#if admin}}
+  {{>admin-header}}
+  {{else}}
+  {{>user-header}}
+  {{/if}}
+
+
+
+  {{{body}}}
+
+  {{#if admin}}
+
+  {{else}}
+  {{>user-footer}}
+
+  {{/if}}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Option 1: Bootstrap Bundle with Popper 5.0.2 -->
+  <script src="/assets/js/templatemo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+
+  {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
+  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+  <script src="/assets/js/init-alpine.js"></script>
+
+  <script src="/path/to/cropper.js"></script>
+  <!-- Start Script -->
+  <script src="/assets/js/jquery-1.11.0.min.js"></script>
+  <script src="/assets/js/jquery-migrate-1.2.1.min.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/custom.js"></script>
+  <!-- End Script -->
+
+  <!-- Personal Js -->
+
+  <script src="/javascripts/Login.js"></script>
+
+<script src="/javascripts/addToCart.js"></script>
+
+
+  <!-- End Script -->
+
+</body>
+
+</html>

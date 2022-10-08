@@ -1,0 +1,222 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+
+
+{{! Carousel }}
+<!-- Modal -->
+<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="w-100 pt-1 mb-5 text-right">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form action="" method="get" class="modal-content modal-body border-0 p-0">
+      <div class="input-group mb-2">
+        <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+        <button type="submit" class="input-group-text bg-success text-light">
+          <i class="fa fa-fw fa-search text-white"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- Start Banner Hero -->
+{{!-- first Picture start --}}
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="container">
+        <div class="row p-5">
+          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+            <img class="img-fluid" src="/images/png image iwatch.png" alt="">
+          </div>
+          <div class="col-lg-6 mb-0 d-flex align-items-center">
+            <div class="text-align-left align-self-center">
+              <h1 class="h1 text-success"><b>Elegance is an </b> attitude</h1>
+              <h3 class="h2">Chose your attitude</h3>
+              <p>
+                Life, it’s made up of two things- time and love. A watch tells one,but what tells the
+                other? we tell each other.
+                <a rel="sponsored" class="text-success" href="#" target="_blank">find your</a>, Perfect
+                <a rel="sponsored" class="text-success" href="#" target="_blank"><span
+                    class="bi bi-watch"></span>Partner</a>
+                {{!-- <a rel="sponsored" class="text-success" href="#" target="_blank">Icons 8</a>. --}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- first Picture end --}}
+
+    {{!-- second Picture start --}}
+
+    <div class="carousel-item">
+      <div class="container">
+        <div class="row p-5">
+          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+            <img class="img-fluid" src="/images/banner.png" alt="">
+          </div>
+          <div class="col-lg-6 mb-0 d-flex align-items-center">
+            <div class="text-align-left">
+              <h1 class="h1">The World’s Best Luxury Watch Brands </h1>
+              <h3 class="h2">Find Your Style</h3>
+              <p>
+                For people who do not go with the times !! Time is Everything <br> To Break The Rules,
+                You Must First Master Them
+                You are <strong> Perfect</strong> for this
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{!-- 3rd banner --}}
+
+    <div class="carousel-item">
+      <div class="container">
+        <div class="row p-5">
+          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+            <img class="img-fluid" src="/images/960x0-removebg-preview.png" alt="">
+          </div>
+          <div class="col-lg-6 mb-0 d-flex align-items-center">
+            <div class="text-align-left">
+              <h1 class="h1">It’s your watch that tells most about who you are</h1>
+              <h3 class="h2">always be different</h3>
+              <p>
+                investing in a luxury watch is not only about owning something of great quality but also
+                about being part of an elite fraternity
+                of enthusiasts who treasure the intricacies of micro engineering.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button"
+    data-bs-slide="prev">
+    <i class="fas fa-chevron-left"></i>
+  </a>
+  <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button"
+    data-bs-slide="next">
+    <i class="fas fa-chevron-right"></i>
+  </a>
+</div>
+<!-- End Banner Hero -->
+{{!-- ---------------------------------------------------------------------------------------------------------------
+--}}
+{{!-- ---------------------------------------------------------------------------------------------------------------
+--}}
+{{!-- ---------------------------------------------------------------------------------------------------------------
+--}}
+{{!-- ---------------------------------------------------------------------------------------------------------------
+--}}
+
+<!-- Start Categories  -->
+<section class="container py-5">
+  <div class="row text-center pt-3">
+    <div class="col-lg-6 m-auto">
+      <h1 class="h1">Categories</h1>
+      <p>
+        find your style in our categories !!
+        Choose your Perfect <span class="bi bi-watch"> </span>Partner
+      </p>
+    </div>
+  </div>
+
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================Category Itemes start hear======================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+  {{!-- ====================================================================================================== --}}
+
+  <div class="row">
+
+    {{#each cat}}
+    <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-3 ">
+      <div class="card h-10  rounded-circle border-0">
+        <a href="#">
+          <img src="/images/1661258569watches_for_men.webp" class="card-img-top rounded-circle pb-0" height="18rem"
+            width="100%" style="max-height: 18rem; width: 100%;">
+        </a>
+      </div>
+      <h5 class="text-center mt-3 mb-3">{{this.category}}</h5>
+      <p class="text-center"><a class="btn btn-success">Go Shop</a></p>
+    </div>
+
+    {{/each}}
+  </div>
+
+</section>
+<!-- End Categories of The Month -->
+
+
+<!-- Start Featured Product -->
+<section class="bg-light">
+  <div class="container py-5">
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h1">New Product</h1>
+        <p>
+          Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          Excepteur sint occaecat cupidatat non proident.
+        </p>
+      </div>
+    </div>
+
+
+
+
+    <div class="row mt-3">
+      {{#each products}}
+      <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-4">
+        <div class="card h-100">
+          <a href="/preview-product/{{this._id}}">
+            <img src="/productIMG/{{this._id}}.jpg" class="card-img-top" height="18rem" width="100%"
+              style="max-height: 18rem; width: 100%;">
+          </a>
+          <div class="card-body">
+            <ul class="list-unstyled d-flex justify-content-between">
+              <li>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-muted fa fa-star"></i>
+                <i class="text-muted fa fa-star"></i>
+              </li>
+              <li class="text-muted text-right">₹{{this.proPrice}}/-</li>
+            </ul>
+            <a href="/preview-product/{{this._id}}" class="h2 text-decoration-none text-dark"> {{this.proName}} </a>
+            <p class="card-text">
+
+            </p>
+            <p class="text-muted ">Reviews (48)</p>
+          
+          <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
+          <button type="submit" class="btn btn-success btn-lg" onclick="addToCart('{{this._id}}')" name="submit" value="addtocard">Add To Cart</button>
+          </div>
+          
+        </div>
+        
+      </div>
+
+      {{/each}}
+    </div>
+
+</section>
+<!-- End Featured Product -->
+
+

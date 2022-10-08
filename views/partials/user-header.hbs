@@ -1,0 +1,102 @@
+<section>
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-light shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <a class="navbar-brand text-success logo h1 align-self-center" href="/">
+        </span><span id="boot-icon" class="bi bi-watch "
+          style="font-size: 40px; color: rgb(0, 128, 55); opacity: 0.7;"></span>Watch HuB<span
+          class="position-absolute top-10 left-100 translate-middle badge rounded-pill"></span></span>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+        data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
+        id="templatemo_main_nav">
+        <div class="flex-fill">
+          <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="shop.html">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div class="navbar align-self-center d-flex">
+          <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+            <div class="input-group">
+              <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+              <div class="input-group-text">
+                <i class="fa fa-fw fa-search"></i>
+              </div>
+            </div>
+          </div>
+          
+          <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+            <i class="fa fa-fw fa-search text-dark mr-2"></i>
+          </a>
+          
+          {{!-- Cart Icon --}}
+          <a class="nav-icon position-relative text-decoration-none" href="/users/cart">
+            <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+            <span
+              class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark" id="countid">{{cartCount}}</span>
+          </a>
+          {{!-- cart icon --}}
+
+
+
+          {{#if Uname}}
+          <div class="btn-group">
+            <button type="button" class="btn btn-white"><i class="fa fa-fw fa-user text-dark mr-3"></i> <span id="userAvailable">{{Uname}}</span>
+              </button>
+            <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference"
+              data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="/users/cart">My Cart</a></li>
+              <li><a class="dropdown-item" href="#">My Cupons</a></li>
+              <li><a class="dropdown-item text-danger" href="/users/logout">Log Out</a></li>
+            </ul>
+          </div>
+        </div>
+        {{else}}
+        <a class="nav-icon position-relative text-decoration-none" href="/users/login">
+          <i class="fa fa-fw fa-user text-dark mr-3"></i>
+          {{!-- <span
+            class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+          --}}
+        </a>
+        {{/if}}
+      </div>
+    </div>
+
+    </div>
+  </nav>
+  <!-- Close Header -->
+
+</section>
+
+<script>
+  $(document).ready(function () {
+  $("#anythingSearch").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#myDIV *").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

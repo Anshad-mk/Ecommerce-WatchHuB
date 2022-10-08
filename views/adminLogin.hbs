@@ -1,0 +1,183 @@
+<style>
+  :root {
+    --main-bg-color: #009d63;
+    --main-text-color: #009d63;
+    --second-text-color: #bbbec5;
+    --second-bg-color: #c1efde;
+  }
+
+  .primary-text {
+    color: var(--main-text-color);
+  }
+
+  .second-text {
+    color: var(--second-text-color);
+  }
+
+  .primary-bg {
+    background-color: var(--main-bg-color);
+  }
+
+  .secondary-bg {
+    background-color: var(--second-bg-color);
+  }
+
+  .rounded-full {
+    border-radius: 100%;
+  }
+
+  #wrapper {
+    overflow-x: hidden;
+    background-image: linear-gradient(to right,
+        #baf3d7,
+        #c2f5de,
+        #cbf7e4,
+        #d4f8ea,
+        #ddfaef);
+  }
+
+  #sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin 0.25s ease-out;
+    -moz-transition: margin 0.25s ease-out;
+    -o-transition: margin 0.25s ease-out;
+    transition: margin 0.25s ease-out;
+  }
+
+  #sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+  }
+
+  #sidebar-wrapper .list-group {
+    width: 15rem;
+  }
+
+  #page-content-wrapper {
+    min-width: 100vw;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #menu-toggle {
+    cursor: pointer;
+  }
+
+  .list-group-item {
+    border: none;
+    padding: 20px 30px;
+  }
+
+  .list-group-item.active {
+    background-color: transparent;
+    color: var(--main-text-color);
+    font-weight: bold;
+    border: none;
+  }
+
+  @media (min-width: 768px) {
+    #sidebar-wrapper {
+      margin-left: 0;
+    }
+
+    #page-content-wrapper {
+      min-width: 0;
+      width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+      margin-left: -15rem;
+    }
+
+  }
+</style>
+
+<body>
+  <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent ">
+        <div class="d-flex align-items-center">
+          <i class="fas primary-text fs-2 me-3" id="menu-toggle"></i>
+          <a class="navbar-brand text-success logo h2 align-self-center" href="/">
+            </span><span id="boot-icon" class="bi bi-watch "
+              style="font-size: 28px; color: rgb(0, 128, 55); opacity: 0.7;"></span>Watch HuB<span
+              class="position-absolute  translate-middle  badge rounded-pill"
+              style="font-size: 15px; color: rgb(5, 29, 15); opacity: 0.7;">Admin Log</span></span>
+          </a>
+
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+
+      <section class=" bg-light gradient-custom">
+        <div class="container py-5  pt-0">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="card bg-dark mt-5 text-success" style="border-radius: 1rem;">
+                <div class="card-body p-5">
+                  <div class="mb-md-5 mt-md-4 pb-0">
+
+                    <h2 class="fw-bold mb-2 text-uppercase text-center">Admin Log in</h2>
+                    <p class="text-success-50 mb-5 text-center">Please enter Valid credentials </p>
+
+
+
+                    <form action="/admin" method="POST" id="signin">
+                      <div class="mb-5">
+                        <label for="exampleInputEmail1" class="form-label text-success  ">Email ID</label>
+                        <input type="email" name="email" placeholder=" " value='' class="form-control" required
+                          id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                        <div class=" mt-5">
+                          <label for="exampleInputPassword1" class="form-label text-success">Password</label>
+                          <input type="Password" name="password" placeholder=" " class="form-control" required
+                            id="exampleInputPassword1">
+                          <div id="passmsg" class="form-text text-danger">
+                            {{err}}</div>
+                          <div id=" emailmsg" class="form-text text-danger" style="display: none;">First Fill Requaird
+                            data
+                          </div>
+                        </div>
+                        <div class="mt-5">
+                          <div class="d-flex justify-content-center"> <button
+                              class="btn btn-outline-success btn-lg px-5 " type="submit">log in</button> </div>
+                        </div>
+                    </form>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+  </div>
