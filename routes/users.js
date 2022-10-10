@@ -181,32 +181,91 @@ router.post('/changeProQuantity',userVerrify,(req,res,next)=>{
 
 router.post('/removeCartProduct',(req,res,next)=>{
   cartHelpers.removeCartProduct(req.body).then((response)=>{
-    
-    res.json(response)
+     res.json(response)
   })
 })
 
-router.post('/place-order',(req,res,next)=>{
-  console.log(req.body );
-  
-})
+
 router.get('/checkout',userVerrify,async(req,res,next)=>{
   // let count=await cartHelpers.getItemCount(req.session.userID)
   let Prototal=await cartHelpers.getCartTotal(req.session.userID)
   let products=await cartHelpers.viewCart(req.session.userID)
-   if(Prototal&&products){
-    total=Prototal.total;
-    // let ProSum=[]
-    // products.forEach((element) => { 
-    //   let sum=element.quantity*element.product.proPrice
-    //   ProSum.push(sum)
-    // });
-  
-    res.render('Checkout',{total,products})
-   } 
+  let savedAddress=await userHelpers.findAddress(req.session.userID)
+  if(savedAddress){
+    if(Prototal&&products){
+      total=Prototal.total;   
+      console.log("savedAddress",savedAddress); 
+      res.render('Checkout',{total,products,user:req.session.userID,savedAddress})
+     } else{
+      if(Prototal&&products){
+        total=Prototal.total;
+        console.log(products);
+              
+        res.render('Checkout',{total,products,user:req.session.userID})
+       } 
+     }
+  }
+   
 })
 
-router.get('order',(req,res,next)=>{
+router.post('/place-order',userVerrify,async(req,res,next)=>{
+  let products = await cartHelpers.cartproductslist(req.session.userID)
+  let totalPrice= await cartHelpers.getCartTotal(req.session.userID)
+ 
+  console.log(req.body);
+  cartHelpers.PlaceOrder(req.body,products,totalPrice).then((response)=>{
+res.json({status:true})
+  })
+
+  
+})
+
+router.get('/ordersuccess',userVerrify,(req,res,next)=>{
+  res.render('CartSuccessFull',{Uname:req.session.userName})
+})
+
+router.get('/profile',userVerrify,async(req,res,next)=>{
+  let profileData =await userHelpers.getUserDetails(req.session.userID)
+  let address=await userHelpers.findAddress(req.session.userID)
+  
+  if(address){
+    res.render('profile',{profileData,Uname:req.session.userName,address})
+  }else{
+     res.render('profile',{profileData,Uname:req.session.userName})
+  }
+ 
+ 
+})
+
+router.post('/Profile',userVerrify,(req,res,next)=>{
+userHelpers.UpdateUser(req.session.userID,req.body).then((response)=>{
+    res.json(response)
+  })
+})
+
+router.get('/address',userVerrify,(req,res,next)=>{
+  res.render('address',{Uname:req.session.userName})
+})
+
+router.post('/address',userVerrify,async (req,res,next)=>{
+  let proExist= await userHelpers.findAddress(req.session.userID)
+  if(proExist){
+    userHelpers.addNewAddress(req.session.userID,req.body).then((response)=>{
+      res.redirect('/users/Profile')
+    })
+  }else{
+userHelpers.addAddress(req.session.userID,req.body).then((response)=>{
+    res.redirect('/users/Profile')
+  })
+  }
+  
+})
+router.get('/viewOrder',userVerrify,(req,res,next)=>{
+  userHelpers.viewOrders(req.session.userID).then((response)=>{
+    res.render('viewOrder',{response,Uname:req.session.userName})
+  }).catch((err)=>{
+    res.render('viewOrder',{Uname:req.session.userName})
+  })
   
 })
 

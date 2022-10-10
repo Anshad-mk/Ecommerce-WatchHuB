@@ -1,0 +1,93 @@
+<center><div class=" text-left col-md-7 col-lg-8 mb-5 mt-5 ms-5">
+    <h4 class="text-center mb-3 shadow-lg btn-lg">Address</h4>
+
+    <form class="needs-validation border p-4" action="/users/address" id="address-form" method="post" >
+        <div class="row g-3">
+{{!-- <label  for="Home_Address" class="shadow"><input type="radio" class="" name="AddressCatogary" value="Home_Address" id="Home_Address"> Home Address</label> 
+<label for="business_Address" class="shadow"><input type="radio" class="" name="AddressCatogary" value="business_Address" id="business_Address"> business Address</label> --}}
+
+            <div class="col-sm-6">
+                <label for="FName" class="form-label">First name</label>
+                <input type="text" class="form-control" name="FirstName" id="FName" placeholder="" value="" required
+                    data-msg="Please fill this field">
+                <div class="invalid-feedback">
+                    Valid first name is required.
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-6">
+                <label for="LName" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="LName" name="LastName" placeholder="" value="" required>
+                <div class="invalid-feedback">
+                    Valid last name is required.
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" name="Address" id="address" placeholder="Full Address" required>
+                <div class="invalid-feedback">
+                    Please enter your shipping address.
+                </div>
+            </div>
+            
+
+            <div class="col-12">
+                <label for="address2" class="form-label"> Mobile Number <span class="text-muted"></span></label>
+                <input type="tel" class="form-control" name="Phone" id="address2" maxlength="10" placeholder="Number"
+                    required>
+            </div>
+
+            <div class="col-md-5">
+                <label for="Post" class="form-label">Post</label>
+                <input type="text" class="form-control" name="Post" id="Post" placeholder="" required>
+                <div class="invalid-feedback">
+                    Post required.
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="zip" class="form-label">Zip Code</label>
+                <input type="number" maxlength="6" name="ZipCode" class="form-control" id="zip" placeholder="" required>
+                <div class="invalid-feedback">
+                    Zip code required.
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="State" class="form-label">State</label>
+                <input type="text" class="form-control" name="State" id="State" placeholder="" required>
+                <div class="invalid-feedback">
+                    State required.
+                </div>
+            </div>
+        </div>
+
+
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-primary btn-lg" type="submit" >Save Address </button>
+    </form>
+</div>
+</center>
+
+
+{{!-- <script>
+    $('#address-form').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/users/address',
+            method: 'post',
+            data: $('#address-form').serialize(),
+            success: (response) => {
+                if(response.status==true){
+                    alert('Address Adedd')
+                   window.location.href='/users/profile'
+                }else{
+                    alert('err')
+                }
+            }
+        })
+    })
+</script> --}}

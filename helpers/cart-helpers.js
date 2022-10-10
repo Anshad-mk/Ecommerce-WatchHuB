@@ -214,9 +214,48 @@ module.exports = {
     
   },
 
-ProcessCheckout:(order,userID)=>{
-db.get().collection(Mycollection.orders_Colloction).insertOne({order})
+PlaceOrder:(Orderdata,products,total)=>{
+return new Promise((resolve,reject)=>{
+  console.log(Orderdata,products,total)
+  let status=Orderdata.paymentMethod==='COD'?'Placed':'Pending'
+  let orderOBJ={
+    DeliveryAddress:{
+      Name:Orderdata.FirstName,
+      Address:Orderdata.Address,
+      Post:Orderdata.Post,
+      Zip:Orderdata.ZipCode,
+      State:Orderdata.State,
+      Phone:Orderdata.Phone,
 
+    },
+    userID:ObjectId(Orderdata.userID),
+    TotelAmound:total.total,
+    Date:new Date(),
+    paymentMethod:Orderdata.paymentMethod,
+    products:products,
+    status:status
+
+  
+}
+db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response)=>{
+  db.get().collection(Mycollection.Cart_Colloctions).deleteOne({user:ObjectId(Orderdata.userID)})
+  resolve()
+  console.log(response);
+})
+
+})
+
+
+
+},
+cartproductslist:(userID)=>{
+  return new Promise (async(resolve,reject)=>{
+let cart = await db.get().collection(Mycollection.Cart_Colloctions).findOne({user:ObjectId(userID)})
+if(cart){
+  resolve(cart.products)
+}
+
+  })
 }
   
 

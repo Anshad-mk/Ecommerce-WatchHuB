@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const Mycollection = require("../config/collections");
 const collections = require("../config/collections");
 
+
 module.exports = {
   userRegister: (user) => {
     user.blocked=false
@@ -68,6 +69,145 @@ unblockUser:(userid)=>{
             resolve(response)
         })
     })
+},
+
+getUserDetails:(userID)=>{
+  return new Promise (async(resolve,reject)=>{
+let userdetails=await db.get().collection(Mycollection.user_Collections).findOne({_id:ObjectId(userID)})
+if(userdetails){
+  resolve(userdetails)
+}
+  })
+
+},
+UpdateUser:(userID,userDetails)=>{
+  
+console.log(userDetails);
+  return new Promise((resolve,reject)=>{
+    db.get().collection(Mycollection.user_Collections).updateOne({_id:ObjectId(userID)},{$set:userDetails}).then((response)=>{
+      resolve(response)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+},
+// updateAddress:(userID,[address])=>{
+
+//   return new Promise ((resolve,reject)=>{
+//     db.get().collection(Mycollection.user_Collections).updateOne({_id:ObjectId(userID)},{$PUSH:{address}}).then((response)=>{
+//       resolve(response)
+//     }).catch((err)=>{
+//       reject(err)
+//     })
+//   })
+// }
+
+addAddress:(userID,address)=>{
+ let addressObj={
+    user:ObjectId(userID),
+    address:[{
+      Fname:address.FirstName,
+      Lname:address.LastName,
+    address:address.Address,
+    post:address.Post,
+    pin:address.ZipCode,
+    state:address.State,
+    phone:address.Phone,
+  }]
+    
+   }
+  return new Promise((resolve,reject)=>{
+    db.get().collection(Mycollection.address_Collection).insertOne(addressObj).then((response)=>{
+      resolve(response)
+    }).catch((err)=>{
+      reject(err)
+    })
+   })
+},
+findAddress:(userID)=>{
+  return new Promise ((resolve,reject)=>{
+    db.get().collection(Mycollection.address_Collection).findOne({user:ObjectId(userID)}).then((address)=>{
+      // console.log(address);
+      resolve(address)
+    }).catch((err)=>{
+reject(err)
+    })
+   
+    
+  })
+},
+addNewAddress:(userId,address)=>{
+  let addNew={
+    Fname:address.FirstName,
+    Lname:address.LastName,
+    address:address.Address,
+    post:address.Post,
+    pin:address.ZipCode,
+    state:address.State,
+    phone:address.Phone,
+  
+  }
+  return new Promise((resolve,reject)=>{
+    db.get().collection(Mycollection.address_Collection).updateOne({user:ObjectId(userId)},{$push:{address:addNew}
+    }).then((response)=>{
+      resolve(response)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+
+},
+viewOrders:(userID)=>{
+return new Promise((resolve,reject)=>{
+db.get().collection(Mycollection.orders_Colloction).aggregate([
+  {
+    $match:{
+      userID:ObjectId(userID)
+    }
+
+  },
+  {
+    $unwind: "$products",
+    },
+  {
+    $lookup:{
+      from:Mycollection.Product_Colloctions,
+      localField:'products.item',
+      foreignField:'_id',
+      as:'orders'
+    }
+  },
+  {
+    $unwind:'$orders'
+  },
+  {
+    $project:{
+      _id:1,
+      DeliveryAddress:1,
+      TotelAmound:1,
+      Date:1,
+      paymentMethod:1,
+      orders:1,
+      status:1,
+      products:1
+
+    }
+  }
+
+]).toArray().then((response)=>{
+  resolve(response)
+  console.log(response);
+}).catch((err)=>{
+  reject(err)
+})
+
+
+
+
+
+
+})
+
 }
 
 
