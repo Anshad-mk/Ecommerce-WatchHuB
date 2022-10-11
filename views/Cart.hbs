@@ -31,17 +31,17 @@
                   
                   <tr>
                      
-                    <td class="product-thumbnail">
+                    <td class="product-thumbnail shadow-lg">
                       <img src="/productIMG/{{this.product._id}}.jpg" alt="Image" class="img-fluid">
                     </td>
-                    <td class="product-name">
+                    <td class="product-name shadow-lg">
                       <h2 class="h5 text-black">{{this.product.proName}}</h2>
                     </td>
-                    <td><span id="price{{this.product._id}}">{{this.product.proPrice}} </span></td>
-                    <td>
+                    <td class="shadow-lg"><span id="price{{this.product._id}}">{{this.product.proPrice}} </span></td>
+                    <td class="shadow-lg">
                         
-                      <div class="input-group mb-3" style="max-width: 120px;">
-                        <div class="input-group-prepend">
+                      <div class="input-group mb-3 " style="max-width: 120px;">
+                        <div class="input-group-prepend ">
                           <button class="btn btn-outline-primary js-btn-minus" onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',-1)" type="button">&minus;</button>
                         </div>
                         <input type="text" class="form-control text-center" id="{{this.product._id}}" value="{{this.quantity}}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
@@ -51,8 +51,8 @@
                       </div>
 
                     </td>
-                    <td><span id="sum{{this.product._id}}">{{this.product.proPrice}}</span></td>
-                    <td><button onclick="removeProducts('{{this._id}}','{{this.product._id}}')" class="btn btn-primary btn-sm">X</button></td>
+                    <td class="shadow-lg"><span id="sum{{this.product._id}}">{{this.product.proPrice}}</span></td>
+                    <td class="shadow-lg"><button onclick="removeProducts('{{this._id}}','{{this.product._id}}')" class="btn btn-primary btn-sm">X</button></td>
                     </tr>
                   {{/each}}
                   

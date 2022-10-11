@@ -4,6 +4,8 @@ var router = express.Router();
 const productHelpers=require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 let cartcount = 0
+
+
 const userVerrify=(req,res,next)=>{
   let cartcount = 0
   if(req.session.user){
@@ -12,6 +14,7 @@ const userVerrify=(req,res,next)=>{
     res.redirect('/users/login')
   }
 }
+
 
 
 
@@ -261,13 +264,23 @@ userHelpers.addAddress(req.session.userID,req.body).then((response)=>{
   
 })
 router.get('/viewOrder',userVerrify,(req,res,next)=>{
-  userHelpers.viewOrders(req.session.userID).then((response)=>{
+  userHelpers.viewOrders(req.session.userID).then((response)=>{    
     res.render('viewOrder',{response,Uname:req.session.userName})
   }).catch((err)=>{
     res.render('viewOrder',{Uname:req.session.userName})
   })
   
 })
+
+router.get('/cancel_Order/:id',userVerrify,async(req,res,next)=>{  
+  console.log(req.params.id);
+let response = await userHelpers.cancelOrder(req.params.id)
+if(response){
+  res.json(response)
+}
+})
+
+
 
 
 

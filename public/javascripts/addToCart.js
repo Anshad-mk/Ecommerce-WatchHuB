@@ -31,6 +31,8 @@ function ChangeQuantity(cartID, ProID, count) {
   count = parseInt(count);
   console.log(ProQuantity);
 
+  
+
   $.ajax({
     url: "/users/changeProQuantity",
     data: {
@@ -90,5 +92,41 @@ $.ajax({
 
 
 }
+
+// orders  
+
+function confirmDelete(OrdeID) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, cancel it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url:`/users/cancel_Order/${OrdeID}`,
+        method:'get',
+        success:(response)=>{
+          if(response){
+      document.getElementById('save'+OrdeID).innerHTML="Order Canceld"
+      document.getElementById('')
+
+          }
+          
+          
+        }
+      })
+      
+    }
+  })
+
+
+
+}
+
+
 
 

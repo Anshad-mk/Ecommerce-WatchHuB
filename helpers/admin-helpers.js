@@ -30,6 +30,13 @@ module.exports = {
         reject(emailerr);
       }
     });
+  },
+
+
+  viewAllOrders:()=>{
+    return new Promise((resolve,reject)=>{
+      db.get
+    })
   }
 
 

@@ -217,7 +217,16 @@ module.exports = {
 PlaceOrder:(Orderdata,products,total)=>{
 return new Promise((resolve,reject)=>{
   console.log(Orderdata,products,total)
+  UTCTime = new Date() 
+  const time = UTCTime.toTimeString().split('G')[0]
+  
+var month = UTCTime.getUTCMonth() + 1; //months from 1-12
+var day = UTCTime.getUTCDate();
+var year = UTCTime.getUTCFullYear();
+
+let newdate = day + "-" + month + "-" + year +" Time:- "+ time;
   let status=Orderdata.paymentMethod==='COD'?'Placed':'Pending'
+
   let orderOBJ={
     DeliveryAddress:{
       Name:Orderdata.FirstName,
@@ -230,10 +239,11 @@ return new Promise((resolve,reject)=>{
     },
     userID:ObjectId(Orderdata.userID),
     TotelAmound:total.total,
-    Date:new Date(),
+    Date:newdate,
     paymentMethod:Orderdata.paymentMethod,
     products:products,
-    status:status
+    status:status,
+    orderCancel:false
 
   
 }

@@ -1,28 +1,33 @@
 <div class="container mt-5 mb-5" >
 
-    <table id="example6" class="display nowrap" style="width:100%">
+    <table id="example6" class="display table" style="width:100%">
       <thead>
         <tr>
-          <th>Product Name</th>
+          <th>Payment Method</th>
           <th>Date</th>
           <th>Detail view</th>
-          <th>Order Cancel</th>
+          <th>Order Modify</th>
+          <th>Status</th>
         </tr>
+         
       </thead>
+    
       <tbody>
         
+         {{#each response}}
         <tr>
-          <td>
-            paymentMethod
+           
+          <td class="shadow-lg">
+           {{this.paymentMethod}}
           </td>
-          <td>
-            orders.date
+          <td class="shadow-lg">
+            {{this.Date}}
           </td>
         </td>
        
-        <td scope="col">
+        <td scope="col" class="shadow-lg">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            onclick="viewdetail(`<%=orders._id%>`)">View Details</button>
+            onclick="viewdetail()">View Product Details</button>
 
 
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -40,7 +45,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-secondary shadow-lg" data-bs-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>
@@ -48,88 +53,21 @@
 
         </td>
           
-            <td scope="col"><button class="btn btn-danger" onclick="confirmDelete('<%=orders._id%>')">Cancel Order</button></td>
+          <td scope="col" class="shadow-lg"><button id="buttoncancel" class="btn btn-danger shadow-lg" onclick="confirmDelete(`{{this._id}}`)">Order Cancel</button></td>
        
-            <td>order cancelled</td>
+    
+ <td class="shadow-lg"><strong id="save{{this._id}}"></strong></td>
+
+      
+      
+            
+            
         
         </tr>
-       
+        {{/each}}
       </tbody>
     </table>
   </div>
 
  
-  <script>
-    function confirmDelete(proId) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, cancel it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'Order Canceled!',
-            'Your order has been canceled.',
-            'success'
-          ).then(() => {
-            location.href = `/cancel-order/${proId}`
-          })
-        }
-      })
-    }
-
-    function viewdetail(id) {
-      let hello = document.getElementById('hello')
-      hello.innerHTML = ''
-      $.ajax({
-        url: `/product/${id}`,
-        method: 'get',
-        success: (response) => {
-          
-          for (let i = 0; i < response.length; i++) {
-            hello.innerHTML += ` 
-                        <h5 class="text-light bg-dark">${response[i].name}</h5>
-                        <img src="/static/product-image/${response[i].image}.jpg" alt="" style="width: 100px;height: 75px;">
-                        ${
-                          (response[i].purchase==response[i].original) ?
-                           `<h6 class="text-danger">Price: ${response[i].purchase}</h6>`
-                            :
-                           `
-                            <h6 class="text-danger">Price: ${response[i].original}</h6>
-                            <h6 class="text-dark">Coupon Used: ${response[i].offername}</h6>
-                            <h6 class="text-success">Discount Price: ${response[i].offer}</h6>
-                            <h6 class="text-success">Total Paid: ${response[i].purchase}</h6>`  
-                        }
-                        <p>Category: ${response[i].category}</p>
-                        <p>Ordered Date: ${new Date(response[i].date).toDateString()}</p> 
-                        <p>PaymentMethod: ${response[i].paymentMethod}</p>
-                        <p>Delivered Address: ${response[i].town} ${response[i].state} ${response[i].pincode}</p>
-                        <hr>
-                        `
-          }
-        }
-      })
-
-    }
-
-    var exampleModal = document.getElementById('exampleModal')
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-      // Button that triggered the modal
-      var button = event.relatedTarget
-      // Extract info from data-bs-* attributes
-      var recipient = button.getAttribute('data-bs-whatever')
-      // If necessary, you could initiate an AJAX request here
-      // and then do the updating in a callback.
-      //
-      // Update the modal's content.
-      var modalTitle = exampleModal.querySelector('.modal-title')
-      var modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-      modalTitle.textContent = 'New message to ' + recipient
-      modalBodyInput.value = recipient
-    })
-  </script>
+ 

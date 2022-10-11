@@ -6,7 +6,7 @@ const userHelpers = require("../helpers/user-helpers");
 const CategoryHelpers = require("../helpers/category-helpers");
 const categoryHelpers = require("../helpers/category-helpers");
 const adminHelpers = require("../helpers/admin-helpers");
-const { response } = require("../app");
+const { response, render } = require("../app");
 var Handlebars = require('handlebars');
 const { Db } = require("mongodb");
 const { ObjectId} = require("mongodb");
@@ -166,6 +166,11 @@ router.get('/viewMore/:id',(req,res,next)=>{
   }).catch((err)=>{
     console.log('errr');
   })
+})
+
+router.get('/viewOrders',loginVerrify,(req,res,next)=>{
+  
+  res.render('viewAllOrders')
 })
 
 
