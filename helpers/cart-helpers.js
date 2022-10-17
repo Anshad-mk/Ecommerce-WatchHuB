@@ -98,7 +98,7 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(CartItems);
+      // console.log(CartItems);
       resolve(CartItems);
     });
   },
@@ -214,9 +214,12 @@ module.exports = {
     
   },
 
+
+
+
 PlaceOrder:(Orderdata,products,total)=>{
 return new Promise((resolve,reject)=>{
-  console.log(Orderdata,products,total)
+  // console.log(Orderdata,products,total)
   UTCTime = new Date() 
   const time = UTCTime.toTimeString().split('G')[0]
   
@@ -224,7 +227,7 @@ var month = UTCTime.getUTCMonth() + 1; //months from 1-12
 var day = UTCTime.getUTCDate();
 var year = UTCTime.getUTCFullYear();
 
-let newdate = day + "-" + month + "-" + year +" Time:- "+ time;
+let newdate = day + "-" + month + "-" + year +" "+ time;
   let status=Orderdata.paymentMethod==='COD'?'Placed':'Pending'
 
   let orderOBJ={
@@ -249,11 +252,14 @@ let newdate = day + "-" + month + "-" + year +" Time:- "+ time;
 }
 db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response)=>{
   db.get().collection(Mycollection.Cart_Colloctions).deleteOne({user:ObjectId(Orderdata.userID)})
-  resolve()
-  console.log(response);
+  resolve(response)
+  console.log(response.insertedId);
 })
 
 })
+
+
+
 
 
 
@@ -266,6 +272,41 @@ if(cart){
 }
 
   })
+},
+
+viewaOrderedData:(orderID)=>{
+return new Promise (async(resolve,reject)=>{
+  let orderItem=await db.get().collection(Mycollection.orders_Colloction).aggregate([
+    {
+      $match:{_id:ObjectId(orderID)}
+    },
+    {
+      $unwind:'$products'
+    },
+    {
+      $lookup:{
+        from:Mycollection.Product_Colloctions,
+        localField:'products.item',
+        foreignField:'_id',
+        as:'items'
+      }
+    },
+    {
+      $unwind:'$items'
+    }
+
+  ]).toArray()
+
+  if(orderItem){
+    resolve(orderItem)
+  }else{
+    reject()
+  }
+  
+})
+
+
+
 }
   
 

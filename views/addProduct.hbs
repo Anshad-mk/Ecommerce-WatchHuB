@@ -117,8 +117,9 @@
         <a href="/admin/viewproducts"
           class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
             class="fa fa-cog me-2"></i>View Products</a>
-            <a href="/admin/viewOrders" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>View Orders</a>
+        <a href="/admin/viewOrders"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>View Orders</a>
         <a href="/admin/logout"
           class="fs-5 list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
             class="fas fa-power-off me-2"></i>Logout</a>
@@ -207,37 +208,46 @@
                                   <ul class="dropdown-menu">
                                     <option name="proCategory" value="null"> Select </option>
                                     {{#each response}}
-                                    <li> <input name="proCategory" id="selectCat" class="ms-2" value="{{this.category}}" type="radio"
-                                        required> {{this.category}}</li>
+                                    <li><input name="proCategory" id="selectCat" class="ms-2" value="{{this.category}}"
+                                        type="radio" required> <label for="proCategory">{{this.category}} </label> </li>
                                     {{/each}}
 
                                   </ul>
                                 </div>
-                                <div id="emailmsg" class="form-text text-danger" >
-                                 
-                                  </div>
+                                <div id="emailmsg" class="form-text text-danger">
+
+                                </div>
 
 
                                 <div class="mt-3">
                                   <label for="exampleInputEmail1" class="form-label text-success  ">Image</label>
-                                  <input type="file" name="image1" accept="image/*" onclick="checking()" placeholder=" " value='' class="form-control" required
-                                    id="exampleInputEmail1" aria-describedby="emailHelp">
-                                    <input type="file" name="image2" accept="image/*" onclick="checking()" placeholder=" " value='' class="form-control" required
-                                    id="exampleInputEmail1" aria-describedby="emailHelp">
-                                    <input type="file" name="image3" accept="image/*" onclick="checking()" placeholder=" " value='' class="form-control" required
-                                    id="exampleInputEmail1" aria-describedby="emailHelp">
-                                    <input type="file" name="image4" accept="image/*" onclick="checking()" placeholder=" " value='' class="form-control" required
-                                    id="exampleInputEmail1" aria-describedby="emailHelp">
+                                  <input type="file" name="image1" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input type="file" name="image2" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input type="file" name="image3" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input type="file" name="image4" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
 
                                   <div id="passmsg" class="form-text text-danger">
                                     {{err}}</div>
-                                  
+
                                 </div>
                                 <div class="mt-5">
                                   <div class="d-flex justify-content-center"> <button
-                                      class="btn btn-outline-success btn-lg px-5 " onclick="checking()"  type="submit">Add Product</button>
+                                      class="btn btn-outline-success btn-lg px-5 " onclick="checking()"
+                                      type="submit">Add Product</button>
                                   </div>
                                 </div>
+                                {{!-- crop --}}
+                               
+                                {{!-- crop end --}}
+
                     </form>
 
 
@@ -267,13 +277,18 @@
       el.classList.toggle("toggled");
     };
 
-    function checking(){
-     if (document.getElementById("selectCat").checked) {
-document.getElementById('emailmsg').innerText=""
-      
-    }else{
-      document.getElementById('emailmsg').innerText=" Select Product Category"
-    
+    function checking() {
+      if (document.getElementById("selectCat").checked) {
+        document.getElementById('emailmsg').innerText = ""
+
+      } else {
+        document.getElementById('emailmsg').innerText = " Select Product Category"
+
+      }
     }
-    }
+
+    //crop
+
+
+
   </script>

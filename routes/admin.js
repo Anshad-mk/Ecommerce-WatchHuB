@@ -42,14 +42,15 @@ router.get("/",(req, res, next) =>{
   if(req.session.admin){
     res.redirect('/admin/manageusers')
   }else{
-    res.render("adminLogin", { admin: true });
+    res.render("adminLogin", { admin: true});
   }
   
 });
 
 router.get("/addproduct",loginVerrify, function (req, res, next) {
   categoryHelpers.viewCategory().then((response)=>{
-    res.render("addProduct", { admin: true, response });
+    console.log(response);
+    res.render("addProduct", {admin:true ,response});
   })
   
 });

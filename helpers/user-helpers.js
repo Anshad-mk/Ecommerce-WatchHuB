@@ -2,6 +2,12 @@ const db = require("../config/connection");
 const { ObjectId } = require("mongodb");
 const Mycollection = require("../config/collections");
 const collections = require("../config/collections");
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: 'rzp_test_3FXgnN9RmxDnjy',
+  key_secret: 'wcywClX3z6jW6Cf207UPZepB',
+});
 
 
 module.exports = {
@@ -12,13 +18,13 @@ module.exports = {
         .collection(Mycollection.user_Collections)
         .insertOne(user)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           resolve(data);
         });
     });
   },
   userLogin: (loguser) => {
-    console.log(loguser);
+    // console.log(loguser);
 
     return new Promise(async (resolve, reject) => {
       const check = await db
@@ -82,7 +88,7 @@ module.exports = {
   },
   UpdateUser: (userID, userDetails) => {
 
-    console.log(userDetails);
+    // console.log(userDetails);
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.user_Collections).updateOne({ _id: ObjectId(userID) }, { $set: userDetails }).then((response) => {
         resolve(response)
@@ -91,16 +97,7 @@ module.exports = {
       })
     })
   },
-  // updateAddress:(userID,[address])=>{
 
-  //   return new Promise ((resolve,reject)=>{
-  //     db.get().collection(Mycollection.user_Collections).updateOne({_id:ObjectId(userID)},{$PUSH:{address}}).then((response)=>{
-  //       resolve(response)
-  //     }).catch((err)=>{
-  //       reject(err)
-  //     })
-  //   })
-  // }
 
   addAddress: (userID, address) => {
     let addressObj = {
@@ -188,15 +185,15 @@ module.exports = {
             orders: 1,
             status: 1,
             products: 1,
-            orderCancel:1,
+            orderCancel: 1,
 
           }
         }
 
       ]).toArray().then((response) => {
         resolve(response)
-console.log(response);
-      
+        // console.log(response);
+
       }).catch((err) => {
         reject(err)
       })
@@ -205,24 +202,137 @@ console.log(response);
 
   },
 
-  
-  cancelOrder:(orderID)=>{
-    console.log(orderID);
-    return new Promise((resolve,reject)=>{
-      db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(orderID)},{
-      $set:{orderCancel:true}
-    }).then((response)=>{
-      resolve(true)
-      console.log(response+"res help");
-  
-      }).catch((err)=>{
-        console.log(err+"err");
-      reject(false)
-      
+
+  cancelOrder: (orderID) => {
+    // console.log(orderID);
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.orders_Colloction).updateOne({ _id: ObjectId(orderID) }, {
+        $set: {
+          orderCancel: true,
+          status: "Order Canceled"
+        }
+      }).then((response) => {
+        resolve(true)
+
+
+      }).catch((err) => {
+
+        reject(false)
+
+      })
+    })
+
+  },
+
+  // razorPay Integration 
+  generateRazorpay: (OrderID, totalAmount) => {
+    return new Promise((resolve, reject) => {
+      var options = {
+        amount: totalAmount.total,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: OrderID.toString()
+      };
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+
+          console.log("err", err);
+
+        } else {
+          console.log("new order", order);
+          resolve(order)
+        }
+
+
+
+      });
+
+
+
+    })
+  },
+  verifyPayment: (PaymentDetials) => {
+    console.log(PaymentDetials);
+    return new Promise((resolve, reject) => {
+      var crypto = require("crypto");
+
+      let body = PaymentDetials['paymentdata[razorpay_order_id]'] + "|" + PaymentDetials['paymentdata[razorpay_payment_id]'];
+
+
+      var expectedSignature = crypto.createHmac('sha256', 'wcywClX3z6jW6Cf207UPZepB')
+        .update(body.toString())
+        .digest('hex');
+      console.log("sig received ", PaymentDetials['paymentdata[razorpay_signature]']);
+      console.log("sig generated ", expectedSignature);
+
+      if (expectedSignature === PaymentDetials['paymentdata[razorpay_signature]']) {
+        resolve()
+      } else {
+        console.log("failed");
+        reject()
+      }
+
+
+    })
+  },
+  changeOrderStatus: (orderID) => {
+
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.orders_Colloction).updateOne({ _id: ObjectId(orderID) }, {
+        $set: {
+          status: "Placed"
+        }
+      }).then(() => {
+        resolve()
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+
+  },
+  generatePaypal: (orderID, totalAmount) => {
+    parseInt(totalPrice).toFixed(2)
+    return new promises((resolve, reject) => {
+      const create_payment_json = {
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": "http://localhost:3000/success",
+            "cancel_url": "http://localhost:3000/cancel"
+        },
+        "transactions": [{
+            "item_list": {
+                "items": [{
+                    "name": "list added",
+                    "sku": "001",
+                    "price": totalAmount,
+                    "currency": "USD",
+                    "quantity": 1
+                }]
+            },
+            "amount": {
+                "currency": "USD",
+                "total": totalAmount
+            },
+            "description": "Hat "
+        }]
+    };
+
+    let data = paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+            console.log(error, 'error ahda kuta');
+            throw error;
+        } else {
+            console.log('payment ayiiii');
+            resolve(payment)
+        }
     })
     })
-    
+
+
   }
+
 
 
 };

@@ -38,7 +38,21 @@ reject(err)
 db.get().collection(Mycollection.Product_Colloctions).find({proCategoryID:ObjectId(catID)})
 
 
- }   
+ },
+ 
+productCatogerize:(catName)=>{
+    return new Promise(async(resolve,reject)=>{
+  let catProducts= await db.get().collection(Mycollection.Product_Colloctions).find({proCategory:catName}).toArray()   
+  if(catProducts){
+    resolve(catProducts)
+  }else{
+    reject()
+  }
+  
+    })
+
+
+}
 
 
 

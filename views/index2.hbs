@@ -1,256 +1,360 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" />
 <style>
- :root {
-  --main-bg-color: #009d63;
-  --main-text-color: #009d63;
-  --second-text-color: #bbbec5;
-  --second-bg-color: #c1efde;
-}
+  :root {
+    --main-bg-color: #009d63;
+    --main-text-color: #009d63;
+    --second-text-color: #bbbec5;
+    --second-bg-color: #c1efde;
+  }
 
-.primary-text {
-  color: var(--main-text-color);
-}
+  .primary-text {
+    color: var(--main-text-color);
+  }
 
-.second-text {
-  color: var(--second-text-color);
-}
+  .second-text {
+    color: var(--second-text-color);
+  }
 
-.primary-bg {
-  background-color: var(--main-bg-color);
-}
+  .primary-bg {
+    background-color: var(--main-bg-color);
+  }
 
-.secondary-bg {
-  background-color: var(--second-bg-color);
-}
+  .secondary-bg {
+    background-color: var(--second-bg-color);
+  }
 
-.rounded-full {
-  border-radius: 100%;
-}
+  .rounded-full {
+    border-radius: 100%;
+  }
 
-#wrapper {
-  overflow-x: hidden;
-  background-image: linear-gradient(
-    to right,
-    #baf3d7,
-    #c2f5de,
-    #cbf7e4,
-    #d4f8ea,
-    #ddfaef
-  );
-}
+  #wrapper {
+    overflow-x: hidden;
+    background-image: linear-gradient(to right,
+        #baf3d7,
+        #c2f5de,
+        #cbf7e4,
+        #d4f8ea,
+        #ddfaef);
+  }
 
-#sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -15rem;
-  -webkit-transition: margin 0.25s ease-out;
-  -moz-transition: margin 0.25s ease-out;
-  -o-transition: margin 0.25s ease-out;
-  transition: margin 0.25s ease-out;
-}
-
-#sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
-}
-
-#sidebar-wrapper .list-group {
-  width: 15rem;
-}
-
-#page-content-wrapper {
-  min-width: 100vw;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
-}
-
-#menu-toggle {
-  cursor: pointer;
-}
-
-.list-group-item {
-  border: none;
-  padding: 20px 30px;
-}
-
-.list-group-item.active {
-  background-color: transparent;
-  color: var(--main-text-color);
-  font-weight: bold;
-  border: none;
-}
-
-@media (min-width: 768px) {
   #sidebar-wrapper {
-    margin-left: 0;
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin 0.25s ease-out;
+    -moz-transition: margin 0.25s ease-out;
+    -o-transition: margin 0.25s ease-out;
+    transition: margin 0.25s ease-out;
+  }
+
+  #sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+  }
+
+  #sidebar-wrapper .list-group {
+    width: 15rem;
   }
 
   #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
+    min-width: 100vw;
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
+    margin-left: 0;
   }
 
-}
+  #menu-toggle {
+    cursor: pointer;
+  }
+
+  .list-group-item {
+    border: none;
+    padding: 20px 30px;
+  }
+
+  .list-group-item.active {
+    background-color: transparent;
+    color: var(--main-text-color);
+    font-weight: bold;
+    border: none;
+  }
+
+  @media (min-width: 768px) {
+    #sidebar-wrapper {
+      margin-left: 0;
+    }
+
+    #page-content-wrapper {
+      min-width: 0;
+      width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+      margin-left: -15rem;
+    }
+
+    .box-2 {
+      padding: 0.5em;
+      width: calc(100% / 2 - 1em);
+    }
+
+    .options label,
+    .options input {
+      width: 4em;
+      padding: 0.5em 1em;
+    }
+
+    .btn {
+      background: white;
+      color: black;
+      border: 1px solid black;
+      padding: 0.5em 1em;
+      text-decoration: none;
+      margin: 0.8em 0.3em;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+  }
 </style>
 
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-       <div class="bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fa fa-inbox"> &nbsp </i>Watch HuB</div> <i class=""></i>
-            <div class="list-group list-group-flush my-3">
-                <a href="#" class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-                <a href="/admin/manageusers" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>Manage Users</a>
-                
-                <a href="/admin/categorymanage" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>category</a>
-                <a href="/admin/addproduct" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>Add Products</a>
-                <a href="/admin/viewproducts" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>View Products</a>
-                <a href="/admin/viewOrders" class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fa fa-cog me-2"></i>View Orders</a>
-                <a href="/admin/logout" class="fs-5 list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
-                        class="fas fa-power-off me-2"></i>Logout</a>
-                        
-            </div>
-        </div> 
-        <!-- /#sidebar-wrapper -->
+  <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="bg-white" id="sidebar-wrapper">
+      <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
+          class="fa fa-inbox"> &nbsp </i>Watch HuB</div> <i class=""></i>
+      <div class="list-group list-group-flush my-3">
+        <a href="#" class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
+            class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+        <a href="/admin/manageusers"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>Manage Users</a>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                    <h2 class="fs-2 m-0">Dashboard</h2>
-                </div>
+        <a href="/admin/categorymanage"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>category</a>
+        <a href="/admin/addproduct"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>Add Products</a>
+        <a href="/admin/viewproducts"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>View Products</a>
+        <a href="/admin/viewOrders"
+          class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+            class="fa fa-cog me-2"></i>View Orders</a>
+        <a href="/admin/logout"
+          class="fs-5 list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+            class="fas fa-power-off me-2"></i>Logout</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>{{name}}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            {{!-- <div class="container-fluid px-4">
-                <div class="row g-3 my-2">
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">...</h3>
-                                <p class="fs-5">Products</p>
-                            </div>
-                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">....</h3>
-                                <p class="fs-5">Sales</p>
-                            </div>
-                            <i
-                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">....</h3>
-                                <p class="fs-5">Delivery</p>
-                            </div>
-                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">%...</h3>
-                                <p class="fs-5">Increase</p>
-                            </div>
-                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-                </div> --}}
-
-                <div class="row my-5 ">
-                    <h3 class="fs-4 mb-3">View Orders</h3>
-                    <div class="col">
-                        <table class="table bg-white rounded shadow-sm  table-hover">
-                          
-                            <thead>
-                                <tr>
-                                    <th scope="col" width="50">#</th>
-                                    
-                                    <th scope="col">PURCHASE DATE</th>
-                                   <th scope="col">CUSTOMER NAME</th>
-                                   <th scope="col">AMOUNT</th>
-                                   <th scope="col">PAYMENT METHOD</th>
-                                   <th scope="col">STATUS</th>
-                                   <th scope="col">ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              
-                              {{#each response}}
-                                <tr>
-                                    
-                                    <th scope="row">{{inc @index}}</th>
-                                    <td>{{this.firstName}}&nbsp;{{this.LastName}}</td>
-                                    <td>{{this.email}}</td>
-                                    {{!-- <td><a href="/admin/edit_user/{{this._id}}" class="btn btn-danger btn-small">Edit</a> </td> --}}
-                                    {{#if this.blocked}}
-                                    <td> <a href="/admin/Unblock_user/{{this._id}}" class="btn btn-dark btn-small ps-4 mt-2 pe-4"><center>UnBlock</center> </a> </td>
-                                    
-                                    {{else}}
-                                     <td> <a href="/admin/block_user/{{this._id}}" class="btn btn-primary btn-small ps-4 mt-2 pe-4"><center>Block</center> </a> </td>
-                                    {{/if}}
-                                </tr>
-                                {{/each}}
-                                                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+          <h2 class="fs-2 m-0">Dashboard</h2>
         </div>
-    </div>
-    <!-- /#page-content-wrapper -->
-    </div>
 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user me-2"></i>{{name}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+
+      <section class=" bg-light gradient-custom">
+        <div class="container py-5  pt-0">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="card bg-light text-success" style="border-radius: 1rem;">
+                <div class="card-body p-5">
+                  <div class="mb-md-5 mt-md-4 pb-0">
+
+                    <h2 class="fw-bold mb-2 text-uppercase text-center">Add Products</h2>
+                    <p class="text-success-50 mb-5 text-center">Please enter Product details </p>
+
+                    <form action="/admin/addproduct" method="POST" id="signup" enctype="multipart/form-data">
+                      <div class="mb-5">
+                        <label for="exampleInputEmail1" class="form-label text-success  ">Product Name</label>
+                        <input type="text" name="proName" placeholder=" " value='' class="form-control" required
+                          id="exampleInputEmail1" aria-describedby="emailHelp">
+
+
+                        {{!-- <label for="exampleInputEmail1" class="form-label text-success  ">Product category</label>
+                        <input type="text" name="proCategory" placeholder=" " value='' class="form-control" required
+                          id="exampleInputEmail1" aria-describedby="emailHelp"> --}}
+
+                        <div class="mt-2">
+                          <label for="exampleInputEmail1" class="form-label text-success  ">price</label>
+                          <input type="number" name="proPrice" placeholder=" " value='' class="form-control" required
+                            id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                          <div class="mt-2">
+                            <label for="exampleInputEmail1" class="form-label text-success  ">quantity</label>
+                            <input type="number" name="Quantity" placeholder=" " value='' class="form-control" required
+                              id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                            <div class=" mt-3">
+                              <label for="exampleInputPassword1" class="form-label text-success">Product
+                                discription</label>
+                              <input type="text" name="proDiscription" placeholder=" " class="form-control" required
+                                id="exampleInputPassword1">
+
+                              <div class="mt-4">
+
+                                <div class="btn-group">
+                                  <button
+                                    class="btn btn-light btn-sm d-flex btn-outline-dark form-control dropdown-toggle"
+                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Product category
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                    <option name="proCategory" value="null"> Select </option>
+                                    {{#each response}}
+                                    <li> <input name="proCategory" id="selectCat" class="ms-2" value="{{this.category}}"
+                                        type="radio" required> {{this.category}}</li>
+                                    {{/each}}
+
+                                  </ul>
+                                </div>
+                                <div id="emailmsg" class="form-text text-danger">
+
+                                </div>
+
+
+                                <div class="mt-3">
+                                  <label for="exampleInputEmail1" class="form-label text-success  ">Image</label>
+                                  <input type="file" name="image1" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input type="file" name="image2" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input type="file" name="image3" accept="image/*" onclick="checking()" placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                  <input class="form-control" onclick="checking()" accept="image/*" type="file" required id="file-input" />
+                                  <input class="form-control" name="image4" accept="image/*" type="file" value="" hidden
+                                    required id="file-Output"   placeholder=" "
+                                    value='' class="form-control" required id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+
+                                  <section>
+                                    <link rel="stylesheet"
+                                      href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" />
+                                    
+                                      <div class="container page">
+                                        <div class="">
+
+                                        </div>
+                                        <div class="box-2">
+                                          <div class="result"></div>
+                                        </div>
+                                        <!--rightbox-->
+                                        <div class="box-2 img-result hide">
+                                          <!-- result of crop -->
+                                          <img class="cropped" src="" alt="" />
+                                        </div>
+                                        <!-- input file -->
+                                        <div class="box">
+                                          <div class="options hide">
+                                            <input type="number" class="img-w" value="300" min="100" max="1200" hi />
+                                          </div>
+                                          <!-- save btn -->
+                                          <button class="btn save hide">Save</button>
+                                          <!-- download btn -->
+                                          <a href="" class="btn download hide">Download</a>
+                                        </div>
+                                      </div>
+                                   
+                                    
+
+                                  </section>
+
+                                  {{!--
+                                  <input type="file" name="image4" accept="image/*"> --}}
+
+                                  <div id="passmsg" class="form-text text-danger">
+                                    {{err}}</div>
+
+                                </div>
+                                <div class="mt-5">
+                                  <div class="d-flex justify-content-center"> <button
+                                      class="btn btn-outline-success btn-lg px-5 " onclick="checking()"
+                                      type="submit">Add Product</button>
+                                  </div>
+                                </div>
+
+
+                    </form>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+  </div>
+
+  <script>
+    var el = document.getElementById("wrapper");
+    var toggleButton = document.getElementById("menu-toggle");
+
+    toggleButton.onclick = function () {
+      el.classList.toggle("toggled");
+    };
+
+    function checking() {
+      if (document.getElementById("selectCat").checked) {
+        document.getElementById('emailmsg').innerText = ""
+
+      } else {
+        document.getElementById('emailmsg').innerText = " Select Product Category"
+
+      }
+    }
     
-    <script>
-        var el = document.getElementById("wrapper");
-        var toggleButton = document.getElementById("menu-toggle");
 
-        toggleButton.onclick = function () {
-            el.classList.toggle("toggled");
-        };
-    </script>
+    //crop
+
+
+
+
+  </script>

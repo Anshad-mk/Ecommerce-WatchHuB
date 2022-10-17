@@ -4,7 +4,17 @@ const Mycollection = require("../config/collections");
 
 
 module.exports = {
-  addProducts: (Product) => {
+  addProducts: (ProductData) => {
+    Product={
+      
+        proName: ProductData.proName,
+        proPrice: parseInt(ProductData.proPrice),
+        Quantity: parseInt(ProductData.Quantity),
+        proDiscription: ProductData.proDiscription,
+        proCategory: ProductData.proCategory,
+    
+    }
+
     return new Promise((resolve, reject) => {
       db.get()
         .collection(Mycollection.Category_Colloctions)
@@ -28,7 +38,7 @@ module.exports = {
         .find()
         .toArray();
       resolve(products);
-    });
+    }); 
   },
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
@@ -52,6 +62,7 @@ module.exports = {
     });
   },
   upodateProducts: (id, updateData) => {
+    
     return new Promise((resolve, reject) => {
       db.get()
         .collection(Mycollection.Category_Colloctions)
@@ -68,8 +79,8 @@ module.exports = {
                   proName: updateData.proName,
                   proDiscription: updateData.proDiscription,
                   proCategory: updateData.proCategory,
-                  proPrice: updateData.proPrice,
-                  Quantity: updateData.Quantity,
+                  proPrice: parseInt(updateData.proPrice),
+                  Quantity: parseInt(updateData.Quantity),
                   proCategoryID:catdata._id
                 },
               }

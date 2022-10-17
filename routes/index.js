@@ -14,12 +14,9 @@ router.get("/", async(req, res, next)=> {
     let products= await productHelpers.viewProducts()
     let cat=await categoryHelpers.viewCategory()
     let cartCount =await cartHelpers.getItemCount(req.session.userID) 
-    if(cartCount){
+    
       res.render("index",{products,Uname,cat,cartCount})
-    }else{
-      res.render("index",{products,Uname,cat
-      })
-    }
+  
         
   
   }else{
@@ -60,8 +57,21 @@ router.get('/catogarylisting/:id',(req,res,next)=>{
     res.render('/',{Uname})
 })
 
-router.get('/listAllProducts',(req,res,next)=>{
+router.get('/listAllProducts/:catogary',async(req,res,next)=>{
+  console.log(req.params.catogary);
+  let cartCount =await cartHelpers.getItemCount(req.session.userID) 
+ let products= await categoryHelpers.productCatogerize(req.params.catogary)
+ if(products){
+  if(cartCount){
+    res.render('listProducts',{products,cartCount})
+  }else{
+    res.render('listProducts',{products})
+  }
+  
+ }else{
   res.render('listProducts')
+ }
+  
 })
 
 

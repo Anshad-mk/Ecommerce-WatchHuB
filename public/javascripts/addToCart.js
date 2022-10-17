@@ -1,10 +1,11 @@
+
 function addToCart(ProID) {
-  if ($("#userAvailable")) {
+  //  if ($("#userAvailable")) {
     $.ajax({
       url: "/users/addToCart/" + ProID,
       method: "get",
       success: (response) => {
-        if (response.status == false) {
+        if (response.status === false) {
           location.href = "/users/login";
         } else if ($("#countid").html() != "") {
           Swal.fire({
@@ -20,9 +21,9 @@ function addToCart(ProID) {
         }
       },
     });
-  } else {
-    window.location.href = "/users/login";
-  }
+  // } else {
+  //   window.location.href = "/users/login";
+  // }
 }
 
 function ChangeQuantity(cartID, ProID, count) {
@@ -96,6 +97,8 @@ $.ajax({
 // orders  
 
 function confirmDelete(OrdeID) {
+  const btn= document.getElementById(OrdeID+'buttoncancel')
+  const statustd=document.getElementById('td'+OrdeID)
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -111,8 +114,11 @@ function confirmDelete(OrdeID) {
         method:'get',
         success:(response)=>{
           if(response){
-      document.getElementById('save'+OrdeID).innerHTML="Order Canceld"
-      document.getElementById('')
+      btn.className='btn btn-dark shadow-lg '
+      btn.disabled=true
+      btn.innerHTML="Order Canceled"
+      statustd.className='shadow-lg  bg-secondary rounded text-center'
+      statustd.innerHTML=`<strong>Order Canceld</strong>`
 
           }
           
