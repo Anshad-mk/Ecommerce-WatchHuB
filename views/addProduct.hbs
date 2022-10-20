@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
 <style>
   :root {
     --main-bg-color: #009d63;
@@ -102,7 +105,7 @@
       <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
           class="fa fa-inbox"> &nbsp </i>Watch HuB</div> <i class=""></i>
       <div class="list-group list-group-flush my-3">
-        <a href="#" class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
+        <a href="/admin/dashboard" class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
             class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
         <a href="/admin/manageusers"
           class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
@@ -230,12 +233,19 @@
                                   <input type="file" name="image3" accept="image/*" onclick="checking()" placeholder=" "
                                     value='' class="form-control" required id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
-                                  <input type="file" name="image4" accept="image/*" onclick="checking()" placeholder=" "
+                                   <input type="file" id="id_image1" name="image4" accept="image/*" onchange="viewImage1(event)"
+                                  style="width:100%;" class="mb-4 form-control">
+
+
+                                  {{!-- <input type="file" name="image4" accept="image/*" onclick="checking()" placeholder=" "
                                     value='' class="form-control" required id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
+                                    aria-describedby="emailHelp"> --}}
 
                                   <div id="passmsg" class="form-text text-danger">
                                     {{err}}</div>
+                                    
+
+
 
                                 </div>
                                 <div class="mt-5">
@@ -245,6 +255,17 @@
                                   </div>
                                 </div>
                                 {{!-- crop --}}
+ 
+                  <br>
+                     <img src="" id="imgView1" alt="" style="height:100px" >
+                  <div class="vald-info" id="info"></div>
+                  <h5 class="error_form text-danger" id="image1_error_message"></h5>
+                  <div style="display:flex">
+                    <div id="image-box1" class="image-container"></div>
+                    <button type="button" class="btn btn-outline-info  ms-3" id="crop-btn1" style=" margin-top: 10px; display: none;
+                      width:  50% ; margin: 20rem 0rem 0rem 0rem;">Crop</button>
+                  </div>
+
                                
                                 {{!-- crop end --}}
 
@@ -289,6 +310,68 @@
 
     //crop
 
-
-
+  /* --------------------------------- image 1 -------------------------------- */
+  const imagebox1 = document.getElementById('image-box1')
+  const crop_btn1 = document.getElementById('crop-btn1')
+  const input1 = document.getElementById('id_image1')
+  function viewImage1(event) {
+    var fileInput1 = document.getElementById('id_image1');
+    var filePath1 = fileInput1.value;
+    var allowedExtensions = /(\.jpg|)$/i;
+    if (!allowedExtensions.exec(filePath1)) {
+      fileInput1.value = '';
+      swal("There is a problem!", "Please choose image file.");
+      return false;
+    } else {
+      document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
+    }
+  }
+  // When user uploads the image this event will get triggered
+  input1.addEventListener('change', () => {
+    // Getting image file object from the input variable
+    const img_data1 = input1.files[0]
+    // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The new object URL represents the specified File object or Blob object.
+    const url1 = URL.createObjectURL(img_data1)
+    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+    imagebox1.innerHTML = `<img src="${url1}" id="image1" style="width:100%;">`
+    // Storing that cropping view image in a variable
+    const image = document.getElementById('image')
+    // Displaying the image box
+    document.getElementById('image-box1').style.display = 'block'
+    // Displaying the Crop buttton
+    document.getElementById('crop-btn1').style.display = 'block'
+    // Hiding the Post button
+    const cropper1 = new Cropper(image1, {
+      autoCropArea: 1,
+      viewMode: 1,
+      scalable: false,
+      zoomable: false,
+      movable: false,
+      minCropBoxWidth: 50,
+      minCropBoxHeight: 50,
+    })
+    // When crop button is clicked this event will get triggered
+    crop_btn1.addEventListener('click', () => {
+      // This method coverts the selected cropped image on the cropper canvas into a blob object
+      cropper1.getCroppedCanvas().toBlob((blob) => {
+        // Gets the original image data
+        let fileInputElement1 = document.getElementById('id_image1');
+        // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+        let file1 = new File([blob], img_data1.name, { type: "image/*", lastModified: new Date().getTime() });
+        // Create a new container
+        let container1 = new DataTransfer();
+        // Add the cropped image file to the container
+        container1.items.add(file1);
+        // Replace the original image file with the new cropped image file
+        fileInputElement1.files = container1.files;
+        document.getElementById('imgView1').src = URL.createObjectURL(fileInputElement1.files[0])
+        // Hide the cropper box
+        document.getElementById('image-box1').style.display = 'none'
+        // Hide the crop button
+        document.getElementById('crop-btn1').style.display = 'none'
+      })
+    })
+  })
+  
   </script>

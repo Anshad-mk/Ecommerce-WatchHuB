@@ -1,30 +1,30 @@
-<div class="container mt-5 mb-5" >
+<div class="container mt-5 mb-5">
 
-    <table id="example6" class="display table" style="width:100%">
-      <thead>
-        <tr>
-          <th>Payment Method</th>
-          <th>Date</th>
-          <th>Detail view</th>
-          <th>Order Modify</th>
-          <th>Status</th>
-        </tr>
-         
-      </thead>
-    
-      <tbody>
-        
-         {{#each response}}
-        <tr>
-           
-          <td class="shadow-lg">
-           {{this.paymentMethod}}
-          </td>
-          <td class="shadow-lg">
-            {{this.Date}}
-          </td>
+  <table id="example6" class="display table" style="width:100%">
+    <thead>
+      <tr>
+        <th>Payment Method</th>
+        <th>Date</th>
+        <th>Detail view</th>
+        <th>Order Modify</th>
+        <th>Status</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      {{#each response}}
+      <tr>
+
+        <td class="shadow-lg">
+          {{this.paymentMethod}}
         </td>
-       
+        <td class="shadow-lg">
+          {{this.Date}}
+        </td>
+        </td>
+
         <td scope="col" class="shadow-lg">
           <a href="/users/orderdetails/{{this._id}}" class="btn btn-primary">View Details</a>
           {{!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -37,12 +37,12 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel"> VIEW DETAILS</h5> <br>
-                  
-           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-       00
-      </div>
+                  00
+                </div>
                 <div class="modal-body">
                   <div id="hello">
 
@@ -58,26 +58,20 @@
 
         </td>
 
-      {{#if this.orderCancel}}
-       <td scope="col" class="shadow-lg"><button id="{{this._id}}canceled" class="btn btn-dark shadow-lg" disabled> Order Canceled</button></td>
-       <td class="shadow-lg  bg-secondary rounded text-center"><strong id="save{{this._id}}">Order Canceld</strong></td>
-          {{else}}
-          <td scope="col" class="shadow-lg"><button id="{{this._id}}buttoncancel" class="btn btn-danger shadow-lg" onclick="confirmDelete(`{{this._id}}`)">Order Cancel</button></td>
-          <td id="td{{this._id}}" class="shadow-lg btn-success text-center"><strong id="save{{this._id}}">Order {{this.status}}</strong></td>
-       {{/if}}
-    
- 
+        {{#if this.orderCancel}}
+        <td scope="col" class="shadow-lg"><button id="{{this._id}}canceled" class="btn btn-dark shadow-lg" disabled>
+            Order Canceled</button></td>
+        <td class="shadow-lg  bg-secondary rounded text-center"><strong id="save{{this._id}}">Order Canceld</strong>
+        </td>
+        {{else}}
+        <td scope="col" class="shadow-lg"><button id="{{this._id}}buttoncancel" class="btn btn-danger shadow-lg"
+            onclick="confirmDelete(`{{this._id}}`)">Order Cancel</button></td>
+        <td id="td{{this._id}}" class="shadow-lg btn-success text-center"><strong id="save{{this._id}}">Order
+            {{this.status}}</strong></td>
+        {{/if}}
 
-      
-      
-            
-            
-        
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-
- 
- 
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

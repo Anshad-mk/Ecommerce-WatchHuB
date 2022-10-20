@@ -30,7 +30,7 @@ router.post('/',(req,res,next)=>{
   adminHelpers.adminLogin(req.body).then((response)=>{
     req.session.admin=req.body.email
     req.session.admin=true
-    res.redirect('/admin/manageusers')
+    res.redirect('/admin/dashboard')
   }).catch((err)=>{
     res.render("adminLogin", { admin: true,err });
   })
@@ -170,8 +170,50 @@ router.get('/viewMore/:id',(req,res,next)=>{
 })
 
 router.get('/viewOrders',loginVerrify,(req,res,next)=>{
+  adminHelpers.viewAllOrders().then((allOrders)=>{
+    res.render('viewAllOrders',{allOrders,admin: true})
+    
+  }).catch((err)=>{
+    res.render('viewAllOrders')
+    console.log("Err");
+  })
   
-  res.render('viewAllOrders')
+})
+
+router.get('/dashboard',loginVerrify,(req,res,next)=>{
+  
+  res.render('dashbord',{admin: true})
+})
+
+router.get('/chartWeek',loginVerrify,(req,res,next)=>{
+  adminHelpers.weekOrderCuount().then((value)=>{
+    res.json(value)
+  }).catch((err)=>{
+    res.json(err)
+  })
+})
+
+router.get('/chartMonth',loginVerrify,(req,res,next)=>{
+  adminHelpers.MonthOrderCuount().then((value)=>{
+    res.json(value)
+  }).catch((err)=>{
+    res.json(err)
+  })
+})
+
+router.get('/chartYear',loginVerrify,(req,res,next)=>{
+  adminHelpers.YearOrderCuount().then((value)=>{
+    res.json(value)
+  }).catch((err)=>{
+    res.json(err)
+  })
+})
+
+router.post('/change-status/:id',loginVerrify,(req,res,next)=>{
+  
+  adminHelpers.statusUpdate(req.params.id,req.body).then((value)=>{
+    res.redirect('/admin/viewOrders')
+  })
 })
 
 

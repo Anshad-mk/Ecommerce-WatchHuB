@@ -1,0 +1,393 @@
+<style>
+    :root {
+        --main-bg-color: #009d63;
+        --main-text-color: #009d63;
+        --second-text-color: #bbbec5;
+        --second-bg-color: #c1efde;
+    }
+
+    .primary-text {
+        color: var(--main-text-color);
+    }
+
+    .second-text {
+        color: var(--second-text-color);
+    }
+
+    .primary-bg {
+        background-color: var(--main-bg-color);
+    }
+
+    .secondary-bg {
+        background-color: var(--second-bg-color);
+    }
+
+    .rounded-full {
+        border-radius: 100%;
+    }
+
+    #wrapper {
+        overflow-x: hidden;
+        background-image: linear-gradient(to right,
+                #baf3d7,
+                #c2f5de,
+                #cbf7e4,
+                #d4f8ea,
+                #ddfaef);
+    }
+
+    #sidebar-wrapper {
+        min-height: 100vh;
+        margin-left: -15rem;
+        -webkit-transition: margin 0.25s ease-out;
+        -moz-transition: margin 0.25s ease-out;
+        -o-transition: margin 0.25s ease-out;
+        transition: margin 0.25s ease-out;
+    }
+
+    #sidebar-wrapper .sidebar-heading {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.2rem;
+    }
+
+    #sidebar-wrapper .list-group {
+        width: 15rem;
+    }
+
+    #page-content-wrapper {
+        min-width: 100vw;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #menu-toggle {
+        cursor: pointer;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 20px 30px;
+    }
+
+    .list-group-item.active {
+        background-color: transparent;
+        color: var(--main-text-color);
+        font-weight: bold;
+        border: none;
+    }
+
+    @media (min-width: 768px) {
+        #sidebar-wrapper {
+            margin-left: 0;
+        }
+
+        #page-content-wrapper {
+            min-width: 0;
+            width: 100%;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: -15rem;
+        }
+
+    }
+</style>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
+                    class="fa fa-inbox"> &nbsp </i>Watch HuB</div> <i class=""></i>
+            <div class="list-group list-group-flush my-3">
+                <a href="#" class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
+                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="/admin/manageusers"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Manage Users</a>
+
+                <a href="/admin/categorymanage"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>category</a>
+                <a href="/admin/addproduct"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Add Products</a>
+                <a href="/admin/viewproducts"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>View Products</a>
+                <a href="/admin/viewOrders"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>View Orders</a>
+                <a href="/admin/logout"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                        class="fas fa-power-off me-2"></i>Logout</a>
+
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">Dashboard</h2>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>{{name}}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid px-4">
+                <div class="row g-3 my-2">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">...</h3>
+                                <p class="fs-5">Products</p>
+                            </div>
+                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">....</h3>
+                                <p class="fs-5">Sales</p>
+                            </div>
+                            <i
+                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">....</h3>
+                                <p class="fs-5">Delivery</p>
+                            </div>
+                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">%...</h3>
+                                <p class="fs-5">Increase</p>
+                            </div>
+                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-5 ">
+                    <h3 class="fs-4 mb-3">Graphics</h3>
+                    <div class="col">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 pe-4"><canvas id="myChart" width="200px" height="200px"></canvas>
+                                </div>
+                                <div class="col-md-4"> <canvas id="myChart2" width="200px" height="200px"></canvas>
+                                </div>
+                                <div class="col-md-4"> <canvas id="myChart3" width="200px" height="200px"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const ctx2 = document.getElementById('myChart2').getContext('2d');
+        const ctx3 = document.getElementById('myChart3').getContext('2d');
+
+
+        var el = document.getElementById("wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+
+
+        fetch('/admin/chartWeek', {
+            method: 'get',
+        }).then((val) => val.json())
+            .then((data) => {
+                console.log(data);
+                let xaxis = []
+                let countss = []
+                for (const val of data) {
+                    let date = `${val.detail.day}/${val.detail.month}/${val.detail.year}`
+                    xaxis.push(date)
+                    countss.push(val.count)
+                }
+
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [...xaxis],
+                        datasets: [{
+                            label: 'ONE WEEKS CHART',
+                            data: [...countss],
+                            backgroundColor: [
+                                'rgba(255, 2, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+
+        fetch('/admin/chartMonth', {
+            method: 'get',
+        }).then((val) => val.json())
+            .then((data) => {
+                console.log(data);
+                let xaxis = []
+                let countss = []
+                for (const val of data) {
+                    let date = `${val.detail.day}/${val.detail.month}/${val.detail.year}`
+                    xaxis.push(date)
+                    countss.push(val.count)
+                }
+
+                const myChart2 = new Chart(ctx2, {
+                    type: 'pie',
+                    data: {
+                        labels: [...xaxis],
+                        datasets: [{
+                            label: 'ONE MONTH CHART',
+                            data: [...countss],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+
+        fetch('/admin/chartYear', {
+            method: 'get',
+        }).then((val) => val.json())
+            .then((data) => {
+                console.log(data);
+                let xaxis = []
+                let countss = []
+                for (const val of data) {
+                    let date = `${val.detail.day}/${val.detail.month}/${val.detail.year}`
+                    xaxis.push(date)
+                    countss.push(val.count)
+                }
+
+                const myChart3 = new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: [...xaxis],
+                        datasets: [{
+                            label: 'ONE YEAR CHART',
+                            data: [...countss],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+
+    </script>

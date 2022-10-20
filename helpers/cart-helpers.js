@@ -1,8 +1,9 @@
 const db = require("../config/connection");
-const { ObjectId } = require("mongodb");
+const { ObjectId, Timestamp } = require("mongodb");
 const Mycollection = require("../config/collections");
 const { Category_Colloctions } = require("../config/collections");
 const collections = require("../config/collections");
+var moment = require('moment');
 
 module.exports = {
   AddtoCart: (proId, userId) => {
@@ -220,6 +221,14 @@ module.exports = {
 PlaceOrder:(Orderdata,products,total)=>{
 return new Promise((resolve,reject)=>{
   // console.log(Orderdata,products,total)
+  
+  // var utc = new Date () 
+
+  // var m = moment.unix(utc).utc().format('DD-MM-YYYY HH:mm:ss');
+ 
+  
+let createdAt=new Date().toString()
+
   UTCTime = new Date() 
   const time = UTCTime.toTimeString().split('G')[0]
   
@@ -243,10 +252,14 @@ let newdate = day + "-" + month + "-" + year +" "+ time;
     userID:ObjectId(Orderdata.userID),
     TotelAmound:total.total,
     Date:newdate,
+    createdAt:createdAt,
+    date:new Date(),
     paymentMethod:Orderdata.paymentMethod,
     products:products,
     status:status,
-    orderCancel:false
+    orderCancel:false,
+    Timestamp:true
+    
 
   
 }

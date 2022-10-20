@@ -218,7 +218,7 @@
                                     value="PayPal" class="form-check-input" required>
                                 <label class="form-check-label" for="paypal">PayPal</label>
                             </div>
-
+<div id="placeorder"></div>
 
                         </div>
 <script src="/javascripts/paypal.js"></script>
@@ -250,6 +250,8 @@
                         } else if (response.Razorpay) {
                             razorpayPayment(response)
 
+                        }else if(response.paypal){
+                            paypal()
                         }
 
                     }
@@ -363,6 +365,9 @@
           });
         }
       }).render('#paypal-button-container');
+
+
+      
 
 
 
