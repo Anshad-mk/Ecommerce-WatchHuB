@@ -76,7 +76,7 @@
 				<h2 class="btn-lg shadow me-3 text-center"> Address </h2> 
 {{#each address.address}}
 <div class="address">
-	<ul>{{this.Fname}} {{this.Lname}},{{this.address}}, {{this.post}}, {{this.pin}}, {{this.state}}, {{this.phone}} <button class="btn btn-primary">delete</button></ul>
+	<ul> {{this.Fname}} {{this.Lname}},{{this.address}}, {{this.post}}, {{this.pin}}, {{this.state}}, {{this.phone}}<button class="btn btn-primary" onclick=" deleteAddress({{@index}},'{{../profileData._id}}')" >delete</button></ul>
 </div>	
 {{/each}}		
 			</div>
@@ -119,9 +119,44 @@
 			}
 		})
 
-
-
-
 	}
+
+function deleteAddress(index,userId){
+Swal.fire({
+  title: 'Do you want to Delete ?',
+  showCancelButton: true,
+  confirmButtonText: 'Delete',
+  
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+
+console.log('hiii')
+
+$.ajax({
+	url:'/users/deleteAddress',
+	method:'get',
+	data:{
+		Index:index,
+		UserID:userId
+	},
+	success:(response)=>{
+	Swal.fire('Deleted !', '', 'success')	
+	}
+})	
+
+
+
+
+    
+  } else  {
+    Swal.fire('Canceled', '', 'info')
+  }
+})
+
+	
+
+}
+
 
 </script>

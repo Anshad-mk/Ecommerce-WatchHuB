@@ -240,7 +240,14 @@ router.post('/place-order',userVerrify,async(req,res,next)=>{
   cartHelpers.PlaceOrder(req.body,products,totalPrice).then((OrderID)=>{
     if(req.body['paymentMethod']==='COD'){
     res.json({COD_Success:true})
-    }else if(req.body['paymentMethod']==='razorpay'){
+    } else if (req.body['paymentMethod']==='PayPal'){
+userHelpers.changeOrderStatus(OrderID.insertedId).then((response)=>{
+  console.log(OrderID.insertedId,"hiii odid");
+  {response.paypal = true}
+  res.json(response)
+})
+    } else if(req.body['paymentMethod']==='razorpay'){
+
 userHelpers.generateRazorpay(OrderID.insertedId,totalPrice).then((response)=>{
   response.Razorpay=true
 res.json(response)
@@ -268,7 +275,7 @@ router.get('/ordersuccess',userVerrify,(req,res,next)=>{
 router.get('/profile',userVerrify,async(req,res,next)=>{
   let profileData =await userHelpers.getUserDetails(req.session.userID)
   let address=await userHelpers.findAddress(req.session.userID)
-  
+  console.log(profileData,address);
   if(address){
     res.render('profile',{profileData,Uname:req.session.userName,address})
   }else{
@@ -281,6 +288,7 @@ router.get('/profile',userVerrify,async(req,res,next)=>{
 router.post('/Profile',userVerrify,(req,res,next)=>{
 userHelpers.UpdateUser(req.session.userID,req.body).then((response)=>{
     res.json(response)
+    
   })
 })
 
@@ -322,6 +330,7 @@ router.get('/orderdetails/:id',userVerrify,async (req,res,next)=>{
   let orderdata =await cartHelpers.viewaOrderedData(req.params.id)
   if(orderdata){
      res.render('orderDeteails',{orderdata})
+     console.log(orderdata);
   }else{
     res.render('orderDeteails')
   }
@@ -342,6 +351,16 @@ userHelpers.changeOrderStatus(req.body['order[receipt]']).then(()=>{
   })
  
 })
+
+router.get('/deleteAddress',userVerrify,(req,res,next)=>{
+ userHelpers.deleteAddress(req.query.Index,req.query.UserID).then((response)=>{
+ res.json(response)
+
+ })
+
+
+})
+
 
 
 

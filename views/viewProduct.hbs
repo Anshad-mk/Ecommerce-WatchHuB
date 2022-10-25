@@ -201,7 +201,7 @@
                 <div class="row my-5 ">
                     <h3 class="fs-4 mb-3">View Products</h3>
                     <div class="col">
-                        <table class="table bg-white rounded shadow-sm  table-hover">
+                        <table id="productsTable" class="table bg-white rounded shadow-sm  table-hover">
                           
                             <thead>
                                 <tr>
@@ -295,5 +295,9 @@ function viewMore(id){
   }
 })
 }
+
+  $(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
 
     </script>

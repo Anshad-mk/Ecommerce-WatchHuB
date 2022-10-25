@@ -176,12 +176,27 @@ module.exports = {
   statusUpdate:(OrderID,status)=>{
     console.log(status,"haiii");
     return new Promise((resolve,reject)=>{
-      db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
-      {$set:{status:status.status}}).then((response)=>{
+      if(status.status=='delivered'){
+        db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
+      {$set:{status:status.status,delivered:true}}).then((response)=>{
         resolve(response)
       }).catch((err)=>{
         reject(err)
       })
+      }else if(status.status=='Cancel'){
+        db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
+        {$set:{status:status.status,orderCancel:true}}).then((response)=>{
+          resolve(response)
+        }).catch((err)=>{
+          reject(err)
+        })
+      }else if(status.status=='Shipped')
+      db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
+        {$set:{status:status.status,Shipped:true}}).then((response)=>{
+          resolve(response)
+        }).catch((err)=>{
+          reject(err)
+        })
     })
   }
 

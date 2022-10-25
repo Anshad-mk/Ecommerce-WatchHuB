@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
-
+<style>
+  .hov :hover{
+    transition: 0.2s ease-in;
+    transform: translateY(-10px);
+    box-shadow: 0px 45px 60px 0px rgba(0, 0, 0, 0.087);
+  }
+</style>
 
 {{! Carousel }}
 <!-- Modal -->
@@ -143,18 +149,17 @@
   {{!-- ====================================================================================================== --}}
   {{!-- ====================================================================================================== --}}
 
-  <div class="row">
+  <div class="row ">
 
     {{#each cat}}
     <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-3 ">
-      <div class="card h-10  rounded-circle border-0">
-        <a href="#">
-          <img src="/images/1661258569watches_for_men.webp" class="card-img-top rounded-circle pb-0" height="18rem"
-            width="100%" style="max-height: 18rem; width: 100%;">
+      <div class="card h-10  rounded-circle border-1 hov">
+        <a href="/listAllProducts/{{this.category}}">
+          <img src="/productIMG/{{this._id}}.jpg" class="card-img-top rounded-circle pb-0" style="height: 15em;" >
         </a>
       </div>
       <h5 class="text-center mt-3 mb-3">{{this.category}}</h5>
-      <p class="text-center"><a class="btn btn-success" href="/listAllProducts/{{this.category}}" >Go Shop</a></p>
+      <p class="text-center"><a class="btn btn-success" href="/listAllProducts/{{this.category}}">Go Shop</a></p>
     </div>
 
     {{/each}}
@@ -180,16 +185,40 @@
 
 
 
-    <div class="row mt-3">
+    <div class="row mt-3 ">
       {{#each products}}
-      <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-4">
-        <div class="card h-100">
-          <a href="/preview-product/{{this._id}}">
-            <img src="/productIMG/{{this._id}}.jpg" class="card-img-top" height="18rem" width="100%"
-              style="max-height: 18rem; width: 100%;">
-          </a>
+
+      <div class="col-md-3">
+        <div class="card mb-4 product-wap rounded-0 h-100 ">
+          <div class="card rounded-0">
+            <img class="card-img rounded-0 img-fluid" src="/productIMG/{{this._id}}.jpg" style="height: 15em;">
+            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+              <ul class="list-unstyled">
+                <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
+                <li><a class="btn btn-success text-white mt-2" href="/preview-product/{{this._id}}"><i
+                      class="far fa-eye"></i></a></li>
+                <li><button class="btn btn-success text-white mt-2" onclick="addToCart('{{this._id}}')"><i
+                      class="fas fa-cart-plus"></i></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="card-body">
-            <ul class="list-unstyled d-flex justify-content-between">
+            <a href="shop-single.html" class="h3 text-decoration-none">
+              <h4>{{this.proName}}</h4>
+            </a>
+            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+              <li>
+                <h6>Quantity: {{this.Quantity}}</h6>
+              </li>
+              <li class="pt-2">
+                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+              </li>
+            </ul>
+            <ul class="list-unstyled d-flex justify-content-center mb-1">
               <li>
                 <i class="text-warning fa fa-star"></i>
                 <i class="text-warning fa fa-star"></i>
@@ -197,26 +226,18 @@
                 <i class="text-muted fa fa-star"></i>
                 <i class="text-muted fa fa-star"></i>
               </li>
-              <li class="text-muted text-right">₹{{this.proPrice}}/-</li>
             </ul>
-            <a href="/preview-product/{{this._id}}" class="h2 text-decoration-none text-dark"> {{this.proName}} </a>
-            <p class="card-text">
-
+            <p class="mb-0">
+            <h5 class="text-center">₹{{this.proPrice}}.00</h5>
             </p>
-            <p class="text-muted ">Reviews (48)</p>
-          
-          <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
-          <button type="submit" class="btn btn-success btn-lg" onclick="addToCart('{{this._id}}')" name="submit" value="addtocard">Add To Cart</button>
           </div>
-          
         </div>
-        
       </div>
+
+
 
       {{/each}}
     </div>
 
 </section>
 <!-- End Featured Product -->
-
-

@@ -201,7 +201,7 @@
                 <div class="row my-5 ">
                     <h3 class="fs-4 mb-3">View Users</h3>
                     <div class="col">
-                        <table class="table bg-white rounded shadow-sm  table-hover">
+                        <table id="usertable" class="table bg-white rounded shadow-sm  table-hover">
                           
                             <thead>
                                 <tr>
@@ -220,7 +220,7 @@
                                     <th scope="row">{{inc @index}}</th>
                                     <td>{{this.firstName}}&nbsp;{{this.LastName}}</td>
                                     <td>{{this.email}}</td>
-                                    {{!-- <td><a href="/admin/edit_user/{{this._id}}" class="btn btn-danger btn-small">Edit</a> </td> --}}
+                                     {{!-- <td><a href="/admin/edit_user/{{this._id}}" class="btn btn-danger btn-small" >Edit</a> </td>  --}}
                                     {{#if this.blocked}}
                                     <td> <a href="/admin/Unblock_user/{{this._id}}" class="btn btn-dark btn-small ps-4 mt-2 pe-4"><center>UnBlock</center> </a> </td>
                                     
@@ -249,4 +249,8 @@
         toggleButton.onclick = function () {
             el.classList.toggle("toggled");
         };
+
+        $(document).ready( function () {
+    $('#usertable').DataTable();
+} );
     </script>

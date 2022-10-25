@@ -96,9 +96,14 @@ router.get("/categorymanage",loginVerrify, (req, res, next) => {
 });
 
 router.post('/addcategory',(req,res,next)=>{
+  console.log(req.files.catImg);
   categoryHelpers.addCategory(req.body).then((response)=>{
-    console.log(req.body);
-    res.redirect('/admin/categorymanage')
+    let id = ObjectId(response.insertedId).toString()
+    let CatImage=req.files.catImg;
+    CatImage.mv("./public/productIMG/" + id + ".jpg").then((response)=>{
+      res.redirect('/admin/categorymanage')
+    })
+   
   })
 })
 

@@ -144,6 +144,7 @@ module.exports = {
       phone: address.Phone,
 
     }
+    
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.address_Collection).updateOne({ user: ObjectId(userId) }, {
         $push: { address: addNew }
@@ -281,8 +282,8 @@ module.exports = {
         $set: {
           status: "Placed"
         }
-      }).then(() => {
-        resolve()
+      }).then((response) => {
+        resolve(response)
       }).catch((err) => {
         reject(err)
       })
@@ -331,7 +332,14 @@ module.exports = {
     })
 
 
-  }
+  },
+  // deleteAddress:(index,userID)=>{
+  //   console.log(index,userID);
+  //   return new Promise((resolve,reject)=>{
+  //    db.get().collection(Mycollection.address_Collection).updateOne({user:ObjectId(userID)},
+  //    {$unset : {"interests" : 1 }})
+  //   })
+  // }
 
 
 

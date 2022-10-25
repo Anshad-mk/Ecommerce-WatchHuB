@@ -245,13 +245,13 @@
                     method: 'post',
                     data: $('#checkout-form').serialize(),
                     success: (response) => {
-                        if (response.COD_Success) {
+                        if (response.COD_Success ) {
                             location.href = "/users/ordersuccess"
                         } else if (response.Razorpay) {
                             razorpayPayment(response)
 
                         }else if(response.paypal){
-                            paypal()
+                             location.href = "/users/ordersuccess"
                         }
 
                     }
@@ -360,7 +360,7 @@
             const transaction = orderData.purchase_units[0].payments.captures[0];
             // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
             $(document).ready(function(){
-            $( "#placeorder" ).trigger( "click" );
+            $( "#checkoutSubmit" ).trigger( "click" );
             })
           });
         }

@@ -204,9 +204,36 @@
                     <div class="col">
 <div class="container">
 <div class="row">
-  <div class="col-md-6 pe-4"><canvas id="myChart" width="200px" height="200px"></canvas> </div>
-  <div class="col-md-6"> <canvas id="myChart2" width="200px" height="200px"></canvas></div>
-   <div class="col-md-6"> <canvas id="myChart3" width="200px" height="200px"></canvas></div>
+ <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-4">
+        <div class="card h-100">
+          <a href="/preview-product/{{this._id}}">
+            <img src="/productIMG/{{this._id}}.jpg" class="card-img-top" height="18rem" width="100%"
+              style="max-height: 18rem; width: 100%;">
+          </a>
+          <div class="card-body">
+            <ul class="list-unstyled d-flex justify-content-between">
+              <li>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-warning fa fa-star"></i>
+                <i class="text-muted fa fa-star"></i>
+                <i class="text-muted fa fa-star"></i>
+              </li>
+              <li class="text-muted text-right">₹{{this.proPrice}}/-</li>
+            </ul>
+            <a href="/preview-product/{{this._id}}" class="h2 text-decoration-none text-dark"> {{this.proName}} </a>
+            <p class="card-text">
+
+            </p>
+            <p class="text-muted ">Reviews (48)</p>
+          
+          <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
+          <button type="submit" class="btn btn-success btn-lg" onclick="addToCart('{{this._id}}')" name="submit" value="addtocard">Add To Cart</button>
+          </div>
+          
+        </div>
+        
+      </div>
 </div>
 
 </div>
