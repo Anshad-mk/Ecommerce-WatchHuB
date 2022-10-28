@@ -129,7 +129,7 @@
 
         <a href="/admin/categorymanage"
           class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-            class="fa fa-cog me-2"></i>category</a>
+            class="fa fa-cog me-2"></i>Category</a>
         <a href="/admin/addproduct"
           class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
             class="fa fa-cog me-2"></i>Add Products</a>
@@ -247,7 +247,7 @@
                   <td scope="row">{{inc @index}}</td>
                   <td scope="row">{{this.Date}}</td>
                   <td scope="row">{{this.DeliveryAddress.Name}}</td>
-                  <td scope="row"><a href="/users/orderdetails/{{this._id}}" class="btn btn-primary">Products</a></td>
+                  <td scope="row"><a href="/admin/orderdetails/{{this._id}}" class="btn btn-primary">Products</a></td>
                   <td scope="row">₹{{this.TotelAmound}}</td>
                   <td scope="row">{{this.paymentMethod}}</td>
                   <td scope="row">{{this.status}}</td>

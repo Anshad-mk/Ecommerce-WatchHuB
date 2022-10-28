@@ -1,13 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var hbs=require('express-handlebars')
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let hbs=require('express-handlebars')
 let session = require('express-session')
 let db=require('./config/connection')
 let fileUpload=require('express-fileupload')
-
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const adminRouter = require('./routes/admin');
+const { handlebars } = require('hbs');
 
 db.connect((err)=>{
   if(err){
@@ -16,14 +19,12 @@ console.log(err);
     console.log('database connected successfully');
   }
 })
+const app = express();
 
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var adminRouter = require('./routes/admin');
-const { handlebars } = require('hbs');
 
-var app = express();
+
+
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store')

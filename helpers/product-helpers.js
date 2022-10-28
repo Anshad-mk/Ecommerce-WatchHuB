@@ -12,6 +12,7 @@ module.exports = {
         Quantity: parseInt(ProductData.Quantity),
         proDiscription: ProductData.proDiscription,
         proCategory: ProductData.proCategory,
+        isDeleted:false
     
     }
 
@@ -40,6 +41,7 @@ module.exports = {
       resolve(products);
     }); 
   },
+
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -99,4 +101,44 @@ module.exports = {
         });
     });
   },
+  softdelete:(id)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.Product_Colloctions).updateOne({_id:ObjectId(id)},
+      {
+        $set:{isDeleted:true}
+      }).then((resp)=>{
+        resolve(resp)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  },
+  deletefalse:(id)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.Product_Colloctions).updateOne({_id:ObjectId(id)},
+      {
+        $set:{isDeleted:false}
+      }).then((resp)=>{
+        resolve(resp)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  },
+  IndexProducts: () => {
+    return new Promise(async (resolve, reject) => {
+      let products = await db
+        .get()
+        .collection(Mycollection.Product_Colloctions)
+        .find({isDeleted:false})
+        .toArray();
+      resolve(products);
+    }); 
+  }
+
+
+
+
+
+
 };

@@ -1,15 +1,16 @@
 const { Router } = require("express");
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const productHelpers = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
 const CategoryHelpers = require("../helpers/category-helpers");
 const categoryHelpers = require("../helpers/category-helpers");
 const adminHelpers = require("../helpers/admin-helpers");
 const { response, render } = require("../app");
-var Handlebars = require('handlebars');
+const Handlebars = require('handlebars');
 const { Db } = require("mongodb");
 const { ObjectId} = require("mongodb");
+const cartHelpers = require('../helpers/cart-helpers')
 
 Handlebars.registerHelper("inc", function(value, options)
 {
@@ -219,6 +220,30 @@ router.post('/change-status/:id',loginVerrify,(req,res,next)=>{
   adminHelpers.statusUpdate(req.params.id,req.body).then((value)=>{
     res.redirect('/admin/viewOrders')
   })
+})
+
+router.get('/orderdetails/:id',loginVerrify,async (req,res,next)=>{
+  let orderdata =await cartHelpers.viewaOrderedData(req.params.id)
+  if(orderdata){
+     res.render('orderDeteails',{orderdata})
+     
+  }else{
+    res.render('orderDeteails')
+  }
+ 
+})
+
+router.get('/softdelete/:id',loginVerrify,(req,res,next)=>{
+  productHelpers.softdelete(req.params.id).then((response)=>{
+    res.json(true)
+  })
+})
+
+router.get('/softfalse/:id',loginVerrify,(req,res,next)=>{
+  productHelpers.deletefalse(req.params.id).then((response)=>{
+    res.json(true)
+  })
+
 })
 
 

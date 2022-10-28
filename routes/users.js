@@ -1,10 +1,11 @@
-var express = require('express');
+const express = require('express');
 const cartHelpers = require('../helpers/cart-helpers');
-var router = express.Router();
+const router = express.Router();
 const productHelpers=require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const paypal =require('paypal-rest-sdk');
 const adminHelpers = require('../helpers/admin-helpers');
+const { route } = require('.');
 let cartcount = 0
 
 
@@ -51,7 +52,14 @@ router.get('/register', function(req, res, next) {
 
 
 router.post('/register',(req, res, next)=>{
-userHelpers.userLogin(req.body).then((excist)=>{
+  let user ={
+    firstName:req.body.firstName,
+    LastName:req.body.LastName,
+    email:req.body.email.toLowerCase(),
+    password:req.body.password,
+    repassword:req.body.repassword
+  }
+userHelpers.userLogin(user).then((excist)=>{
   if(excist){
     res.render('register',{err:"email ID alredy existing !! Try login"})
   }
@@ -61,8 +69,7 @@ userHelpers.userLogin(req.body).then((excist)=>{
       res.render('register',{err:"password not match"})
   
     }else{
-      userHelpers.userRegister(req.body).then((data)=>{
-        // console.log(req.body)
+      userHelpers.userRegister(user).then((data)=>{
           res.redirect('/users/login')
       })
     
@@ -106,7 +113,7 @@ res.render('login-otp')
 })
 
 router.post('/login-otp', (req, res) => {
-console.log(req.body.phone);
+// console.log(req.body.phone);
 client.verify
      .services(serverSID)
      .verifications.create({
@@ -145,7 +152,7 @@ router.post('/login-otpverification',(req,res,next)=>{
 })
 
 router.get('/cart',userVerrify,async(req,res,next)=>{
-  console.log(req.session.userID);
+  // console.log(req.session.userID);
   Uname=req.session.userName;
   let products= await cartHelpers.viewCart(req.session.userID)
   let cartCount= await cartHelpers.getItemCount(req.session.userID)  
@@ -242,7 +249,7 @@ router.post('/place-order',userVerrify,async(req,res,next)=>{
     res.json({COD_Success:true})
     } else if (req.body['paymentMethod']==='PayPal'){
 userHelpers.changeOrderStatus(OrderID.insertedId).then((response)=>{
-  console.log(OrderID.insertedId,"hiii odid");
+  // console.log(OrderID.insertedId,"hiii odid");
   {response.paypal = true}
   res.json(response)
 })
@@ -275,8 +282,9 @@ router.get('/ordersuccess',userVerrify,(req,res,next)=>{
 router.get('/profile',userVerrify,async(req,res,next)=>{
   let profileData =await userHelpers.getUserDetails(req.session.userID)
   let address=await userHelpers.findAddress(req.session.userID)
-  console.log(profileData,address);
+  // console.log(profileData,address);
   if(address){
+    
     res.render('profile',{profileData,Uname:req.session.userName,address})
   }else{
      res.render('profile',{profileData,Uname:req.session.userName})
@@ -300,10 +308,12 @@ router.post('/address',userVerrify,async (req,res,next)=>{
   let proExist= await userHelpers.findAddress(req.session.userID)
   if(proExist){
     userHelpers.addNewAddress(req.session.userID,req.body).then((response)=>{
+      // console.log(response);
       res.redirect('/users/Profile')
     })
   }else{
 userHelpers.addAddress(req.session.userID,req.body).then((response)=>{
+  // console.log(response);
     res.redirect('/users/Profile')
   })
   }
@@ -330,7 +340,7 @@ router.get('/orderdetails/:id',userVerrify,async (req,res,next)=>{
   let orderdata =await cartHelpers.viewaOrderedData(req.params.id)
   if(orderdata){
      res.render('orderDeteails',{orderdata})
-     console.log(orderdata);
+    //  console.log(orderdata);
   }else{
     res.render('orderDeteails')
   }
@@ -353,12 +363,26 @@ userHelpers.changeOrderStatus(req.body['order[receipt]']).then(()=>{
 })
 
 router.get('/deleteAddress',userVerrify,(req,res,next)=>{
- userHelpers.deleteAddress(req.query.Index,req.query.UserID).then((response)=>{
+  userHelpers.deleteAddress(req.query.date,req.query.UserID).then((response)=>{
  res.json(response)
 
  })
 
 
+})
+
+router.get('/EditAddress/:index',userVerrify,(req,res,next)=>{
+  userHelpers.EditAddress(req.session.userID,req.params.index).then((response)=>{
+    res.render('address',{Uname:req.session.userName,response})
+    // console.log(response);
+  })
+
+})
+
+router.post('/UpdateAddress',userVerrify,(req,res,next)=>{
+  userHelpers.updateAddress(req.body,req.session.userID).then((response)=>{
+res.redirect('/users/Profile')
+  })
 })
 
 

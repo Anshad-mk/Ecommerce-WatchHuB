@@ -42,7 +42,7 @@ db.get().collection(Mycollection.Product_Colloctions).find({proCategoryID:Object
  
 productCatogerize:(catName)=>{
     return new Promise(async(resolve,reject)=>{
-  let catProducts= await db.get().collection(Mycollection.Product_Colloctions).find({proCategory:catName}).toArray()   
+  let catProducts= await db.get().collection(Mycollection.Product_Colloctions).find({proCategory:catName,isDeleted:false}).toArray()   
   if(catProducts){
     resolve(catProducts)
   }else{

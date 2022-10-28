@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const Mycollection = require("../config/collections");
 const collections = require("../config/collections");
 const Razorpay = require('razorpay');
+const bcrypt= require('bcrypt')
 
 var instance = new Razorpay({
   key_id: 'rzp_test_3FXgnN9RmxDnjy',
@@ -11,22 +12,22 @@ var instance = new Razorpay({
 
 
 module.exports = {
-  userRegister: (user) => {
+  userRegister: async (user) => {
+    user.email = user.email.toLowerCase()
     user.blocked = false
+user.password= await bcrypt.hash(user.password,10)
+user.repassword = user.password
     return new Promise((resolve, reject) => {
       db.get()
         .collection(Mycollection.user_Collections)
         .insertOne(user)
         .then((data) => {
-          // console.log(data);
           resolve(data);
         });
     });
   },
   userLogin: (loguser) => {
-    // console.log(loguser);
-
-    return new Promise(async (resolve, reject) => {
+     return new Promise(async (resolve, reject) => {
       const check = await db
         .get()
         .collection(Mycollection.user_Collections)
@@ -34,9 +35,11 @@ module.exports = {
       const emailerr = "enter valid email id";
       const passerr = "enter valid password";
       const blockerr = "You are Blocked User !.  Please Contact us"
+
       if (check) {
         if (check.email == loguser.email) {
-          if (check.password == loguser.password) {
+
+          if (bcrypt.compare(check.password,loguser.password)) {
             if (check.blocked) {
               reject(blockerr)
             } else {
@@ -100,12 +103,14 @@ module.exports = {
 
 
   addAddress: (userID, address) => {
+    let uniqId = new Date()
     let addressObj = {
       user: ObjectId(userID),
-      address: [{
+      Address: [{
+        uniqId: uniqId.toString(),
         Fname: address.FirstName,
         Lname: address.LastName,
-        address: address.Address,
+        Address: address.Address,
         post: address.Post,
         pin: address.ZipCode,
         state: address.State,
@@ -134,20 +139,24 @@ module.exports = {
     })
   },
   addNewAddress: (userId, address) => {
+
+    let uniqId = new Date()
+
     let addNew = {
+      uniqId: uniqId.toString(),
       Fname: address.FirstName,
       Lname: address.LastName,
-      address: address.Address,
+      Address: address.Address,
       post: address.Post,
       pin: address.ZipCode,
       state: address.State,
       phone: address.Phone,
 
     }
-    
+
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.address_Collection).updateOne({ user: ObjectId(userId) }, {
-        $push: { address: addNew }
+        $push: { Address: addNew }
       }).then((response) => {
         resolve(response)
       }).catch((err) => {
@@ -188,6 +197,11 @@ module.exports = {
             products: 1,
             orderCancel: 1,
 
+          }
+        },
+        {
+          $sort:{
+            Date:-1
           }
         }
 
@@ -236,10 +250,10 @@ module.exports = {
       instance.orders.create(options, function (err, order) {
         if (err) {
 
-          console.log("err", err);
+          //console.log("err", err);
 
         } else {
-          console.log("new order", order);
+          //console.log("new order", order);
           resolve(order)
         }
 
@@ -252,7 +266,7 @@ module.exports = {
     })
   },
   verifyPayment: (PaymentDetials) => {
-    console.log(PaymentDetials);
+    // console.log(PaymentDetials);
     return new Promise((resolve, reject) => {
       var crypto = require("crypto");
 
@@ -262,8 +276,8 @@ module.exports = {
       var expectedSignature = crypto.createHmac('sha256', 'wcywClX3z6jW6Cf207UPZepB')
         .update(body.toString())
         .digest('hex');
-      console.log("sig received ", PaymentDetials['paymentdata[razorpay_signature]']);
-      console.log("sig generated ", expectedSignature);
+      // console.log("sig received ", PaymentDetials['paymentdata[razorpay_signature]']);
+      // console.log("sig generated ", expectedSignature);
 
       if (expectedSignature === PaymentDetials['paymentdata[razorpay_signature]']) {
         resolve()
@@ -296,50 +310,89 @@ module.exports = {
       const create_payment_json = {
         "intent": "sale",
         "payer": {
-            "payment_method": "paypal"
+          "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/success",
-            "cancel_url": "http://localhost:3000/cancel"
+          "return_url": "http://localhost:3000/success",
+          "cancel_url": "http://localhost:3000/cancel"
         },
         "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": "list added",
-                    "sku": "001",
-                    "price": totalAmount,
-                    "currency": "USD",
-                    "quantity": 1
-                }]
-            },
-            "amount": {
-                "currency": "USD",
-                "total": totalAmount
-            },
-            "description": "Hat "
+          "item_list": {
+            "items": [{
+              "name": "list added",
+              "sku": "001",
+              "price": totalAmount,
+              "currency": "USD",
+              "quantity": 1
+            }]
+          },
+          "amount": {
+            "currency": "USD",
+            "total": totalAmount
+          },
+          "description": "Hat "
         }]
-    };
+      };
 
-    let data = paypal.payment.create(create_payment_json, function (error, payment) {
+      let data = paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
-            console.log(error, 'error ahda kuta');
-            throw error;
+          // console.log(error, );
+          throw error;
         } else {
-            console.log('payment ayiiii');
-            resolve(payment)
+        
+          resolve(payment)
         }
-    })
+      })
     })
 
 
   },
-  // deleteAddress:(index,userID)=>{
-  //   console.log(index,userID);
-  //   return new Promise((resolve,reject)=>{
-  //    db.get().collection(Mycollection.address_Collection).updateOne({user:ObjectId(userID)},
-  //    {$unset : {"interests" : 1 }})
-  //   })
-  // }
+   deleteAddress: (date, userID) => {
+    console.log(date);
+    return new Promise((resolve, reject) => {
+
+      db.get().collection(Mycollection.address_Collection).updateOne({ user: ObjectId(userID) },
+
+        { $pull: { Address: { uniqId: date } } }
+
+      ).then((data) => {
+        resolve(data)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+  EditAddress:(userID,index)=>{
+  return new Promise ((resolve, reject)=>{
+    db.get().collection(Mycollection.address_Collection).findOne({user:ObjectId(userID)}).then((response)=>{
+     resolve(response.Address[parseInt(index)])
+   
+      
+    })
+  })
+  },
+  updateAddress:(date,userID)=>{
+    // console.log(date.uniquedate);
+    // console.log(userID);
+    return new Promise ((resolve,reject)=>{
+      db.get().collection(Mycollection.address_Collection).findOneAndUpdate({user:ObjectId(userID),"Address.uniqId":date.uniquedate},
+      { "$set": { 
+        "Address.$.Fname": date.FirstName,
+        "Address.$.Lname": date.LastName,
+        "Address.$.Address": date.Address,
+        "Address.$.phone": date.Phone,
+        "Address.$.post": date.Post,
+        "Address.$.pin": date.ZipCode,
+        "Address.$.state": date.State,
+        "Address.$.uniqId": date.uniquedate      
+      }} 
+      ).then((response)=>{
+        resolve((response))
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  }
 
 
 

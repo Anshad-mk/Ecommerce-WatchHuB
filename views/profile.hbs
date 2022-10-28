@@ -10,9 +10,11 @@
 			</div>
 
 			<div class="shadow rounded mt-3 p-3">
-				<h6 class="fw-normal"><a href="/users/address" class="text-secondary btn btn-outline-dark">Address</a>
+				<h6 class="fw-normal"><button data-bs-toggle="modal"
+										data-bs-target="#exampleModal" class="text-secondary btn btn-outline-dark">Address</button>
 				</h6>
-				<h6 class="fw-normal"><a href="/users/viewOrder" class="text-secondary btn btn-outline-dark ">My Orders </a></h6>
+				<h6 class="fw-normal"><a href="/users/viewOrder" class="text-secondary btn btn-outline-dark ">My Orders
+					</a></h6>
 
 
 				<h6 class="fw-normal"><a href="/changepassword" class="text-secondary btn btn-outline-dark">Change
@@ -73,21 +75,146 @@
 			</div>
 
 			<div class="shadow ps-3 pt-3 overflow-auto " style="width: 100%; height: auto;">
-				<h2 class="btn-lg shadow me-3 text-center"> Address </h2> 
-{{#each address.address}}
-<div class="address">
-	<ul> {{this.Fname}} {{this.Lname}},{{this.address}}, {{this.post}}, {{this.pin}}, {{this.state}}, {{this.phone}}<button class="btn btn-primary" onclick=" deleteAddress({{@index}},'{{../profileData._id}}')" >delete</button></ul>
-</div>	
-{{/each}}		
+				<h2 class="btn-lg shadow me-3 text-center"> Address </h2>
+
+
+
+
+				<div class="address">
+					<table class="table">
+						<thead>
+						</thead>
+						<tbody>
+							{{#each address.Address}}
+							<tr>
+
+								<th>
+									{{inc @index}}
+								</th>
+								<td>{{this.Fname}} {{this.Lname}},{{this.Address}}, {{this.post}}, {{this.pin}},
+									{{this.state}}, {{this.phone}}</td>
+								<td><button class="btn btn-danger" style="width: 4rem;"
+										onclick=" deleteAddress(`{{this.uniqId}}`,'{{../profileData._id}}')">delete</button>
+
+								</td>
+								<td>
+									<a href="/users/EditAddress/{{@index}}" class="btn btn-primary" style="width: 4rem;">Edit
+									</a>
+								</td>
+							</tr>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
+
 			</div>
-			
+
 		</div>
 	</div>
 
 	</div>
 </section>
 
+<!-- Button trigger modal -->
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="text-center" id="exampleModalLabel">Edit Address</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+
+				<form class="needs-validation border p-4" action="/users/address" id="address-form" method="post">
+					<div class="row g-3">
+						{{!-- <label for="Home_Address" class="shadow"><input type="radio" class=""
+								name="AddressCatogary" value="Home_Address" id="Home_Address"> Home Address</label>
+						<label for="business_Address" class="shadow"><input type="radio" class="" name="AddressCatogary"
+								value="business_Address" id="business_Address"> business Address</label> --}}
+
+						<div class="col-sm-6">
+							<label for="FName" class="form-label">First name</label>
+							<input type="text" class="form-control" name="FirstName" id="FName" placeholder="" value=""
+								required data-msg="Please fill this field">
+							<div class="invalid-feedback">
+								Valid first name is required.
+							</div>
+						</div>
+
+
+
+						<div class="col-sm-6">
+							<label for="LName" class="form-label">Last name</label>
+							<input type="text" class="form-control" id="LName" name="LastName" placeholder="" value=""
+								required>
+							<div class="invalid-feedback">
+								Valid last name is required.
+							</div>
+						</div>
+						<div class="col-12">
+							<label for="address" class="form-label">Address</label>
+							<input type="text" class="form-control" name="Address" id="address"
+								placeholder="Full Address" required>
+							<div class="invalid-feedback">
+								Please enter your shipping address.
+							</div>
+						</div>
+
+
+						<div class="col-12">
+							<label for="address2" class="form-label"> Mobile Number <span
+									class="text-muted"></span></label>
+							<input type="tel" class="form-control" name="Phone" id="address2" maxlength="10"
+								placeholder="Number" required>
+						</div>
+
+						<div class="col-md-5">
+							<label for="Post" class="form-label">Post</label>
+							<input type="text" class="form-control" name="Post" id="Post" placeholder="" required>
+							<div class="invalid-feedback">
+								Post required.
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<label for="zip" class="form-label">Zip Code</label>
+							<input type="number" maxlength="6" name="ZipCode" class="form-control" id="zip"
+								placeholder="" required>
+							<div class="invalid-feedback">
+								Zip code required.
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<label for="State" class="form-label">State</label>
+							<input type="text" class="form-control" name="State" id="State" placeholder="" required>
+							<div class="invalid-feedback">
+								State required.
+							</div>
+						</div>
+					</div>
+
+
+					<hr class="my-4">
+
+					<button class="w-100 btn btn-primary btn-lg" type="submit">Save Address </button>
+				</form>
+
+
+
+			</div>
+			{{!-- <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div> --}}
+		</div>
+	</div>
+</div>
 
 
 
@@ -121,42 +248,37 @@
 
 	}
 
-function deleteAddress(index,userId){
-Swal.fire({
-  title: 'Do you want to Delete ?',
-  showCancelButton: true,
-  confirmButtonText: 'Delete',
-  
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
+	function deleteAddress(iddate, userId) {
+		Swal.fire({
+			title: 'Do you want to Delete ?',
+			showCancelButton: true,
+			confirmButtonText: 'Delete',
 
-console.log('hiii')
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
 
-$.ajax({
-	url:'/users/deleteAddress',
-	method:'get',
-	data:{
-		Index:index,
-		UserID:userId
-	},
-	success:(response)=>{
-	Swal.fire('Deleted !', '', 'success')	
+				$.ajax({
+					url: '/users/deleteAddress',
+					method: 'get',
+					data: {
+						date: iddate,
+						UserID: userId
+					},
+					success: (response) => {
+						Swal.fire('Deleted !', '', 'success')
+						location.reload();
+					}
+				})
+
+			} else {
+				Swal.fire('Canceled', '', 'info')
+			}
+		})
+
+
+
 	}
-})	
-
-
-
-
-    
-  } else  {
-    Swal.fire('Canceled', '', 'info')
-  }
-})
-
-	
-
-}
 
 
 </script>

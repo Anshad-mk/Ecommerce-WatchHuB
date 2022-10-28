@@ -79,7 +79,7 @@ module.exports = {
         }
       ]).toArray().then((value) => {
         resolve(value)
-        console.log(value);
+        // console.log(value);
       }).catch((err) => {
         reject(err)
       })
@@ -121,7 +121,7 @@ module.exports = {
         }
   ]).toArray().then((value)=>{
     resolve(value)
-    console.log(value);
+    // console.log(value);
   }).catch((err)=>{
     reject(err)
   })
@@ -164,7 +164,7 @@ module.exports = {
         }
   ]).toArray().then((value)=>{
     resolve(value)
-    console.log(value);
+    // console.log(value);
   }).catch((err)=>{
     reject(err)
   })
@@ -174,7 +174,7 @@ module.exports = {
     })
   },
   statusUpdate:(OrderID,status)=>{
-    console.log(status,"haiii");
+    // console.log(status,"haiii");
     return new Promise((resolve,reject)=>{
       if(status.status=='delivered'){
         db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},

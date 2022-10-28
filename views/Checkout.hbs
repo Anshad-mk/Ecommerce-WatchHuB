@@ -105,17 +105,19 @@
                     {{!-- offer form --}}
                     <div class="mt-4">
                         <h2 class="shadow-lg">Saved Address</h2>
-                        {{#each savedAddress.address}}
+                        {{#each savedAddress.Address}}
                         <input type="radio"
-                            value="`{{this.Fname}}``{{this.Lname}}`,`{{this.address}}`,`{{this.post}}`,` {{this.pin}}`,`{{this.state}}`, `{{this.phone}}`"
+                            value="`{{this.Fname}}``{{this.Lname}}`,`{{this.Address}}`,`{{this.post}}`,` {{this.pin}}`,`{{this.state}}`, `{{this.phone}}`"
                             name="Saved_address" id="{{@index}}"
-                            onclick="selectAddress('{{this.Fname}}','{{this.Lname}}','{{this.address}}','{{this.post}}','{{this.pin}}','{{this.state}}','{{this.phone}}')">
-                        <label for="{{@index}}">{{this.Fname}} {{this.Lname}} {{this.address}},{{this.post}},
+                            onclick="selectAddress('{{this.Fname}}','{{this.Lname}}','{{this.Address}}','{{this.post}}','{{this.pin}}','{{this.state}}','{{this.phone}}')">
+                        <label for="{{@index}}">{{this.Fname}} {{this.Lname}} {{this.Address}},{{this.post}},
                             {{this.pin}},
                             {{this.state}},{{this.phone}}</label>
                         {{/each}}
                     </div>
+
                 </div>
+
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Billing address</h4>
 
@@ -218,19 +220,23 @@
                                     value="PayPal" class="form-check-input" required>
                                 <label class="form-check-label" for="paypal">PayPal</label>
                             </div>
-<div id="placeorder"></div>
+                            <div id="placeorder"></div>
 
                         </div>
-<script src="/javascripts/paypal.js"></script>
+                        <script src="/javascripts/paypal.js"></script>
                         <hr class="my-4">
                         <!-- Replace "test" with your own sandbox Business account app client ID -->
-                        <script src="https://www.paypal.com/sdk/js?client-id=ASVAT4RqsGB4WwcfuVT2NpKbt0seSFXUW3ic6R5K0oevO6WKB0XoYeWBiwXA75DRi0HvBH_XBQd94qZb&currency=USD" data-namespace="paypal_sdk"></script>
-                      
+                        <script
+                            src="https://www.paypal.com/sdk/js?client-id=ASVAT4RqsGB4WwcfuVT2NpKbt0seSFXUW3ic6R5K0oevO6WKB0XoYeWBiwXA75DRi0HvBH_XBQd94qZb&currency=USD"
+                            data-namespace="paypal_sdk"></script>
+
                         <!-- Set up a container element for the button -->
-                        <div id="paypal-button-container" hidden  class="clr"></div>
-<div id="checkout-button" class="clr">
- <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit" hidden>Continue
-                            to checkout</button></div>
+                        <div id="paypal-button-container" hidden class="clr"></div>
+                        <div id="checkout-button" class="clr">
+                            <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit"
+                                hidden>Continue
+                                to checkout</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -245,13 +251,13 @@
                     method: 'post',
                     data: $('#checkout-form').serialize(),
                     success: (response) => {
-                        if (response.COD_Success ) {
+                        if (response.COD_Success) {
                             location.href = "/users/ordersuccess"
                         } else if (response.Razorpay) {
                             razorpayPayment(response)
 
-                        }else if(response.paypal){
-                             location.href = "/users/ordersuccess"
+                        } else if (response.paypal) {
+                            location.href = "/users/ordersuccess"
                         }
 
                     }
@@ -261,11 +267,11 @@
 
             function displayCOD() {
                 document.getElementById('checkoutSubmit').hidden = false
-                let list2 = document.getElementById("paypal-button-container").hidden=true
+                let list2 = document.getElementById("paypal-button-container").hidden = true
             }
             function displayrazorpay() {
                 document.getElementById('checkoutSubmit').hidden = false
-                let list2 = document.getElementById("paypal-button-container").hidden=true
+                let list2 = document.getElementById("paypal-button-container").hidden = true
             }
 
 
@@ -336,38 +342,38 @@
 
 
             function displayPaypal() {
-   let list1 = document.getElementById("checkoutSubmit").hidden=true
-            let list2 = document.getElementById("paypal-button-container").hidden=false
-        
+                let list1 = document.getElementById("checkoutSubmit").hidden = true
+                let list2 = document.getElementById("paypal-button-container").hidden = false
+
 
             }
-  paypal_sdk.Buttons({
-        // Sets up the transaction when a payment button is clicked
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value:{{total}} // Can also reference a variable or function
+            paypal_sdk.Buttons({
+                // Sets up the transaction when a payment button is clicked
+                createOrder: (data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: {{ total }} // Can also reference a variable or function
               }
             }]
           });
         },
 
 
-        onApprove: (data, actions) => {
-          return actions.order.capture().then(function(orderData) {
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-            const transaction = orderData.purchase_units[0].payments.captures[0];
-            // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-            $(document).ready(function(){
-            $( "#checkoutSubmit" ).trigger( "click" );
-            })
-          });
-        }
+            onApprove: (data, actions) => {
+                return actions.order.capture().then(function (orderData) {
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    const transaction = orderData.purchase_units[0].payments.captures[0];
+                    // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                    $(document).ready(function () {
+                        $("#checkoutSubmit").trigger("click");
+                    })
+                });
+            }
       }).render('#paypal-button-container');
 
 
-      
+
 
 
 

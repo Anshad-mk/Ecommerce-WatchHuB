@@ -3,7 +3,7 @@ const { ObjectId, Timestamp } = require("mongodb");
 const Mycollection = require("../config/collections");
 const { Category_Colloctions } = require("../config/collections");
 const collections = require("../config/collections");
-var moment = require('moment');
+const moment = require('moment');
 
 module.exports = {
   AddtoCart: (proId, userId) => {
@@ -220,12 +220,6 @@ module.exports = {
 
 PlaceOrder:(Orderdata,products,total)=>{
 return new Promise((resolve,reject)=>{
-  // console.log(Orderdata,products,total)
-  
-  // var utc = new Date () 
-
-  // var m = moment.unix(utc).utc().format('DD-MM-YYYY HH:mm:ss');
- 
   
 let createdAt=new Date().toString()
 
@@ -266,7 +260,7 @@ let newdate = day + "-" + month + "-" + year +" "+ time;
 db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response)=>{
   db.get().collection(Mycollection.Cart_Colloctions).deleteOne({user:ObjectId(Orderdata.userID)})
   resolve(response)
-  console.log(response.insertedId);
+  // console.log(response.insertedId);
 })
 
 })

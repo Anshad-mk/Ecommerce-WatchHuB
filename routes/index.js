@@ -1,9 +1,9 @@
-var express = require("express");
+const express = require("express");
 const { Db } = require("mongodb");
 const { ObjectId} = require("mongodb");
 const cartHelpers = require("../helpers/cart-helpers");
 const categoryHelpers = require("../helpers/category-helpers");
-var router = express.Router();
+const router = express.Router();
 let productHelpers=require('../helpers/product-helpers')
 
 
@@ -11,7 +11,7 @@ let productHelpers=require('../helpers/product-helpers')
 router.get("/", async(req, res, next)=> {
   if(req.session.user){
     let Uname=req.session.userName 
-    let products= await productHelpers.viewProducts()
+    let products= await productHelpers.IndexProducts()
     let cat=await categoryHelpers.viewCategory()
     let cartCount =await cartHelpers.getItemCount(req.session.userID) 
     
@@ -21,7 +21,7 @@ router.get("/", async(req, res, next)=> {
   
   }else{
     const Uname=req.session.userName
-    let products =await productHelpers.viewProducts()
+    let products =await productHelpers.IndexProducts()
       let cat=await categoryHelpers.viewCategory()
      res.render("index",{products,cat});
       
