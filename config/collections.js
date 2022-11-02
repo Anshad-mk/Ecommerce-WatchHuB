@@ -5,6 +5,7 @@ module.exports={
     Category_Colloctions:'Category',
     Cart_Colloctions:'usercart',
     orders_Colloction:'Orders',
-    address_Collection:'address'
+    address_Collection:'address',
+    Banner_Collection:'Banner'
 
 }

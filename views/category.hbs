@@ -158,152 +158,179 @@
         </div>
       </nav>
 
-      {{!-- <div class="container-fluid px-4">
-        <div class="row g-3 my-2">
-          <div class="col-md-3">
-            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-              <div>
-                <h3 class="fs-2">...</h3>
-                <p class="fs-5">Products</p>
-              </div>
-              <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-            </div>
-          </div>
+      <div class="m-5">
+        <!-- Button trigger modal -->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary ms-4 mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Add category
+        </button>
 
-          <div class="col-md-3">
-            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-              <div>
-                <h3 class="fs-2">....</h3>
-                <p class="fs-5">Sales</p>
-              </div>
-              <i class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-            </div>
-          </div>
+        <!-- Modal -->
+        <form action="/admin/addcategory" method="post" enctype="multipart/form-data" onsubmit="return  validcat()">
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Enter Your category</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-          <div class="col-md-3">
-            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-              <div>
-                <h3 class="fs-2">....</h3>
-                <p class="fs-5">Delivery</p>
-              </div>
-              <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-            </div>
-          </div>
+                  <div class="container">
+                    <center><label class="btn btn-light shadow" for="imgInp"><i class="fa fa-upload fa-6x"
+                          aria-hidden="true"></i></label> <br></center>
+                    <input accept="image/*" type='file' id="imgInp" name="catImg" hidden placeholder=" " value=''
+                      class="form-control">
+                    <center><img id="blah" src="#" alt="your image" hidden style="height: 10rem; ">
+                      <div class="text-danger" id="CatIMGError"></div>
+                    </center>
 
-          <div class="col-md-3">
-            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-              <div>
-                <h3 class="fs-2">%...</h3>
-                <p class="fs-5">Increase</p>
-              </div>
-              <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-            </div>
-          </div>
-        </div> --}}
-        <div class="my-5  ">
-          <!-- Button trigger modal -->
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary ms-4 mb-2" data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop">
-            Add category
-          </button>
+                    <label for="text">Category Name</label>
+                    <input type="text" name="category" id="Cat" class="form-control" onkeyup="return catname()">
+                    <div class="text-danger" id="CatError"></div>
+                    
+                    <input type="text" hidden name="offer" id="Cat" class="form-control " value="0" >
+                    <div class="text-danger" id="CatError"></div>
 
-          <!-- Modal -->
-          <form action="/admin/addcategory" method="post" enctype="multipart/form-data">
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-              aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Enter Your category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-body">
-
-                    <div class="container">
-                     <center><label class="btn btn-light shadow" for="imgInp"><i class="fa fa-upload fa-6x" aria-hidden="true"></i></label> <br></center> 
-                     <input accept="image/*" type='file' id="imgInp" name="catImg" hidden placeholder=" "
-                                    value='' class="form-control"> 
-                      <center><img id="blah" src="#" alt="your image" hidden style="height: 10rem; "></center>
-                      
-                      <label for="text">Category Name</label>
-                      <input type="text" name="category" class="form-control">
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary">
-                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <input type="submit" class="btn btn-primary">
                 </div>
               </div>
             </div>
-          </form>
-          <!-- Button trigger modal -->
-          <div class="col">
-            <table class="table bg-white rounded shadow-sm  table-hover">
-
-              <thead>
-                <tr>
-                  <th scope="col" width="50">#</th>
-                  <th scope="col">category name</th>
-                  <th scope="col">Operation</th>
-
-
-                </tr>
-              </thead>
-              <tbody>
-
-                {{#each response}}
-                <tr>
-
-
-
-                  <th scope="row">{{inc @index}}</th>
-                  <td>{{this.category}}</td>
-                  <td><a href="/admin/delete-Category/{{this._id}}"
-                      onclick=" return confirm('Are you want to delete {{this.category}} ?.')"
-                      class="btn btn-danger btn-small">Delete</a>
-                  <td></td>
-
-
-
-
-                  {{!-- <br> <a href="/admin/edit_product" class="btn btn-primary btn-small ps-4 mt-2 pe-4">
-                    <center>Edit</center>
-                  </a> </td> --}}
-                </tr>
-                {{/each}}
-
-              </tbody>
-            </table>
           </div>
-        </div>
+        </form>
+        <!-- Button trigger modal -->
+        <div class="col">
+          <table class="table bg-white rounded shadow-sm  table-hover">
 
+            <thead>
+              <tr>
+                <th scope="col" width="50">#</th>
+                <th scope="col">category name</th>
+                <th scope="col">category offer (%)</th>
+                <th scope="col">Operation</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+
+              {{#each response}}
+              <tr>
+
+
+
+                <th scope="row">{{inc @index}}</th>
+                <td class="shadow">{{this.category}}</td>
+                <td class="shadow"><span class="shadow btn brn-ligt" data-bs-toggle="modal" data-bs-target="#staticBackdrope">{{this.offer}} %</span></td>
+                <td class="shadow"><a href="/admin/delete-Category/{{this._id}}"
+                    onclick=" return confirm('Are you want to delete {{this.category}} ?.')"
+                    class="btn btn-danger btn-small">Delete</a>
+                <td></td>
+
+
+                {{!-- <br> <a href="/admin/edit_product" class="btn btn-primary btn-small ps-4 mt-2 pe-4">
+                  <center>Edit</center>
+                </a> </td> --}}
+              </tr>
+              {{/each}}
+
+            </tbody>
+          </table>
+        </div>
       </div>
+
     </div>
+  </div>
   </div>
 
   <!-- /#page-content-wrapper -->
   </div>
+   {{#each response}}
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrope" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+ {{/each}}
 
 
   <script>
-    var el = document.getElementById("wrapper");
+  var el = document.getElementById("wrapper");
     var toggleButton = document.getElementById("menu-toggle");
 
     toggleButton.onclick = function () {
       el.classList.toggle("toggled");
     };
 
-imgInp.onchange = evt => {
-  document.getElementById('blah').hidden=false
-  
-  const [file] = imgInp.files
-  if (file) {
-    
-    blah.src = URL.createObjectURL(file)
-  }
-}
+    imgInp.onchange = evt => {
+      document.getElementById('blah').hidden = false
+
+      const [file] = imgInp.files
+      if (file) {
+
+        blah.src = URL.createObjectURL(file)
+      }
+    }
+    function catname() {
+
+      let name_err = document.getElementById('CatError')
+      let name = document.getElementById('Cat').value;
+
+
+      if (name.length == 0 || name == '') {
+        name_err.innerHTML = "Name cannot be empty";
+        return false;
+      }
+
+      if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+        name_err.innerHTML = "Write Proper name";
+        return false;
+      }
+
+      if (name.length <= 3 || name.length >= 25) {
+        name_err.innerHTML = "Name must be between 3 and 25 characters";
+        return false;
+      }
+
+
+
+      name_err.innerHTML = ""
+      return true;
+    }
+
+    function validcat() {
+      let imagecato = document.getElementById('imgInp')
+      let caterr = document.getElementById('CatIMGError')
+      let imgdisp = document.getElementById('blah')
+      if (!catname()) {
+
+        return false
+      } if (imagecato.files.length == 0 || imgdisp.src.length == 0) {
+        caterr.innerHTML = "Please Select Image";
+        return false;
+      }
+      name_err.innerHTML = ""
+      return true;
+
+    }
 
 
   </script>

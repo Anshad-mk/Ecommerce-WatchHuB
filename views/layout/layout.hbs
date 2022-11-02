@@ -51,9 +51,22 @@
 
   {{#if admin}}
   {{>admin-header}}
-  {{else}}
+  {{else }}
+
+  {{>user-header}}
+
+  {{/if}}
+
+{{!-- {{#if admin}}
+  {{>admin-header}}
+  {{else }}{{#if er}}
+{{else}}
+
   {{>user-header}}
   {{/if}}
+  {{/if}} --}}
+
+
 
 
 
@@ -64,7 +77,8 @@
   {{else}}
   {{>user-footer}}
   {{/if}}
-
+  <script src="/javascripts/wishlist.js"></script>
+<script src="/javascripts/valid.js"></script>
 {{!-- PDF DOWNLOAD --}}
 <link rel="stylesheet" type="text/css"  href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" type="text/css"  href="https://cdn.datatables.net/buttons/1.4.0/css/buttons.dataTables.min.css" />

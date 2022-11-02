@@ -3,7 +3,8 @@ const { ObjectId } = require("mongodb");
 const Mycollection = require("../config/collections");
 const collections = require("../config/collections");
 const Razorpay = require('razorpay');
-const bcrypt= require('bcrypt')
+const bcrypt = require('bcrypt')
+
 
 var instance = new Razorpay({
   key_id: 'rzp_test_3FXgnN9RmxDnjy',
@@ -15,8 +16,8 @@ module.exports = {
   userRegister: async (user) => {
     user.email = user.email.toLowerCase()
     user.blocked = false
-user.password= await bcrypt.hash(user.password,10)
-user.repassword = user.password
+    user.password = await bcrypt.hash(user.password, 10)
+    user.repassword = user.password
     return new Promise((resolve, reject) => {
       db.get()
         .collection(Mycollection.user_Collections)
@@ -27,7 +28,7 @@ user.repassword = user.password
     });
   },
   userLogin: (loguser) => {
-     return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const check = await db
         .get()
         .collection(Mycollection.user_Collections)
@@ -35,29 +36,30 @@ user.repassword = user.password
       const emailerr = "enter valid email id";
       const passerr = "enter valid password";
       const blockerr = "You are Blocked User !.  Please Contact us"
-
       if (check) {
-        if (check.email == loguser.email) {
-
-          if (bcrypt.compare(check.password,loguser.password)) {
+        bcrypt.compare(loguser.password, check.password).then((response) => {
+          if (response == true) {
             if (check.blocked) {
+              console.log("in blocked")
               reject(blockerr)
             } else {
+              console.log("true")
               check.status = true;
               resolve(check);
             }
-
           } else {
+            console.log("reject");
             reject(passerr);
           }
-        } else {
-          reject(emailerr);
-        }
+
+        })
+
       } else {
         reject(emailerr);
       }
     });
   },
+
   listusers: () => {
     return new Promise(async (resolve, reject) => {
       let userlist = await db.get().collection(collections.user_Collections).find().toArray()
@@ -200,8 +202,8 @@ user.repassword = user.password
           }
         },
         {
-          $sort:{
-            Date:-1
+          $sort: {
+            Date: -1
           }
         }
 
@@ -241,19 +243,21 @@ user.repassword = user.password
 
   // razorPay Integration 
   generateRazorpay: (OrderID, totalAmount) => {
+    console.log("genarate pay", totalAmount.total,);
+    console.log(OrderID, totalAmount)
     return new Promise((resolve, reject) => {
       var options = {
-        amount: totalAmount.total,  // amount in the smallest currency unit
+        amount: totalAmount.total * 100,  // amount in the smallest currency unit
         currency: "INR",
         receipt: OrderID.toString()
       };
       instance.orders.create(options, function (err, order) {
         if (err) {
 
-          //console.log("err", err);
+          console.log("err", err);
 
         } else {
-          //console.log("new order", order);
+          console.log("new order", order);
           resolve(order)
         }
 
@@ -336,10 +340,9 @@ user.repassword = user.password
 
       let data = paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
-          // console.log(error, );
+          // console.log(error);
           throw error;
         } else {
-        
           resolve(payment)
         }
       })
@@ -347,7 +350,7 @@ user.repassword = user.password
 
 
   },
-   deleteAddress: (date, userID) => {
+  deleteAddress: (date, userID) => {
     console.log(date);
     return new Promise((resolve, reject) => {
 
@@ -362,38 +365,129 @@ user.repassword = user.password
       })
     })
   },
-  EditAddress:(userID,index)=>{
-  return new Promise ((resolve, reject)=>{
-    db.get().collection(Mycollection.address_Collection).findOne({user:ObjectId(userID)}).then((response)=>{
-     resolve(response.Address[parseInt(index)])
-   
-      
+  EditAddress: (userID, index) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.address_Collection).findOne({ user: ObjectId(userID) }).then((response) => {
+        resolve(response.Address[parseInt(index)])
+
+
+      })
     })
-  })
   },
-  updateAddress:(date,userID)=>{
+  updateAddress: (date, userID) => {
     // console.log(date.uniquedate);
     // console.log(userID);
-    return new Promise ((resolve,reject)=>{
-      db.get().collection(Mycollection.address_Collection).findOneAndUpdate({user:ObjectId(userID),"Address.uniqId":date.uniquedate},
-      { "$set": { 
-        "Address.$.Fname": date.FirstName,
-        "Address.$.Lname": date.LastName,
-        "Address.$.Address": date.Address,
-        "Address.$.phone": date.Phone,
-        "Address.$.post": date.Post,
-        "Address.$.pin": date.ZipCode,
-        "Address.$.state": date.State,
-        "Address.$.uniqId": date.uniquedate      
-      }} 
-      ).then((response)=>{
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.address_Collection).findOneAndUpdate({ user: ObjectId(userID), "Address.uniqId": date.uniquedate },
+        {
+          "$set": {
+            "Address.$.Fname": date.FirstName,
+            "Address.$.Lname": date.LastName,
+            "Address.$.Address": date.Address,
+            "Address.$.phone": date.Phone,
+            "Address.$.post": date.Post,
+            "Address.$.pin": date.ZipCode,
+            "Address.$.state": date.State,
+            "Address.$.uniqId": date.uniquedate
+          }
+        }
+      ).then((response) => {
         resolve((response))
-      }).catch((err)=>{
+      }).catch((err) => {
         reject(err)
       })
     })
-  }
+  },
+  addtowish:(ProId, userID) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.user_Collections).updateOne(
+        { _id: ObjectId(userID) },
+        {
+          $push: { wishlist: { item: ObjectId(ProId) } },
+        }
+      ).then((response) => {
+        
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+
+    })
+  },
+
+
+  removewish: (ProID, userID) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.user_Collections).updateOne(
+        {
+          _id: ObjectId(userID),
+          'wishlist.item': ObjectId(ProID)
+        },
+        {
+          $pull: { wishlist: { item: ObjectId(ProID) } }
+        }
+      ).then((response) => {
+        console.log(response);
+      resolve(response)
+    }).catch((err) => {
+      reject(err)
+    })
+
+    })
+  },
+
+  viewwishlist:(userID) => {
+    return new Promise((resolve, reject) => {
+      
+      db.get().collection(Mycollection.user_Collections).aggregate([
+        {
+          $match: { _id: ObjectId(userID) }
+        },
+        {
+          $unwind: "$wishlist"
+        },
+        {
+          $lookup: {
+            from: Mycollection.Product_Colloctions,
+            localField: "wishlist.item",
+            foreignField: "_id",
+            as: "product"
+          }
+        },
+        {
+          $unwind: "$product"
+        },
+        {
+          $project: {
+            product: 1,
+
+          }
+        },
+        {
+          $match: {
+            'product.isDeleted': false
+          }
+        }
+      ]).toArray().then((response) => {
+          console.log(response);
+          resolve(response)
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err)
+        })
+      
+    })
+    
+
+     
+
+  },
+
+ 
+
+}
 
 
 
-};
+

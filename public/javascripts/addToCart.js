@@ -1,30 +1,31 @@
 
-function addToCart(ProID) {
-  //  if ($("#userAvailable")) {
-    $.ajax({
-      url: "/users/addToCart/" + ProID,
-      method: "get",
-      success: (response) => {
-        if (response.status === false) {
-          location.href = "/users/login";
-        } else if ($("#countid").html() != "") {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Item Added to Cart",
-            showConfirmButton: false,
-            timer: 1000,
-          });
-          let count = $("#countid").html();
-          count = parseInt(count) + 1;
-          $("#countid").html(count);
-        }
-      },
-    });
-  // } else {
-  //   window.location.href = "/users/login";
-  // }
+function addToCart(ProID,user) {
+  $.ajax({
+    url: "/users/addToCart/" + ProID,
+    method: "get",
+    success: (response) => {
+      if (response.status === true) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Item Added to Cart",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        let count = $("#countid").html();
+        count = parseInt(count) + 1;
+        $("#countid").html(count);
+      } else if (response.status === false || !user) {
+        
+        
+       location.href = "/users/login";
+        
+      }
+    },
+  });
+  
 }
+
 
 function ChangeQuantity(cartID, ProID, count) {
   let ProQuantity = parseInt(document.getElementById(ProID).value);
@@ -46,7 +47,7 @@ function ChangeQuantity(cartID, ProID, count) {
     success:(response) => {
       if (response.removeProduct) {
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
           title: "Item Removed from Cart",
           showConfirmButton: false,
@@ -79,7 +80,7 @@ $.ajax({
     success:(response)=>{
       if(response.ProRemove){
         Swal.fire({
-            position: "top-end",
+            position: "center",
             icon: "success",
             title: "Item Removed from Cart",
             showConfirmButton: false,

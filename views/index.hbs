@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
 <style>
-  .hov :hover{
+  .hov :hover {
     transition: 0.2s ease-in;
     transform: translateY(-10px);
     box-shadow: 0px 45px 60px 0px rgba(0, 0, 0, 0.087);
@@ -29,215 +29,187 @@
 
 
 <!-- Start Banner Hero -->
-{{!-- first Picture start --}}
+
 <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
-    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
-    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="container">
-        <div class="row p-5">
-          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-            <img class="img-fluid" src="/images/png image iwatch.png" alt="">
-          </div>
-          <div class="col-lg-6 mb-0 d-flex align-items-center">
-            <div class="text-align-left align-self-center">
-              <h1 class="h1 text-success"><b>Elegance is an </b> attitude</h1>
-              <h3 class="h2">Chose your attitude</h3>
-              <p>
-                Life, it’s made up of two things- time and love. A watch tells one,but what tells the
-                other? we tell each other.
-                <a rel="sponsored" class="text-success" href="#" target="_blank">find your</a>, Perfect
-                <a rel="sponsored" class="text-success" href="#" target="_blank"><span
-                    class="bi bi-watch"></span>Partner</a>
-                {{!-- <a rel="sponsored" class="text-success" href="#" target="_blank">Icons 8</a>. --}}
-              </p>
+        <ol class="carousel-indicators">
+          {{#each Banner}}
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="{{@index}}" class="active"></li>
+           {{/each}} 
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/productIMG/{{Banner.1._id}}.png" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success">{{Banner.1.MainTittle}}</h1>
+                                <h3 class="h2">{{Banner.1.SubTittle}}</h3>
+                                <p>
+                                  {{Banner.1.TittleDiscription}} 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {{!-- first Picture end --}}
-
-    {{!-- second Picture start --}}
-
-    <div class="carousel-item">
-      <div class="container">
-        <div class="row p-5">
-          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-            <img class="img-fluid" src="/images/banner.png" alt="">
-          </div>
-          <div class="col-lg-6 mb-0 d-flex align-items-center">
-            <div class="text-align-left">
-              <h1 class="h1">The World’s Best Luxury Watch Brands </h1>
-              <h3 class="h2">Find Your Style</h3>
-              <p>
-                For people who do not go with the times !! Time is Everything <br> To Break The Rules,
-                You Must First Master Them
-                You are <strong> Perfect</strong> for this
-              </p>
+           {{#each Banner}}
+            <div class="carousel-item">
+               
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/productIMG/{{this._id}}.png" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">{{this.MainTittle}}</h1>
+                                <h3 class="h2">{{this.MainTittle}}</h3>
+                                <p>
+                                    {{this.TittleDiscription}} 
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {{!-- 3rd banner --}}
-
-    <div class="carousel-item">
-      <div class="container">
-        <div class="row p-5">
-          <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-            <img class="img-fluid" src="/images/960x0-removebg-preview.png" alt="">
-          </div>
-          <div class="col-lg-6 mb-0 d-flex align-items-center">
-            <div class="text-align-left">
-              <h1 class="h1">It’s your watch that tells most about who you are</h1>
-              <h3 class="h2">always be different</h3>
-              <p>
-                investing in a luxury watch is not only about owning something of great quality but also
-                about being part of an elite fraternity
-                of enthusiasts who treasure the intricacies of micro engineering.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button"
-    data-bs-slide="prev">
-    <i class="fas fa-chevron-left"></i>
-  </a>
-  <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button"
-    data-bs-slide="next">
-    <i class="fas fa-chevron-right"></i>
-  </a>
-</div>
-<!-- End Banner Hero -->
-{{!-- ---------------------------------------------------------------------------------------------------------------
---}}
-{{!-- ---------------------------------------------------------------------------------------------------------------
---}}
-{{!-- ---------------------------------------------------------------------------------------------------------------
---}}
-{{!-- ---------------------------------------------------------------------------------------------------------------
---}}
-
-<!-- Start Categories  -->
-<section class="container py-5">
-  <div class="row text-center pt-3">
-    <div class="col-lg-6 m-auto">
-      <h1 class="h1">Categories</h1>
-      <p>
-        find your style in our categories !!
-        Choose your Perfect <span class="bi bi-watch"> </span>Partner
-      </p>
-    </div>
-  </div>
-
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================Category Itemes start hear======================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-  {{!-- ====================================================================================================== --}}
-
-  <div class="row ">
-
-    {{#each cat}}
-    <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-3 ">
-      <div class="card h-10  rounded-circle border-1 hov">
-        <a href="/listAllProducts/{{this.category}}">
-          <img src="/productIMG/{{this._id}}.jpg" class="card-img-top rounded-circle pb-0" style="height: 15em;" >
+           {{/each}}
+            
+        {{!-- <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" id="prev" role="button"  data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
         </a>
-      </div>
-      <h5 class="text-center mt-3 mb-3">{{this.category}}</h5>
-      <p class="text-center"><a class="btn btn-success" href="/listAllProducts/{{this.category}}">Go Shop</a></p>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel"  role="button"  data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a> --}}
     </div>
+  <!-- End Banner Hero -->
+  {{!-- ---------------------------------------------------------------------------------------------------------------
+  --}}
+  {{!-- ---------------------------------------------------------------------------------------------------------------
+  --}}
+  {{!-- ---------------------------------------------------------------------------------------------------------------
+  --}}
+  {{!-- ---------------------------------------------------------------------------------------------------------------
+  --}}
 
-    {{/each}}
-  </div>
-
-</section>
-<!-- End Categories of The Month -->
-
-
-<!-- Start Featured Product -->
-<section class="bg-light">
-  <div class="container py-5">
-    <div class="row text-center py-3">
+  <!-- Start Categories  -->
+  <section class="container py-5">
+    <div class="row text-center pt-3">
       <div class="col-lg-6 m-auto">
-        <h1 class="h1">New Product</h1>
+        <h1 class="h1">Categories</h1>
         <p>
-          Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat cupidatat non proident.
+          find your style in our categories !!
+          Choose your Perfect <span class="bi bi-watch"> </span>Partner
         </p>
       </div>
     </div>
 
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================Category Itemes start hear======================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+    {{!-- ====================================================================================================== --}}
+
+    <div class="row ">
+
+      {{#each cat}}
+      <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-3 ">
+        <div class="card h-10  rounded-circle border-1 hov">
+          <a href="/listAllProducts/{{this.category}}">
+            <img src="/productIMG/{{this._id}}.jpg" class="card-img-top rounded-circle pb-0" style="height: 15em;">
+          </a>
+        </div>
+        <h5 class="text-center mt-3 mb-3">{{this.category}}</h5>
+        <p class="text-center"><a class="btn btn-success" href="/listAllProducts/{{this.category}}">Go Shop</a></p>
+      </div>
+
+      {{/each}}
+    </div>
+
+  </section>
+  <!-- End Categories of The Month -->
 
 
-
-    <div class="row mt-3 ">
-      {{#each products}}
-
-      <div class="col-md-3">
-        <div class="card mb-4 product-wap rounded-0 h-100 ">
-          <div class="card rounded-0">
-            <img class="card-img rounded-0 img-fluid" src="/productIMG/{{this._id}}.jpg" style="height: 15em;">
-            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-              <ul class="list-unstyled">
-                <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
-                <li><a class="btn btn-success text-white mt-2" href="/preview-product/{{this._id}}"><i
-                      class="far fa-eye"></i></a></li>
-                <li><button class="btn btn-success text-white mt-2" onclick="addToCart('{{this._id}}')"><i
-                      class="fas fa-cart-plus"></i></button></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body">
-            <a href="shop-single.html" class="h3 text-decoration-none">
-              <h4>{{this.proName}}</h4>
-            </a>
-            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-              <li>
-                <h6>Quantity: {{this.Quantity}}</h6>
-              </li>
-              <li class="pt-2">
-                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-              </li>
-            </ul>
-            <ul class="list-unstyled d-flex justify-content-center mb-1">
-              <li>
-                <i class="text-warning fa fa-star"></i>
-                <i class="text-warning fa fa-star"></i>
-                <i class="text-warning fa fa-star"></i>
-                <i class="text-muted fa fa-star"></i>
-                <i class="text-muted fa fa-star"></i>
-              </li>
-            </ul>
-            <p class="mb-0">
-            <h5 class="text-center">₹{{this.proPrice}}.00</h5>
-            </p>
-          </div>
+  <!-- Start Featured Product -->
+  <section class="bg-light">
+    <div class="container py-5">
+      <div class="row text-center py-3">
+        <div class="col-lg-6 m-auto">
+          <h1 class="h1">New Product</h1>
+          <p>
+            {{!-- Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident. --}}
+          </p>
         </div>
       </div>
 
 
 
-      {{/each}}
-    </div>
 
-</section>
-<!-- End Featured Product -->
+      <div class="row mt-3 ">
+        {{#each products}}
+
+        <div class="col-md-3">
+          <div class="card mb-4 product-wap rounded-0 h-100 ">
+            <div class="card rounded-0">
+              <img class="card-img rounded-0 img-fluid" src="/productIMG/{{this._id}}.jpg" style="height: 15em;">
+              <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                <ul class="list-unstyled">
+                  <li><button class="btn btn-success text-white" onclick="addToWishList('{{this._id}}',{{Uname}})"><i
+                        class="far fa-heart"></i></button></li>
+                  <li><a class="btn btn-success text-white mt-2" href="/preview-product/{{this._id}}"><i
+                        class="far fa-eye"></i></a></li>
+                  <li><button class="btn btn-success text-white mt-2" onclick="addToCart('{{this._id}}',{{Uname}})"><i
+                        class="fas fa-cart-plus"></i></button></li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-body">
+              <a href="/preview-product/{{this._id}}" class="h3 text-decoration-none">
+                <h4>{{this.proName}}</h4>
+              </a>
+              <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                <li>
+                  <h6>Quantity: {{this.Quantity}}</h6>
+                </li>
+                <li class="pt-2">
+                  <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                  <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                  <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                  <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                  <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                </li>
+              </ul>
+              <ul class="list-unstyled d-flex justify-content-center mb-1">
+                <li>
+                  <i class="text-warning fa fa-star"></i>
+                  <i class="text-warning fa fa-star"></i>
+                  <i class="text-warning fa fa-star"></i>
+                  <i class="text-muted fa fa-star"></i>
+                  <i class="text-muted fa fa-star"></i>
+                </li>
+              </ul>
+              <p class="mb-0">
+                <h5 class="text-center text-success"> ₹{{this.offerPrice}} </h5>
+              <h5 class="text-center text-danger"> <strike>₹{{this.proPrice}}.00</strike> </h5>
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+
+        {{/each}}
+      </div>
+
+  </section>
+  <!-- End Featured Product -->
+  <script>
+    
+  </script>

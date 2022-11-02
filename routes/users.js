@@ -161,8 +161,9 @@ router.get('/cart',userVerrify,async(req,res,next)=>{
 })
 
 router.get('/addToCart/:id',(req,res,next)=>{
+  
 if(req.session.loggedIn){
-  cartHelpers.AddtoCart(req.params.id,req.session.userID).then((response)=>{
+    cartHelpers.AddtoCart(req.params.id,req.session.userID).then((response)=>{
     if(req.session.user){
       res.json({status:true})
   }else{
@@ -213,20 +214,20 @@ router.get('/checkout',userVerrify,async(req,res,next)=>{
     if(Prototal&&products){
       total=Prototal.total;   
       // console.log("savedAddress",savedAddress); 
-      res.render('Checkout',{total,products,user:req.session.userID,savedAddress})
+      res.render('Checkout',{Uname:req.session.userName,total,products,user:req.session.userID,savedAddress})
      } else{
       if(Prototal&&products){
         total=Prototal.total;
         // console.log(products);
               
-        res.render('Checkout',{total,products,user:req.session.userID})
+        res.render('Checkout',{Uname:req.session.userName,total,products,user:req.session.userID})
        } 
      }
   }else{
     if(Prototal&&products){
       total=Prototal.total;   
       // console.log("savedAddress",savedAddress); 
-      res.render('Checkout',{total,products,user:req.session.userID,savedAddress})
+      res.render('Checkout',{Uname:req.session.userName,total,products,user:req.session.userID,savedAddress})
      } else{
       if(Prototal&&products){
         total=Prototal.total;
@@ -245,6 +246,7 @@ router.post('/place-order',userVerrify,async(req,res,next)=>{
   let totalPrice= await cartHelpers.getCartTotal(req.session.userID)
 //  console.log(req.body);
   cartHelpers.PlaceOrder(req.body,products,totalPrice).then((OrderID)=>{
+    console.log(req.body,products,totalPrice);
     if(req.body['paymentMethod']==='COD'){
     res.json({COD_Success:true})
     } else if (req.body['paymentMethod']==='PayPal'){
@@ -256,6 +258,7 @@ userHelpers.changeOrderStatus(OrderID.insertedId).then((response)=>{
     } else if(req.body['paymentMethod']==='razorpay'){
 
 userHelpers.generateRazorpay(OrderID.insertedId,totalPrice).then((response)=>{
+  
   response.Razorpay=true
 res.json(response)
 }).catch((err)=>{
@@ -339,10 +342,10 @@ if(response){
 router.get('/orderdetails/:id',userVerrify,async (req,res,next)=>{
   let orderdata =await cartHelpers.viewaOrderedData(req.params.id)
   if(orderdata){
-     res.render('orderDeteails',{orderdata})
+     res.render('orderDeteails',{Uname:req.session.userName,orderdata})
     //  console.log(orderdata);
   }else{
-    res.render('orderDeteails')
+    res.render('orderDeteails',{Uname:req.session.userName,})
   }
  
 })
@@ -385,6 +388,35 @@ res.redirect('/users/Profile')
   })
 })
 
+router.get('/wishlist',userVerrify,(req,res,next)=>{
+userHelpers.viewwishlist(req.session.userID).then((response)=>{
+  console.log(response);
+  res.render('wishlist',{Uname:req.session.userName,response})
+  
+}).catch((err)=>{
+  console.log(err);
+})
+
+  
+})
+
+router.get('/addTowish/:id',userVerrify,(req,res,next)=>{
+  // console.log(req.params.id,req.session.userID);
+ userHelpers.addtowish(req.params.id,req.session.userID).then((response)=>{
+  response.status=true
+  res.json(response)
+
+ }).catch((err)=>{
+  res.json(err)
+ })
+})
+
+router.get('/remove/:id',userVerrify,(req,res,next)=>{
+  userHelpers.removewish(req.params.id,req.session.userID).then((response)=>{
+    response.status=true
+    res.json(response)
+  })
+})
 
 
 

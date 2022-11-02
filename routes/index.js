@@ -1,6 +1,7 @@
 const express = require("express");
 const { Db } = require("mongodb");
 const { ObjectId} = require("mongodb");
+const adminHelpers = require("../helpers/admin-helpers");
 const cartHelpers = require("../helpers/cart-helpers");
 const categoryHelpers = require("../helpers/category-helpers");
 const router = express.Router();
@@ -14,8 +15,9 @@ router.get("/", async(req, res, next)=> {
     let products= await productHelpers.IndexProducts()
     let cat=await categoryHelpers.viewCategory()
     let cartCount =await cartHelpers.getItemCount(req.session.userID) 
+    let Banner=await adminHelpers.BannerManage() 
     
-      res.render("index",{products,Uname,cat,cartCount})
+      res.render("index",{products,Uname,cat,cartCount,Banner})
   
         
   
@@ -23,7 +25,9 @@ router.get("/", async(req, res, next)=> {
     const Uname=req.session.userName
     let products =await productHelpers.IndexProducts()
       let cat=await categoryHelpers.viewCategory()
-     res.render("index",{products,cat});
+    let Banner=await adminHelpers.BannerManage() 
+
+     res.render("index",{products,cat,Banner});
       
    
   }

@@ -121,69 +121,60 @@
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Billing address</h4>
 
-                    <form class="needs-validation border p-4" id="checkout-form" novalidate>
+                    <form class="needs-validation border p-4" id="checkout-form" onsubmit="return saveaddrFn()">
                         <div class="row g-3">
 
 
                             <div class="col-sm-6">
                                 <label for="FName" class="form-label">First name</label>
-                                <input type="text" class="form-control" name="FirstName" id="FName" placeholder=""
-                                    value="" required>
-                                <div class="invalid-feedback">
-                                    Valid first name is required.
-                                </div>
+                                <input type="text" class="form-control" name="FirstName" id="FName" 
+                                    value="" onkeyup="return fname()">
+                                <div class="text-danger" id="FNameErr"></div>
                             </div>
 
 
 
                             <div class="col-sm-6">
                                 <label for="LName" class="form-label">Last name</label>
-                                <input type="text" class="form-control" id="LName" name="LastName" value="" required>
-                                <div class="invalid-feedback">
-                                    Valid last name is required.
-                                </div>
+                                <input type="text" class="form-control" id="LName" name="LastName" value=""
+                                    onkeyup="return lname()">
+                                <div class="text-danger" id="LNameErr"></div>
                             </div>
                             <div class="col-12">
                                 <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="Address" name="Address" value="" required>
-                                <div class="invalid-feedback">
-                                    Please enter your shipping address.
-                                </div>
+                                <input type="text" class="form-control" id="addressValue" name="Address" value=""
+                                    onkeyup="return Addressfn()">
+                                <div class="text-danger" id="AddressErr"></div>
                             </div>
                             <input type="text" value="{{user}}" name="userID" hidden>
 
                             <div class="col-12">
                                 <label for="address2" class="form-label"> Mobile Number <span
                                         class="text-muted"></span></label>
-                                <input type="tel" value="" class="form-control" name="Phone" id="number" maxlength="10"
-                                    required>
+                                <input type="tel" value="" class="form-control" name="Phone" id="phoneNo" maxlength="10"
+                                    onkeyup="return Validatemobile()">
+                                <div class="text-danger" id="phoneErr"></div>
                             </div>
 
                             <div class="col-md-5">
                                 <label for="Post" class="form-label">Post</label>
                                 <input type="text" value="" class="form-control" name="Post" id="Post" placeholder=""
-                                    required>
-                                <div class="invalid-feedback">
-                                    Post required.
-                                </div>
+                                    onkeyup="return postfn()">
+                                <div class="text-danger" id="postErr"></div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="zip" class="form-label">Zip Code</label>
-                                <input type="number" value="" max="6" name="ZipCode" class="form-control" id="zip"
-                                    placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Zip code required.
-                                </div>
+                                <input type="number" value="" name="ZipCode" class="form-control" id="zip"
+                                    placeholder="" onkeyup="return checkpinCode()">
+                                <div class="text-danger" id="zipErr"></div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="State" class="form-label">State</label>
-                                <input type="text" value="" class="form-control" name="State" id="State" placeholder=""
-                                    required>
-                                <div class="invalid-feedback">
-                                    State required.
-                                </div>
+                                <input type="text" value="" class="form-control" name="State" id="StatE" placeholder=""
+                                    onkeyup="return StateFn()">
+                                <div class="text-danger" id="StateErr"></div>
                             </div>
                         </div>
                         {{!-- <div class="form-check">
@@ -197,7 +188,7 @@
                             <label class="form-check-label" for="save-info">Save this information for next
                                 time</label>
                         </div> --}}
-
+                        <div id="FormErr" class="text-danger"></div>
                         <hr class="my-4">
 
                         <h4 class="mb-3">Payment</h4>
@@ -234,7 +225,7 @@
                         <div id="paypal-button-container" hidden class="clr"></div>
                         <div id="checkout-button" class="clr">
                             <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit"
-                                hidden>Continue
+                                 hidden> Continue
                                 to checkout</button>
                         </div>
                     </form>
@@ -243,35 +234,78 @@
         </main>
 
         <script>
-            $('#checkout-form').submit((e) => {
-                e.preventDefault()
+            function saveaddrFn() {
+                if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn()) {
+                    document.getElementById('FormErr').innerHTML = 'Fill All data First'
+                    return false;
+                } else {
+                    return true;
+                    document.getElementById('FormErr').innerHTML =''
 
-                $.ajax({
-                    url: '/users/place-order',
-                    method: 'post',
-                    data: $('#checkout-form').serialize(),
-                    success: (response) => {
-                        if (response.COD_Success) {
-                            location.href = "/users/ordersuccess"
-                        } else if (response.Razorpay) {
-                            razorpayPayment(response)
 
-                        } else if (response.paypal) {
-                            location.href = "/users/ordersuccess"
-                        }
+
+                    
+                }
+
+            }
+             $('#checkout-form').submit((e) => {
+                        e.preventDefault()
+     $.ajax({
+                            url: '/users/place-order',
+                            method: 'post',
+                            data: $('#checkout-form').serialize(),
+                            success: (response) => {
+                                console.c
+                                if (response.COD_Success) {
+                                    location.href = "/users/ordersuccess"
+                                } else if (response.Razorpay) {
+                                    razorpayPayment(response)
+
+                                } else if (response.paypal) {
+                                    location.href = "/users/ordersuccess"
+                                }
+
+                            }
+
+                        })
+ 
+
+                       
+                    })
+
+           
+
+    function displayPaypal() {
+           let list1 = document.getElementById("checkoutSubmit").hidden = true
+        if(saveaddrFn()){
+                     
+
+    
+                        let list2 = document.getElementById("paypal-button-container").hidden = false
+
+}
+
 
                     }
 
-                })
-            })
+
+
+
 
             function displayCOD() {
-                document.getElementById('checkoutSubmit').hidden = false
+                if(saveaddrFn()){
+                    document.getElementById('checkoutSubmit').hidden = false
                 let list2 = document.getElementById("paypal-button-container").hidden = true
+                }
+                
             }
             function displayrazorpay() {
-                document.getElementById('checkoutSubmit').hidden = false
+                 if(saveaddrFn()){
+                    document.getElementById('checkoutSubmit').hidden = false
                 let list2 = document.getElementById("paypal-button-container").hidden = true
+                 }
+                
+                 
             }
 
 
@@ -330,23 +364,17 @@
 
                 document.getElementById('FName').value = Fname
                 document.getElementById('LName').value = Lname
-                document.getElementById('Address').value = HouseName
-                document.getElementById('number').value = phone
+                document.getElementById('addressValue').value = HouseName
+                document.getElementById('phoneNo').value = phone
                 document.getElementById('Post').value = post
                 document.getElementById('zip').value = pin
-                document.getElementById('State').value = state
+                document.getElementById('StatE').value = state
             }
 
             //paypal
 
 
 
-            function displayPaypal() {
-                let list1 = document.getElementById("checkoutSubmit").hidden = true
-                let list2 = document.getElementById("paypal-button-container").hidden = false
-
-
-            }
             paypal_sdk.Buttons({
                 // Sets up the transaction when a payment button is clicked
                 createOrder: (data, actions) => {
@@ -371,6 +399,119 @@
                 });
             }
       }).render('#paypal-button-container');
+
+
+
+
+            function Addressfn() {
+                let street = document.getElementById('addressValue').value
+                let streetErr = document.getElementById('AddressErr')
+                if (street.length <= 3 || street == '') {
+                    streetErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                streetErr.innerHTML = ''
+                return true;
+            }
+
+            function postfn() {
+                let street = document.getElementById('Post').value
+                let streetErr = document.getElementById('postErr')
+                if (street.length <= 3 || street == '') {
+                    streetErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                streetErr.innerHTML = ''
+                return true;
+            }
+
+            function StateFn() {
+                let street = document.getElementById('StatE').value
+                let countryErr = document.getElementById('StateErr')
+                if (street.length <= 3 || street == '') {
+                    countryErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                countryErr.innerHTML = ''
+                return true;
+            }
+
+            function checkpinCode() {
+                let street = document.getElementById('zip').value
+                let pinErr = document.getElementById('zipErr')
+                if (street.length > 7 || street == '') {
+                    pinErr.innerHTML = 'Minimum 6 Number'
+                    return false;
+                }
+                pinErr.innerHTML = ''
+                return true;
+            }
+            function Validatemobile() {
+                let mob = document.getElementById('phoneNo').value
+                let mob_err = document.getElementById('phoneErr')
+
+                if (mob.length != 10) {
+                    mob_err.innerHTML = 'Enter Proper Number'
+                    return false;
+                }
+
+                mob_err.innerHTML = ''
+                return true;
+            }
+            function fname() {
+                let name_err = document.getElementById('FNameErr')
+                let name = document.getElementById('FName').value;
+
+                if (name.length == 0 || name == '') {
+                    name_err.innerHTML = "Name cannot be empty";
+                    return false;
+                }
+
+                if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+                    name_err.innerHTML = "Write Proper name";
+                    return false;
+                }
+
+                if (name.length <= 3 || name.length >= 25) {
+                    name_err.innerHTML = "Name must be between 3 and 25 characters";
+                    return false;
+                }
+
+                name_err.innerHTML = ""
+                return true;
+            }
+            function lname() {
+                let name_err = document.getElementById('LNameErr')
+                let name = document.getElementById('LName').value;
+
+                if (name.length == 0 || name == '') {
+                    name_err.innerHTML = "Name cannot be empty";
+                    return false;
+                }
+
+                if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+                    name_err.innerHTML = "Write Proper name";
+                    return false;
+                }
+
+                if (name.length <= 1 || name.length >= 25) {
+                    name_err.innerHTML = "Name must be between 1 and 25 characters";
+                    return false;
+                }
+
+                name_err.innerHTML = ""
+                return true;
+            }
+
+            function saveaddrFn() {
+                if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn()) {
+                    document.getElementById('FormErr').innerHTML = 'Fill All data First'
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
 
 
 

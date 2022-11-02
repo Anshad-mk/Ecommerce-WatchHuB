@@ -127,12 +127,46 @@ module.exports = {
   },
   IndexProducts: () => {
     return new Promise(async (resolve, reject) => {
-      let products = await db
-        .get()
-        .collection(Mycollection.Product_Colloctions)
-        .find({isDeleted:false})
-        .toArray();
-      resolve(products);
+    let products = await db.get().collection(Mycollection.Product_Colloctions).aggregate([
+  {
+    '$lookup': {
+      'from': 'Category', 
+      'localField': 'proCategory', 
+      'foreignField': 'category', 
+      'as': 'result'
+    }
+  }, {
+    '$unwind': {
+      'path': '$result'
+    }
+  }, {
+    '$project': {
+      
+      'proName':1,
+      'proPrice':1,
+      'Quantity':1,
+      'proDiscription':1,
+      'proCategory':1,
+      'proCategoryID':1,
+      'isDeleted':1,
+      'offerPrice': {
+        '$subtract': [
+          '$proPrice', {
+            '$divide': [
+              {
+                '$multiply': [
+                  '$proPrice', '$result.offer'
+                ]
+              }, 100
+            ]
+          }
+        ]
+      }
+    }
+  }
+]).toArray()
+// console.log(products)
+    resolve(products);
     }); 
   }
 

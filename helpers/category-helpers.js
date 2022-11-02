@@ -7,7 +7,9 @@ const collections = require('../config/collections');
 module.exports={
     addCategory:(category)=>{
         return new Promise((resolve,reject)=>{
+            
         db.get().collection(Mycollection.Category_Colloctions).insertOne(category).then((response)=>{
+
 resolve(response)
         })
         })

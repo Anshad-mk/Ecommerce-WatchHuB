@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
 const { handlebars } = require('hbs');
-
+const Handlebars = require('handlebars');
 db.connect((err)=>{
   if(err){
 console.log(err);
@@ -52,8 +52,40 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine','hbs');
-app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
+app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/',
+helpers: {
+  // Function to do basic mathematical operation in handlebar
+  math: function (lvalue, operator, rvalue) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+    return {
+      "+": lvalue + rvalue,
+      "-": lvalue - rvalue,
+      "*": lvalue * rvalue,
+      "/": lvalue / rvalue,
+      "%": lvalue % rvalue,
+      "<": lvalue < rvalue,
+      ">": lvalue > rvalue,
+      "!=":lvalue != rvalue,
 
+    }[operator];
+  },
+  stringCompare: function (value1, value2) {
+    if (value1 == value2) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+}
+
+}))
+Handlebars.registerHelper("inc", function(value, options)
+{
+    return parseInt(value) + 1;
+  
+});
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -82,7 +114,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error',{er:true});
 });
 
 

@@ -7,16 +7,16 @@ const CategoryHelpers = require("../helpers/category-helpers");
 const categoryHelpers = require("../helpers/category-helpers");
 const adminHelpers = require("../helpers/admin-helpers");
 const { response, render } = require("../app");
-const Handlebars = require('handlebars');
+
 const { Db } = require("mongodb");
 const { ObjectId} = require("mongodb");
 const cartHelpers = require('../helpers/cart-helpers')
 
-Handlebars.registerHelper("inc", function(value, options)
-{
-    return parseInt(value) + 1;
-  
-});
+
+
+
+
+
 
 const loginVerrify=(req,res,next)=>{
   if(req.session.admin){
@@ -68,7 +68,7 @@ router.post("/addproduct", function (req, res, next) {
     Image2.mv("./public/productIMG/" + id + "2.jpg");
     Image3.mv("./public/productIMG/" + id + "3.jpg");
     Image4.mv("./public/productIMG/" + id + "4.jpg").then((response)=>{
-      res.redirect("/admin/addProduct");
+      res.redirect("/admin/addproduct");
     })
   })
   
@@ -245,6 +245,37 @@ router.get('/softfalse/:id',loginVerrify,(req,res,next)=>{
   })
 
 })
+
+router.post('/addBanner',(req,res,next)=>{
+console.log(req.body);
+adminHelpers.addBanner(req.body).then((response)=>{
+  imageName=response.insertedId
+  let Image=req.files.bannerimg;
+  Image.mv("./public/productIMG/" + imageName + ".png").then((data)=>{
+    res.redirect('/admin/addBanner')
+  })
+
+
+  })
+  
+
+
+})
+
+router.get('/addBanner',(req,res,next)=>{
+adminHelpers.BannerManage().then((response)=>{
+  res.render('BannerManage',{response})
+  console.log(response);
+}).catch((err)=>{
+  console.log(err);
+  res.render('BannerManage')
+})
+
+
+})
+
+
+ 
 
 
 module.exports = router;

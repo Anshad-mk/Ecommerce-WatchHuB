@@ -2,20 +2,13 @@
     <div class=" text-left col-md-7 col-lg-8 mb-5 mt-5 ms-5">
         <h4 class="text-center mb-3 shadow-lg btn-lg">Address</h4>
 
-        <form class="needs-validation border p-4" action="/users/UpdateAddress" id="address-form" method="post">
+        <form class="needs-validation border p-4" action="/users/UpdateAddress" id="address-form" method="post" onsubmit="return saveaddrFn()">
             <div class="row g-3">
-                {{!-- <label for="Home_Address" class="shadow"><input type="radio" class="" name="AddressCatogary"
-                        value="Home_Address" id="Home_Address"> Home Address</label>
-                <label for="business_Address" class="shadow"><input type="radio" class="" name="AddressCatogary"
-                        value="business_Address" id="business_Address"> business Address</label> --}}
-
                 <div class="col-sm-6">
                     <label for="FName" class="form-label">First name</label>
                     <input type="text" class="form-control" name="FirstName" id="FName" placeholder=""
-                        value="{{response.Fname}}" required data-msg="Please fill this field">
-                    <div class="invalid-feedback">
-                        Valid first name is required.
-                    </div>
+                        value="{{response.Fname}}" onkeyup="return fname()">
+                   <div class="text-danger" id="FNameErr"></div> 
                 </div>
 
 
@@ -23,56 +16,47 @@
                 <div class="col-sm-6">
                     <label for="LName" class="form-label">Last name</label>
                     <input type="text" class="form-control" id="LName" name="LastName" placeholder=""
-                        value="{{response.Lname}}" required>
-                    <div class="invalid-feedback">
-                        Valid last name is required.
-                    </div>
+                        value="{{response.Lname}}" onkeyup="return lname()">
+                    <div class="text-danger" id="LNameErr"></div>
                 </div>
                 <div class="col-12">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" name="Address" id="address" placeholder="Full Address"
-                        value="{{response.Address}}" required>
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
-                    </div>
+                    <input type="text" class="form-control" name="Address" id="addressValue" placeholder="Full Address"
+                        value="{{response.Address}}" onkeyup="return Addressfn()">
+                   <div class="text-danger" id="AddressErr"></div> 
                 </div>
 
 
                 <div class="col-12">
                     <label for="address2" class="form-label"> Mobile Number <span class="text-muted"></span></label>
-                    <input type="tel" class="form-control" name="Phone" id="address2" maxlength="10"
-                        value="{{response.phone}}" placeholder="Number" required>
+                    <input type="tel" class="form-control" name="Phone" id="phoneNo" maxlength="10"
+                        value="{{response.phone}}" placeholder="Number" onkeyup="return Validatemobile()">
+                        <div class="text-danger" id="phoneErr"></div>
                 </div>
 
                 <div class="col-md-5">
                     <label for="Post" class="form-label">Post</label>
-                    <input type="text" class="form-control" name="Post" id="Post" placeholder="" required
-                        value="{{response.post}}">
-                    <div class="invalid-feedback">
-                        Post required.
-                    </div>
+                    <input type="text" class="form-control" name="Post" id="Post" placeholder="" 
+                        value="{{response.post}}" onkeyup="return postfn()">
+                    <div class="text-danger" id="postErr"></div>
                 </div>
 
                 <div class="col-md-3">
                     <label for="zip" class="form-label">Zip Code</label>
                     <input type="number" maxlength="6" name="ZipCode" class="form-control" id="zip" placeholder=""
-                        value="{{response.pin}}" required>
-                    <div class="invalid-feedback">
-                        Zip code required.
-                    </div>
+                        value="{{response.pin}}" onkeyup="return checkpinCode()" >
+                    <div class="text-danger" id="zipErr"></div>
                 </div>
 
                 <div class="col-md-3">
                     <label for="State" class="form-label">State</label>
-                    <input type="text" class="form-control" name="State" id="State" placeholder="" required
+                    <input type="text" class="form-control" name="State" id="StatE" placeholder="" onkeyup="return StateFn()"
                         value="{{response.state}}">
-                    <div class="invalid-feedback">
-                        State required.
-                    </div>
+                    <div class="text-danger" id="StateErr"></div>
                 </div>
             </div>
             <input type="text" name="uniquedate" value="{{response.uniqId}}" hidden>
-
+<div class="text-danger" id="FormErr"></div>
             <hr class="my-4">
 
             <button class="w-100 btn btn-primary btn-lg" type="submit">Update Address </button>
@@ -80,23 +64,117 @@
     </div>
 </center>
 
-
-{{!--
 <script>
-    $('#address-form').submit((e) => {
-        e.preventDefault()
-        $.ajax({
-            url: '/users/address',
-            method: 'post',
-            data: $('#address-form').serialize(),
-            success: (response) => {
-                if (response.status == true) {
-                    alert('Address Adedd')
-                    window.location.href = '/users/profile'
-                } else {
-                    alert('err')
-                }
-            }
-        })
-    })
-</script> --}}
+
+function Addressfn() {
+    let street = document.getElementById('addressValue').value
+    let streetErr = document.getElementById('AddressErr')
+    if (street.length <= 3 || street == '') {
+        streetErr.innerHTML = 'Enter valid details'
+        return false;
+    }
+    streetErr.innerHTML = ''
+    return true;
+}   
+
+function postfn(){
+    let street = document.getElementById('Post').value
+    let streetErr = document.getElementById('postErr')
+    if (street.length <= 3 || street == '') {
+        streetErr.innerHTML = 'Enter valid details'
+        return false;
+    }
+    streetErr.innerHTML = ''
+    return true;
+}
+
+function StateFn() {
+    let street = document.getElementById('StatE').value
+    let countryErr = document.getElementById('StateErr')
+    if (street.length <= 3 || street == '') {
+        countryErr.innerHTML = 'Enter valid details'
+        return false;
+    }
+    countryErr.innerHTML = ''
+    return true;
+}
+
+function checkpinCode() {
+    let street = document.getElementById('zip').value
+    let pinErr = document.getElementById('zipErr')
+    if (street.length <= 7 || street == '') {
+        pinErr.innerHTML = 'Minimum 6 Number'
+        return false;
+    }
+    pinErr.innerHTML = ''
+    return true;
+}
+function Validatemobile() {
+    let mob = document.getElementById('phoneNo').value
+    let mob_err = document.getElementById('phoneErr')
+
+    if (mob.length != 10) {
+        mob_err.innerHTML = 'Enter Proper Number'
+        return false;
+    }
+
+    mob_err.innerHTML = ''
+    return true;
+}
+function fname() {
+    let name_err = document.getElementById('FNameErr')
+    let name = document.getElementById('FName').value;
+
+    if (name.length == 0 || name == '') {
+        name_err.innerHTML = "Name cannot be empty";
+        return false;
+    }
+
+    if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+        name_err.innerHTML = "Write Proper name";
+        return false;
+    }
+
+    if (name.length <= 3 || name.length >= 25) {
+        name_err.innerHTML = "Name must be between 3 and 25 characters";
+        return false;
+    }
+
+    name_err.innerHTML = ""
+    return true;
+}
+function lname() {
+    let name_err = document.getElementById('LNameErr')
+    let name = document.getElementById('LName').value;
+
+    if (name.length == 0 || name == '') {
+        name_err.innerHTML = "Name cannot be empty";
+        return false;
+    }
+
+    if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+        name_err.innerHTML = "Write Proper name";
+        return false;
+    }
+
+    if (name.length <= 1 || name.length >= 25) {
+        name_err.innerHTML = "Name must be between 1 and 25 characters";
+        return false;
+    }
+
+    name_err.innerHTML = ""
+    return true;
+}
+
+function saveaddrFn(){
+    if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn() ) {
+        document.getElementById('FormErr').innerHTML = 'Fill All data First'
+        return false;
+    }else{
+       return true; 
+    }
+    
+}
+
+
+</script>

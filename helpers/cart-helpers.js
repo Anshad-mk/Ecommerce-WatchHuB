@@ -69,35 +69,77 @@ module.exports = {
       let CartItems = await db
         .get()
         .collection(Mycollection.Cart_Colloctions)
-        .aggregate([
-          {
-            $match: { user: ObjectId(userID) },
-          },
-          {
-            $unwind: "$products",
-          },
-          {
-            $project: {
-              item: "$products.item",
-              quantity: "$products.quantity",
-            },
-          },
-          {
-            $lookup: {
-              from: Mycollection.Product_Colloctions,
-              localField: "item",
-              foreignField: "_id",
-              as: "product",
-            },
-          },
-          {
-            $project: {
-              item: 1,
-              quantity: 1,
-              product: { $arrayElemAt: ["$product", 0] },
-            },
-          },
-        ])
+        .aggregate(
+          [
+            {
+              '$match': {
+                'user': ObjectId(userID)
+              }
+            }, {
+              '$unwind': '$products'
+            }, {
+              '$project': {
+                'item': '$products.item',
+                'quantity': '$products.quantity'
+              }
+            }, {
+              '$lookup': {
+                'from': Mycollection.Product_Colloctions,
+                'localField': 'item',
+                'foreignField': '_id',
+                'as': 'product'
+              }
+            }, {
+              '$project': {
+                'item': 1,
+                'quantity': 1,
+                'product': {
+                  '$arrayElemAt': [
+                    '$product', 0
+                  ]
+                }
+              }
+            }, {
+              '$lookup': {
+                'from': Mycollection.Category_Colloctions,
+                'localField': 'product.proCategory',
+                'foreignField': 'category',
+                'as': 'result'
+              }
+            }, {
+              '$project': {
+                'item': 1,
+                'quantity': 1,
+                'product': 1,
+                'result': {
+                  '$arrayElemAt': [
+                    '$result', 0
+                  ]
+                }
+              }
+            }, {
+              '$project': {
+                'item': 1,
+                'quantity': 1,
+                'product': 1,
+                'result': 1,
+                'offerPrice': {
+                  '$subtract': [
+                    '$product.proPrice', {
+                      '$divide': [
+                        {
+                          '$multiply': [
+                            '$product.proPrice', '$result.offer'
+                          ]
+                        }, 100
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+          )
         .toArray();
       // console.log(CartItems);
       resolve(CartItems);
@@ -116,7 +158,8 @@ module.exports = {
           count = cart.products.length;
           resolve(count);
         } else {
-          count = 0;
+          
+          
           resolve(count);
         }
       });
@@ -149,7 +192,7 @@ module.exports = {
             { $inc: { "products.$.quantity": count } }
           )
           .then((response) => {
-            response.status=true
+            response.status = true
             resolve(response);
           });
       }
@@ -164,7 +207,7 @@ module.exports = {
         }
 
       ).then((response) => {
-        resolve({ProRemove:true})
+        resolve({ ProRemove: true })
       })
     })
   },
@@ -180,142 +223,143 @@ module.exports = {
           },
           {
             $unwind: "$products",
-            },
-            {
-              $project:{
-                item:'$products.item',
-                quantity:'$products.quantity'
-              }
-            },
-            {
-              $lookup:{
-                from:Mycollection.Product_Colloctions,
-                localField:"item",
-                foreignField:"_id",
-                as:"product"
-              }
-            },
-            {
-              $project: {
-                item: 1,
-                quantity: 1,
-                product: { $arrayElemAt: ["$product", 0] },
-              },
           },
           {
-            $group:{
-              _id:null,
-              total:{$sum:{$multiply:['$quantity','$product.proPrice']}}
+            $project: {
+              item: '$products.item',
+              quantity: '$products.quantity'
             }
           },
+          {
+            $lookup: {
+              from: Mycollection.Product_Colloctions,
+              localField: "item",
+              foreignField: "_id",
+              as: "product"
+            }
+          },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$product", 0] },
+            },
+          },
+          // {
+          //   $group: {
+          //     _id: null,
+          //     total: { $sum: { $multiply: ['$quantity', '$offerPrice'] } }
+          //   }
+          // },
 
         ]).toArray()
-        resolve(CartTotal[0]);
+        console.log(CartTotal[0]);
+      resolve(CartTotal[0]);
     })
-    
+
   },
 
 
 
 
-PlaceOrder:(Orderdata,products,total)=>{
-return new Promise((resolve,reject)=>{
-  
-let createdAt=new Date().toString()
+  PlaceOrder: (Orderdata, products, total) => {
+    return new Promise((resolve, reject) => {
 
-  UTCTime = new Date() 
-  const time = UTCTime.toTimeString().split('G')[0]
-  
-var month = UTCTime.getUTCMonth() + 1; //months from 1-12
-var day = UTCTime.getUTCDate();
-var year = UTCTime.getUTCFullYear();
+      let createdAt = new Date().toString()
 
-let newdate = day + "-" + month + "-" + year +" "+ time;
-  let status=Orderdata.paymentMethod==='COD'?'Placed':'Pending'
+      UTCTime = new Date()
+      const time = UTCTime.toTimeString().split('G')[0]
 
-  let orderOBJ={
-    DeliveryAddress:{
-      Name:Orderdata.FirstName,
-      Address:Orderdata.Address,
-      Post:Orderdata.Post,
-      Zip:Orderdata.ZipCode,
-      State:Orderdata.State,
-      Phone:Orderdata.Phone,
+      var month = UTCTime.getUTCMonth() + 1; //months from 1-12
+      var day = UTCTime.getUTCDate();
+      var year = UTCTime.getUTCFullYear();
 
-    },
-    userID:ObjectId(Orderdata.userID),
-    TotelAmound:total.total,
-    Date:newdate,
-    createdAt:createdAt,
-    date:new Date(),
-    paymentMethod:Orderdata.paymentMethod,
-    products:products,
-    status:status,
-    orderCancel:false,
-    Timestamp:true
-    
+      let newdate = day + "-" + month + "-" + year + " " + time;
+      let status = Orderdata.paymentMethod === 'COD' ? 'Placed' : 'Pending'
 
-  
-}
-db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response)=>{
-  db.get().collection(Mycollection.Cart_Colloctions).deleteOne({user:ObjectId(Orderdata.userID)})
-  resolve(response)
-  // console.log(response.insertedId);
-})
+      let orderOBJ = {
+        DeliveryAddress: {
+          Name: Orderdata.FirstName,
+          Address: Orderdata.Address,
+          Post: Orderdata.Post,
+          Zip: Orderdata.ZipCode,
+          State: Orderdata.State,
+          Phone: Orderdata.Phone,
 
-})
+        },
+        userID: ObjectId(Orderdata.userID),
+        TotelAmound: total.total,
+        Date: newdate,
+        createdAt: createdAt,
+        date: new Date(),
+        paymentMethod: Orderdata.paymentMethod,
+        products: products,
+        status: status,
+        orderCancel: false,
+        Timestamp: true
 
 
 
-
-
-
-},
-cartproductslist:(userID)=>{
-  return new Promise (async(resolve,reject)=>{
-let cart = await db.get().collection(Mycollection.Cart_Colloctions).findOne({user:ObjectId(userID)})
-if(cart){
-  resolve(cart.products)
-}
-
-  })
-},
-
-viewaOrderedData:(orderID)=>{
-return new Promise (async(resolve,reject)=>{
-  let orderItem=await db.get().collection(Mycollection.orders_Colloction).aggregate([
-    {
-      $match:{_id:ObjectId(orderID)}
-    },
-    {
-      $unwind:'$products'
-    },
-    {
-      $lookup:{
-        from:Mycollection.Product_Colloctions,
-        localField:'products.item',
-        foreignField:'_id',
-        as:'items'
       }
-    },
-    {
-      $unwind:'$items'
-    }
+      db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response) => {
+        db.get().collection(Mycollection.Cart_Colloctions).deleteOne({ user: ObjectId(Orderdata.userID) })
+        resolve(response)
+        // console.log(response.insertedId);
+      })
 
-  ]).toArray()
+    })
 
-  if(orderItem){
-    resolve(orderItem)
-  }else{
-    reject()
+
+
+
+
+
+  },
+  cartproductslist: (userID) => {
+    return new Promise(async (resolve, reject) => {
+      let cart = await db.get().collection(Mycollection.Cart_Colloctions).findOne({ user: ObjectId(userID) })
+      if (cart) {
+        resolve(cart.products)
+      }
+
+    })
+  },
+
+  viewaOrderedData: (orderID) => {
+    return new Promise(async (resolve, reject) => {
+      let orderItem = await db.get().collection(Mycollection.orders_Colloction).aggregate([
+        {
+          $match: { _id: ObjectId(orderID) }
+        },
+        {
+          $unwind: '$products'
+        },
+        {
+          $lookup: {
+            from: Mycollection.Product_Colloctions,
+            localField: 'products.item',
+            foreignField: '_id',
+            as: 'items'
+          }
+        },
+        {
+          $unwind: '$items'
+        }
+
+      ]).toArray()
+
+      if (orderItem) {
+        resolve(orderItem)
+      } else {
+        reject()
+      }
+
+    })
+
+
+
   }
-  
-})
 
-
-
-}
-  
 
 
 };

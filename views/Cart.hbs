@@ -1,138 +1,170 @@
+<link rel="stylesheet" href="/javascripts/style.css">
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+      {{#if products}}
+      <div class="col-md-12 mb-0"><a class="text-black text-decoration-none" href="/"> Home</a> <span
+          class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+    </div>
+  </div>
+</div>
 
-     <link rel="stylesheet" href="/javascripts/style.css">
-    <div class="bg-light py-3">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 mb-0"><a class="text-black text-decoration-none" href="/"> Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+<div class="site-section">
+  <div class="container">
+    <div class="row mb-5">
+      <form class="col-md-12" method="post">
+        <div class="site-blocks-table">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="product-thumbnail">Image</th>
+                <th class="product-name">Product</th>
+                <th class="product-price">Price</th>
+                <th class="product-quantity">Quantity</th>
+                <th class="product-total">Total</th>
+                <th class="product-remove">Remove</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {{#each products}}
+
+              <tr>
+
+                <td class="product-thumbnail shadow-lg">
+                  <img src="/productIMG/{{this.product._id}}.jpg" alt="Image" class="img-fluid">
+                </td>
+                <td class="product-name shadow-lg">
+                  <h2 class="h5 text-black">{{this.product.proName}}</h2>
+                </td>
+                <td class="shadow-lg"><span id="price{{this.product._id}}">{{this.offerPrice}} </span></td>
+                <td class="shadow-lg">
+
+                  <div class="input-group mb-3 " style="max-width: 120px;">
+                    <div clasds="input-group-prepend ">
+                      <button class="btn btn-outline-primary js-btn-minus"
+                        onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',-1)"
+                        type="button">&minus;</button>
+                    </div>
+                    <input type="text" class="form-control text-center" id="{{this.product._id}}"
+                      value="{{this.quantity}}" placeholder="" aria-label="Example text with button addon"
+                      aria-describedby="button-addon1">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-primary js-btn-plus"
+                        onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',1)" type="button">&plus;</button>
+                    </div>
+                  </div>
+
+                </td>
+                <td class="shadow-lg"><span id="sum{{this.product._id}}">{{this.offerPrice}}</span></td>
+                <td class="shadow-lg"><button onclick="removeProducts('{{this._id}}','{{this.product._id}}')"
+                    class="btn btn-primary btn-sm">X</button></td>
+              </tr>
+              {{/each}}
+
+            </tbody>
+
+          </table>
+          
+          <span hidden> </span>
+          
         </div>
-      </div>
+      </form>
     </div>
 
-    <div class="site-section">
-      <div class="container">
+    <div class="row">
+      <div class="col-md-6">
         <div class="row mb-5">
-          <form class="col-md-12" method="post">
-            <div class="site-blocks-table">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th class="product-thumbnail">Image</th>
-                    <th class="product-name">Product</th>
-                    <th class="product-price">Price</th>
-                    <th class="product-quantity">Quantity</th>
-                    <th class="product-total">Total</th>
-                    <th class="product-remove">Remove</th>
-                  </tr>
-                </thead>
-                
-                <tbody>
-                    
-                   {{#each products}}
-                  
-                  <tr>
-                     
-                    <td class="product-thumbnail shadow-lg">
-                      <img src="/productIMG/{{this.product._id}}.jpg" alt="Image" class="img-fluid">
-                    </td>
-                    <td class="product-name shadow-lg">
-                      <h2 class="h5 text-black">{{this.product.proName}}</h2>
-                    </td>
-                    <td class="shadow-lg"><span id="price{{this.product._id}}">{{this.product.proPrice}} </span></td>
-                    <td class="shadow-lg">
-                        
-                      <div class="input-group mb-3 " style="max-width: 120px;">
-                        <div class="input-group-prepend ">
-                          <button class="btn btn-outline-primary js-btn-minus" onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',-1)" type="button">&minus;</button>
-                        </div>
-                        <input type="text" class="form-control text-center" id="{{this.product._id}}" value="{{this.quantity}}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-primary js-btn-plus" onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',1)" type="button">&plus;</button>
-                        </div>
-                      </div>
-
-                    </td>
-                    <td class="shadow-lg"><span id="sum{{this.product._id}}">{{this.product.proPrice}}</span></td>
-                    <td class="shadow-lg"><button onclick="removeProducts('{{this._id}}','{{this.product._id}}')" class="btn btn-primary btn-sm">X</button></td>
-                    </tr>
-                  {{/each}}
-                  
-                </tbody>
-                
-              </table>
-              {{#if products}}
-<span hidden> </span>
-              {{else}}
-              <section class="cart-area pt-5 pb-50 text-center">
-        <img src="/images/cart.png" alt="" style="width:20%;">
-        <div class="container mt-4">
-            <h1 class="text-center">0 items in your cart</h1>
-   </div>
-    </section>
-    {{/if}}
-            </div>
-          </form>
-        </div>
-
-        <div class="row">
+          {{!-- <div class="col-md-6 mb-3 mb-md-0">
+            <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
+          </div> --}}
           <div class="col-md-6">
-            <div class="row mb-5">
-              {{!-- <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
-              </div> --}}
-              <div class="col-md-6">
-                <a href="/"><button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button></a>
+            <a href="/"><button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button></a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="text-black h4" for="coupon">Coupon</label>
+            <p>Enter your coupon code if you have one.</p>
+          </div>
+          <div class="col-md-8 mb-3 mb-md-0">
+            <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary btn-sm">Apply Coupon</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 pl-5">
+        <div class="row justify-content-end">
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-12 text-right border-bottom mb-5">
+                <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
               </div>
             </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <span class="text-black">Subtotal</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black" id="subtotal">{{tottleCost.total}}.00</strong>
+              </div>
+            </div>
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <span class="text-black">Total</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black" id="total">{{tottleCost.total}}.00</strong>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-md-12">
-                <label class="text-black h4" for="coupon">Coupon</label>
-                <p>Enter your coupon code if you have one.</p>
-              </div>
-              <div class="col-md-8 mb-3 mb-md-0">
-                <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-primary btn-sm">Apply Coupon</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 pl-5">
-            <div class="row justify-content-end">
-              <div class="col-md-7">
-                <div class="row">
-                  <div class="col-md-12 text-right border-bottom mb-5">
-                    <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <span class="text-black">Subtotal</span>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <strong class="text-black" id="subtotal">{{tottleCost.total}}.00</strong>
-                  </div>
-                </div>
-                <div class="row mb-5">
-                  <div class="col-md-6">
-                    <span class="text-black">Total</span>
-                  </div>
-                  <div class="col-md-6 text-right">
-                    <strong class="text-black" id="total">{{tottleCost.total}}.00</strong>
-                  </div>
-                </div>
+                {{#if products}}
+                <a href="/users/checkout"><button class="btn btn-primary btn-lg py-3 btn-block"
+                    onclick="window.location='checkout.html'">Proceed To Checkout</button></a>
+                {{/if}}
 
-                <div class="row">
-                  <div class="col-md-12">
-                    {{#if products}}
-                    <a href="/users/checkout"><button class="btn btn-primary btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button></a>
-                    {{/if}}
-                                        
 
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    {{else}}
+          <div class="container-fluid  mt-100  ">
+                        <div class="row">
+
+                            <div class="col-md-12 ">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Cart</h5>
+                                    </div>
+                                    <div class="card-body cart mb-5">
+                                        <div class="col-sm-12 empty-cart-cls text-center">
+                                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130"
+                                                class="img-fluid mb-4 mr-3">
+                                            <h3><strong>Your Cart is Empty</strong></h3>
+                                            <h4>Add something to make me happy :)</h4>
+                                            <a href="/" class="btn btn-primary cart-btn-transform m-3 "
+                                                data-abc="true">continue shopping</a>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+          {{/if}}
+  </div>
+</div>

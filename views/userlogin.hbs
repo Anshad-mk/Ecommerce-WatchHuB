@@ -20,22 +20,24 @@
           <div id="emailHelp" class="form-text text-danger pb-0">
 
           </div>
-          <form action="/users/login" method="post">
+          <form action="/users/login" method="post" id="loginform" onsubmit="return logForm()">
             <label class="block text-sm">
               <span class="text-gray-700 dark:text-gray-400">Email</span>
-              <input type="email" name="email" required id="email"
+              <input type="email" name="email" id="email" onkeyup="return validateEmail()"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" />
             </label>
-            <div id="emailHelp" class="form-text text-danger pb-0">{{errmsg}}
+            <div id="emailid-err" class="form-text text-danger pb-0">{{errmsg}}
 
             </div>
             <label class="block mt-4 text-sm">
               <span class="text-gray-700 dark:text-gray-400">Password</span>
-              <input required name="password" id="password"
+              <input name="password" id="password" onkeyup="return validatepassword()"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                placeholder="" type="password" />
+                placeholder="" type="password" /> <div id="password-err" class="form-text text-danger pb-0">
+              
+            </div>
             </label>
-            <div id="emailHelp" class="form-text text-danger pb-0">
+            <div id="err" class="form-text text-danger pb-0">
               {{err}}
             </div>
 
@@ -90,3 +92,15 @@
 
 
 {{!-- modal --}}
+
+<script>
+
+  function logForm() {
+    if (!validateEmail() || !validatepassword()) {
+      document.getElementById('err').innerHTML = 'Fill All data'
+      return false;
+    }
+    return true;
+  }
+
+</script>

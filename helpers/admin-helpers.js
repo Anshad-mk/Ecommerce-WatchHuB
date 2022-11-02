@@ -88,117 +88,147 @@ module.exports = {
 
     })
   },
-  MonthOrderCuount:()=>{
-    return new Promise((resolve,reject)=>{
+  MonthOrderCuount: () => {
+    return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.orders_Colloction).aggregate([
-                  
+
         {
-            $match:{ date:{
-                    $gte: new Date(new Date() - 60*60*24*1000*30)
-                }
+          $match: {
+            date: {
+              $gte: new Date(new Date() - 60 * 60 * 24 * 1000 * 30)
             }
+          }
         },
         {
-            $unwind:'$products'
+          $unwind: '$products'
         },
         {
-            $project:{
-                year: { $year: "$date" },
-                month: { $month: "$date" },
-                day: { $dayOfMonth: "$date" },
-                dayOfWeek: { $dayOfWeek: "$date" },
-            }
+          $project: {
+            year: { $year: "$date" },
+            month: { $month: "$date" },
+            day: { $dayOfMonth: "$date" },
+            dayOfWeek: { $dayOfWeek: "$date" },
+          }
         },
         {
-            $group:{
-                _id:'$dayOfWeek',
-                count:{$sum:1},
-                detail:{$first:'$$ROOT'}
-            }
+          $group: {
+            _id: '$dayOfWeek',
+            count: { $sum: 1 },
+            detail: { $first: '$$ROOT' }
+          }
         },
         {
-            $sort:{detail:1}
+          $sort: { detail: 1 }
         }
-  ]).toArray().then((value)=>{
-    resolve(value)
-    // console.log(value);
-  }).catch((err)=>{
-    reject(err)
-  })
-  
-        
-     
+      ]).toArray().then((value) => {
+        resolve(value)
+        // console.log(value);
+      }).catch((err) => {
+        reject(err)
+      })
+
+
+
     })
   },
 
-  YearOrderCuount:()=>{
-    return new Promise((resolve,reject)=>{
+  YearOrderCuount: () => {
+    return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.orders_Colloction).aggregate([
-                  
+
         {
-            $match:{ date:{
-                    $gte: new Date(new Date() - 60*60*24*1000*365)
-                }
+          $match: {
+            date: {
+              $gte: new Date(new Date() - 60 * 60 * 24 * 1000 * 365)
             }
+          }
         },
         {
-            $unwind:'$products'
+          $unwind: '$products'
         },
         {
-            $project:{
-                year: { $year: "$date" },
-                month: { $month: "$date" },
-                day: { $dayOfMonth: "$date" },
-                dayOfWeek: { $dayOfWeek: "$date" },
-            }
+          $project: {
+            year: { $year: "$date" },
+            month: { $month: "$date" },
+            day: { $dayOfMonth: "$date" },
+            dayOfWeek: { $dayOfWeek: "$date" },
+          }
         },
         {
-            $group:{
-                _id:'$dayOfWeek',
-                count:{$sum:1},
-                detail:{$first:'$$ROOT'}
-            }
+          $group: {
+            _id: '$dayOfWeek',
+            count: { $sum: 1 },
+            detail: { $first: '$$ROOT' }
+          }
         },
         {
-            $sort:{detail:1}
+          $sort: { detail: 1 }
         }
-  ]).toArray().then((value)=>{
-    resolve(value)
-    // console.log(value);
-  }).catch((err)=>{
-    reject(err)
-  })
-  
-        
-     
-    })
-  },
-  statusUpdate:(OrderID,status)=>{
-    // console.log(status,"haiii");
-    return new Promise((resolve,reject)=>{
-      if(status.status=='delivered'){
-        db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
-      {$set:{status:status.status,delivered:true}}).then((response)=>{
-        resolve(response)
-      }).catch((err)=>{
+      ]).toArray().then((value) => {
+        resolve(value)
+        // console.log(value);
+      }).catch((err) => {
         reject(err)
       })
-      }else if(status.status=='Cancel'){
-        db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
-        {$set:{status:status.status,orderCancel:true}}).then((response)=>{
-          resolve(response)
-        }).catch((err)=>{
-          reject(err)
-        })
-      }else if(status.status=='Shipped')
-      db.get().collection(Mycollection.orders_Colloction).updateOne({_id:ObjectId(OrderID)},
-        {$set:{status:status.status,Shipped:true}}).then((response)=>{
-          resolve(response)
-        }).catch((err)=>{
-          reject(err)
-        })
+
+
+
+    })
+  },
+  statusUpdate: (OrderID, status) => {
+    // console.log(status,"haiii");
+    return new Promise((resolve, reject) => {
+      if (status.status == 'delivered') {
+        db.get().collection(Mycollection.orders_Colloction).updateOne({ _id: ObjectId(OrderID) },
+          { $set: { status: status.status, delivered: true } }).then((response) => {
+            resolve(response)
+          }).catch((err) => {
+            reject(err)
+          })
+      } else if (status.status == 'Cancel') {
+        db.get().collection(Mycollection.orders_Colloction).updateOne({ _id: ObjectId(OrderID) },
+          { $set: { status: status.status, orderCancel: true } }).then((response) => {
+            resolve(response)
+          }).catch((err) => {
+            reject(err)
+          })
+      } else if (status.status == 'Shipped')
+        db.get().collection(Mycollection.orders_Colloction).updateOne({ _id: ObjectId(OrderID) },
+          { $set: { status: status.status, Shipped: true } }).then((response) => {
+            resolve(response)
+          }).catch((err) => {
+            reject(err)
+          })
+    })
+  },
+
+  addBanner: (banner) => {
+    let Banner = {
+      MainTittle: banner.MainTittle,
+      SubTittle: banner.SubTittle,
+      TittleDiscription: banner.TittleDis
+    }
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.Banner_Collection).insertOne(Banner).then((response) => {
+        resolve(response)
+        
+      })
+    })
+  },
+  BannerManage: () => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(Mycollection.Banner_Collection).find({}).toArray().then((response) => {
+        resolve(response)
+        
+      }).catch((err) => {
+       
+        reject(err)
+      })
+
+
     })
   }
+
 
 
 
