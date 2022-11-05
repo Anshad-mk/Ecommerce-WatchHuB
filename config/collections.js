@@ -6,6 +6,7 @@ module.exports={
     Cart_Colloctions:'usercart',
     orders_Colloction:'Orders',
     address_Collection:'address',
-    Banner_Collection:'Banner'
+    Banner_Collection:'Banner',
+    couponCollection: 'Coupon'
 
 }

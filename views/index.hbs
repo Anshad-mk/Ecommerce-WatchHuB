@@ -121,10 +121,18 @@
       {{#each cat}}
       <div class="col-12 col-md-4 mb-2 col-lg-4 col-xl-3 ">
         <div class="card h-10  rounded-circle border-1 hov">
+          
           <a href="/listAllProducts/{{this.category}}">
+          <span class="bg-danger position-absolute top-0 right-0 translate-middle badge rounded-pill "
+              >{{this.offer}}% offer</span>
             <img src="/productIMG/{{this._id}}.jpg" class="card-img-top rounded-circle pb-0" style="height: 15em;">
+            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+               {{!-- overlay if you have --}}
+              </div>
           </a>
+          
         </div>
+        
         <h5 class="text-center mt-3 mb-3">{{this.category}}</h5>
         <p class="text-center"><a class="btn btn-success" href="/listAllProducts/{{this.category}}">Go Shop</a></p>
       </div>
@@ -155,8 +163,8 @@
       <div class="row mt-3 ">
         {{#each products}}
 
-        <div class="col-md-3">
-          <div class="card mb-4 product-wap rounded-0 h-100 ">
+        <div class="col-md-3 mb-3">
+          <div class="card product-wap rounded-0 h-100 ">
             <div class="card rounded-0">
               <img class="card-img rounded-0 img-fluid" src="/productIMG/{{this._id}}.jpg" style="height: 15em;">
               <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
@@ -196,7 +204,7 @@
                 </li>
               </ul>
               <p class="mb-0">
-                <h5 class="text-center text-success"> ₹{{this.offerPrice}} </h5>
+                <h5 class="text-center text-success"> ₹{{this.offerPrice}}.00 </h5>
               <h5 class="text-center text-danger"> <strike>₹{{this.proPrice}}.00</strike> </h5>
               </p>
             </div>

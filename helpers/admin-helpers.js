@@ -227,6 +227,72 @@ module.exports = {
 
 
     })
+  },
+  categoryOffer:(categoryedit)=>{
+    let CatName=categoryedit.Catname
+    let catId=categoryedit.categoryID
+    let offerP=categoryedit.persentage
+    // console.log(categoryedit,"catedit");
+return new Promise((resolve,reject)=>{
+  db.get().collection(Mycollection.Category_Colloctions).updateOne({_id:ObjectId(catId)},{
+    $set:{
+      offer: parseInt(offerP) 
+      
+    }
+  }).then(async(data)=>{
+  let catproducts=await db.get().collection(Mycollection.Product_Colloctions).find({proCategory:CatName}).toArray()
+
+  // console.log(catproducts);
+
+ await catproducts.forEach( async element => {
+  let offerprice = parseInt(element.proPrice - (element.proPrice * offerP / 100))
+  // console.log(offerprice);
+  // console.log(element.proCategory);
+  let bc =await db.get().collection(Mycollection.Product_Colloctions).updateOne({proCategory:element.proCategory},
+    {
+      $set:{
+      offerPrice:parseInt(offerprice),
+      offer: parseInt(offerP)
+      }
+    }
+    )
+  });
+
+
+
+    resolve(data)
+  }).catch((err)=>{
+    reject(err)
+  })
+
+})
+
+  },
+  addcupon:(coupondata)=>{
+
+couponOBj={
+  couponID:coupondata.couponID,
+  couponAmount:coupondata.couponAmount,
+  ExpairyDate:coupondata.ExpairyDate,
+  CreatedDate:new Date().toLocaleDateString()
+
+}
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.couponCollection).insertOne(couponOBj).then((resp)=>{
+        resolve(resp)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  },
+  displayCoupon:()=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.couponCollection).find({}).toArray().then((response)=>{
+        resolve(response)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
   }
 
 

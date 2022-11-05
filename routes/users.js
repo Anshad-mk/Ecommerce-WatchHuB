@@ -6,6 +6,8 @@ const userHelpers = require('../helpers/user-helpers');
 const paypal =require('paypal-rest-sdk');
 const adminHelpers = require('../helpers/admin-helpers');
 const { route } = require('.');
+const shortid = require('shortid');
+const { Db } = require('mongodb');
 let cartcount = 0
 
 
@@ -57,24 +59,42 @@ router.post('/register',(req, res, next)=>{
     LastName:req.body.LastName,
     email:req.body.email.toLowerCase(),
     password:req.body.password,
-    repassword:req.body.repassword
+    repassword:req.body.repassword,
+    useReferal:req.body.Referal,
+    Wallet:parseInt(0),
+    referal:shortid.generate()
   }
-userHelpers.userLogin(user).then((excist)=>{
+  
+userHelpers.userExist(user.email).then((excist)=>{
   if(excist){
     res.render('register',{err:"email ID alredy existing !! Try login"})
-  }
-}).catch((err)=>{
-  
+  }else{
     if(req.body.password!=req.body.repassword){
       res.render('register',{err:"password not match"})
   
     }else{
-      userHelpers.userRegister(user).then((data)=>{
-          res.redirect('/users/login')
-      })
+      if(req.body.Referal != "" || req.body.Referal != 0 || req.body.Referal != null ){
+        userHelpers.validreferal(req.body.Referal).then((valid)=>{
+          userHelpers.userRegister(user).then((data)=>{
+            res.redirect('/users/login')
+        })
+      
+        })
+      
+      }
+      
     
   }
+  }
 })
+  
+
+
+ 
+
+
+
+
 
   
 });
@@ -86,7 +106,7 @@ userHelpers.userLogin(req.body).then((response)=>{
     req.session.userName=response.firstName
     req.session.user=response.email
     req.session.userID=response._id
-    console.log(response._id);
+    // console.log(response._id);
     console.log('login successfully')
     res.redirect('/')
   }
@@ -157,7 +177,8 @@ router.get('/cart',userVerrify,async(req,res,next)=>{
   let products= await cartHelpers.viewCart(req.session.userID)
   let cartCount= await cartHelpers.getItemCount(req.session.userID)  
   let tottleCost=await cartHelpers.getCartTotal(req.session.userID)
-   res.render('Cart',{products,Uname,cartCount,tottleCost});
+  let withoutoffer=await cartHelpers.getTotal(req.session.userID)
+   res.render('Cart',{products,Uname,cartCount,tottleCost,withoutoffer});
 })
 
 router.get('/addToCart/:id',(req,res,next)=>{
@@ -185,11 +206,16 @@ if(req.session.loggedIn){
 router.post('/changeProQuantity',userVerrify,(req,res,next)=>{
   cartHelpers.ChangeProQuantity(req.body).then(async(response)=>{
     let tottleCost=await cartHelpers.getCartTotal(req.session.userID)
-    if( tottleCost==null ||tottleCost=='' ||tottleCost.total<=0 ){
+    let offerless=await cartHelpers.getTotal(req.session.userID)
+    if( tottleCost==null ||tottleCost=='' ||tottleCost.total<=0){
       response.tottleCost=0
+      response.offerless=0
+      
       res.json(response)
     }else{
+
       response.tottleCost=tottleCost.total
+      response.offerless=offerless.total
     res.json(response)
     }
     
@@ -246,7 +272,7 @@ router.post('/place-order',userVerrify,async(req,res,next)=>{
   let totalPrice= await cartHelpers.getCartTotal(req.session.userID)
 //  console.log(req.body);
   cartHelpers.PlaceOrder(req.body,products,totalPrice).then((OrderID)=>{
-    console.log(req.body,products,totalPrice);
+    // console.log(req.body,products,totalPrice);
     if(req.body['paymentMethod']==='COD'){
     res.json({COD_Success:true})
     } else if (req.body['paymentMethod']==='PayPal'){
@@ -323,7 +349,9 @@ userHelpers.addAddress(req.session.userID,req.body).then((response)=>{
   
 })
 router.get('/viewOrder',userVerrify,(req,res,next)=>{
-  userHelpers.viewOrders(req.session.userID).then((response)=>{    
+  userHelpers.viewOrders(req.session.userID).then((response)=>{   
+    console.log(response[0].Date);
+
     res.render('viewOrder',{response,Uname:req.session.userName})
   }).catch((err)=>{
     res.render('viewOrder',{Uname:req.session.userName})
@@ -390,7 +418,8 @@ res.redirect('/users/Profile')
 
 router.get('/wishlist',userVerrify,(req,res,next)=>{
 userHelpers.viewwishlist(req.session.userID).then((response)=>{
-  console.log(response);
+  
+  // console.log(response);
   res.render('wishlist',{Uname:req.session.userName,response})
   
 }).catch((err)=>{
@@ -411,12 +440,14 @@ router.get('/addTowish/:id',userVerrify,(req,res,next)=>{
  })
 })
 
-router.get('/remove/:id',userVerrify,(req,res,next)=>{
+router.get('/removewish/:id',userVerrify,(req,res,next)=>{
+  console.log("remove");
   userHelpers.removewish(req.params.id,req.session.userID).then((response)=>{
     response.status=true
     res.json(response)
   })
 })
+
 
 
 

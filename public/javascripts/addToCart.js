@@ -30,6 +30,7 @@ function addToCart(ProID,user) {
 function ChangeQuantity(cartID, ProID, count) {
   let ProQuantity = parseInt(document.getElementById(ProID).value);
   let ProPrice=parseInt(document.getElementById('price'+ProID).innerHTML)
+  
   count = parseInt(count);
   console.log(ProQuantity);
 
@@ -58,14 +59,19 @@ function ChangeQuantity(cartID, ProID, count) {
         let no=ProQuantity + count;
         document.getElementById(ProID).value = no
         document.getElementById('sum'+ProID).innerHTML = ProPrice* parseInt(document.getElementById(ProID).value)
+        
         document.getElementById('total').innerHTML=response.tottleCost
-        document.getElementById('subtotal').innerHTML=response.tottleCost
+        document.getElementById('subtotal').innerHTML =response.offerless
+        document.getElementById('Discount').innerHTML = response.offerless-response.tottleCost
+        document.getElementById('Pdisc').innerHTML = parseInt(100*(response.offerless-response.tottleCost)/response.offerless)+"% Discount"
+
         console.log(response.tottleCost);
         
       }
     },
   });
 }
+document.getElementById('Pdisc').innerHTML = parseInt(100*(document.getElementById('subtotal').innerHTML-document.getElementById('total').innerHTML)/document.getElementById('subtotal').innerHTML)+"% Discount"
 
 
 

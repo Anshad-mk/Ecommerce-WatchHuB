@@ -99,45 +99,7 @@ module.exports = {
                   ]
                 }
               }
-            }, {
-              '$lookup': {
-                'from': Mycollection.Category_Colloctions,
-                'localField': 'product.proCategory',
-                'foreignField': 'category',
-                'as': 'result'
-              }
-            }, {
-              '$project': {
-                'item': 1,
-                'quantity': 1,
-                'product': 1,
-                'result': {
-                  '$arrayElemAt': [
-                    '$result', 0
-                  ]
-                }
-              }
-            }, {
-              '$project': {
-                'item': 1,
-                'quantity': 1,
-                'product': 1,
-                'result': 1,
-                'offerPrice': {
-                  '$subtract': [
-                    '$product.proPrice', {
-                      '$divide': [
-                        {
-                          '$multiply': [
-                            '$product.proPrice', '$result.offer'
-                          ]
-                        }, 100
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
+            },
           ]
           )
         .toArray();
@@ -159,13 +121,13 @@ module.exports = {
           resolve(count);
         } else {
           
-          
+
           resolve(count);
         }
-      });
+      }); 
     } catch (error) {
       resolve(count);
-    }
+    } 
   },
   ChangeProQuantity: (items) => {
     let { cartID, ProID, count, ProQuantity } = items;
@@ -214,6 +176,52 @@ module.exports = {
 
   getCartTotal: (userID) => {
     return new Promise(async (resolve, reject) => {
+      let offerlessTotal = await db
+        .get()
+        .collection(Mycollection.Cart_Colloctions)
+        .aggregate([
+          {
+            $match: { user: ObjectId(userID) },
+          },
+          {
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              item: '$products.item',
+              quantity: '$products.quantity'
+            }
+          },
+          {
+            $lookup: {
+              from: Mycollection.Product_Colloctions,
+              localField: "item",
+              foreignField: "_id",
+              as: "product"
+            }
+          },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$product", 0] },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              total: { $sum: { $multiply: ['$quantity', '$product.offerPrice'] } }
+            }
+          },
+
+        ]).toArray()
+        // console.log(offerlessTotal[0]);
+      resolve(offerlessTotal[0]);
+    })
+
+  },
+  getTotal:(userID)=>{
+    return new Promise(async (resolve, reject) => {
       let CartTotal = await db
         .get()
         .collection(Mycollection.Cart_Colloctions)
@@ -245,15 +253,15 @@ module.exports = {
               product: { $arrayElemAt: ["$product", 0] },
             },
           },
-          // {
-          //   $group: {
-          //     _id: null,
-          //     total: { $sum: { $multiply: ['$quantity', '$offerPrice'] } }
-          //   }
-          // },
+          {
+            $group: {
+              _id: null,
+              total: { $sum: { $multiply: ['$quantity', '$product.proPrice'] } }
+            }
+          },
 
         ]).toArray()
-        console.log(CartTotal[0]);
+        // console.log(CartTotal[0]);
       resolve(CartTotal[0]);
     })
 
@@ -289,7 +297,7 @@ module.exports = {
         },
         userID: ObjectId(Orderdata.userID),
         TotelAmound: total.total,
-        Date: newdate,
+        Date: newdate.slice(0, 10),
         createdAt: createdAt,
         date: new Date(),
         paymentMethod: Orderdata.paymentMethod,

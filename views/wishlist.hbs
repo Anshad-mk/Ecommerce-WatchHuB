@@ -47,19 +47,19 @@
                                     </span></td>
                                 <td class="shadow-lg"> <span id="price{{this.product._id}}">{{this.product.proCategory}}
                                     </span></td>
-                                <td class="shadow-lg"> <a href="/preview-product/{{this.product._id}}" class="btn btn-primary">View Product</a> 
+                                <td class="shadow-lg"> <a href="/preview-product/{{this.product._id}}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> 
 
 
                                 <td class="shadow-lg">
                                     
-                        <span class="btn btn-primary" onclick="wishToCart('{{this.product._id}}','{{../Uname}}')">ADD TO CART</span>
+                        <span class="btn btn-primary" onclick="wishToCart('{{this.product._id}}','{{../Uname}}')"><i class="bi bi-cart-plus"></i></span>
 
                                 </td>
 
                                 <td class="shadow-lg">
                                     <span
                                         onclick="removewishlistitem('{{this.product._id}}','{{../Uname}}')"
-                                        class="btn btn-primary btn-sm">X</span></td>
+                                        class="btn btn-sm"><i class="bi bi-trash"></i></span></td>
                             </tr>
                             {{/each}}
 

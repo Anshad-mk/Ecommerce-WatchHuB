@@ -19,6 +19,7 @@ function addToWishList(id, user) {
     })
 }
 function removewishlistitem(ProID, name) {
+    
     $.ajax({
         url: `/users/removewish/${ProID}`,
         method: 'get',

@@ -95,7 +95,7 @@
                             <div
                                 class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                 <ul class="list-unstyled">
-                                    <li><a class="btn btn-success text-white" href="shop-single.html"><i
+                                    <li><a class="btn btn-success text-white" onclick="addToWishList('{{this._id}}',{{Uname}})"><i
                                                 class="far fa-heart"></i></a></li>
                                     <li><a class="btn btn-success text-white mt-2" href="/preview-product/{{this._id}}"><i
                                                 class="far fa-eye"></i></a></li>
@@ -134,8 +134,9 @@
                                 </li>
                             </ul>
                             <p class="mb-0">
-                            <h5 class="text-center">₹{{this.proPrice}}.00</h5>
-                            </p>
+                <h5 class="text-center text-success"> ₹{{this.offerPrice}}.00 </h5>
+              <h5 class="text-center text-danger"> <strike>₹{{this.proPrice}}.00</strike> </h5>
+              </p>
                         </div>
                     </div>
                 </div>

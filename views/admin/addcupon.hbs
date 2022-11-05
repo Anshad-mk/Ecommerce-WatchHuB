@@ -1,0 +1,384 @@
+<style>
+    :root {
+        --main-bg-color: #009d63;
+        --main-text-color: #009d63;
+        --second-text-color: #bbbec5;
+        --second-bg-color: #c1efde;
+    }
+
+    .primary-text {
+        color: var(--main-text-color);
+    }
+
+    .second-text {
+        color: var(--second-text-color);
+    }
+
+    .primary-bg {
+        background-color: var(--main-bg-color);
+    }
+
+    .secondary-bg {
+        background-color: var(--second-bg-color);
+    }
+
+    .rounded-full {
+        border-radius: 100%;
+    }
+
+    #wrapper {
+        overflow-x: hidden;
+        background-image: linear-gradient(to right,
+                #baf3d7,
+                #c2f5de,
+                #cbf7e4,
+                #d4f8ea,
+                #ddfaef);
+    }
+
+    #sidebar-wrapper {
+        min-height: 100vh;
+        margin-left: -15rem;
+        -webkit-transition: margin 0.25s ease-out;
+        -moz-transition: margin 0.25s ease-out;
+        -o-transition: margin 0.25s ease-out;
+        transition: margin 0.25s ease-out;
+    }
+
+    #sidebar-wrapper .sidebar-heading {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.2rem;
+    }
+
+    #sidebar-wrapper .list-group {
+        width: 15rem;
+    }
+
+    #page-content-wrapper {
+        min-width: 100vw;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #menu-toggle {
+        cursor: pointer;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 20px 30px;
+    }
+
+    .list-group-item.active {
+        background-color: transparent;
+        color: var(--main-text-color);
+        font-weight: bold;
+        border: none;
+    }
+
+    @media (min-width: 768px) {
+        #sidebar-wrapper {
+            margin-left: 0;
+        }
+
+        #page-content-wrapper {
+            min-width: 0;
+            width: 100%;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: -15rem;
+        }
+
+    }
+</style>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
+                    class="fa fa-inbox"> &nbsp </i>Watch HuB</div> <i class=""></i>
+            <div class="list-group list-group-flush my-3">
+                <a href="/admin/dashboard"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text active"><i
+                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="/admin/manageusers"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Manage Users</a>
+
+                <a href="/admin/categorymanage"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Category</a>
+                <a href="/admin/addproduct"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Add Products</a>
+                <a href="/admin/viewproducts"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>View Products</a>
+                <a href="/admin/viewproducts"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>View Orders</a>
+                <a href="/admin/addbanner"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Add Banner</a>
+                <a href="/admin/coupon"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fa fa-cog me-2"></i>Coupon</a>
+                <a href="/admin/logout"
+                    class="fs-5 list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                        class="fas fa-power-off me-2"></i>Logout</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">Dashboard</h2>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>{{name}}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="m-5">
+                <!-- Button trigger modal -->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary ms-4 mb-2" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
+                    Add Coupon
+                </button>
+
+                <!-- Modal -->
+                <form action="/admin/coupon" method="post" enctype="multipart/form-data"
+                    onsubmit="return couponoffer()">
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Enter Your Coupon</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="container">
+                                        <label for="text">Coupon ID</label>
+                                        <input type="text" name="couponID" id="couponiD" class="form-control"
+                                            onkeyup="return coupencheck()">
+                                        <div class="text-danger" id="Coupon_Error"></div>
+
+                                        <label for="text">Coupon Amount</label>
+                                        <input type="number" name="couponAmount" id="CouponAmount" class="form-control"
+                                            onkeyup="return coupenAmount()">
+                                        <div class="text-danger" id="CouponError"></div>
+
+                                        <label for="text">Expiry Date</label>
+                                        <input type="Date"  name="ExpairyDate" id="expdate" class="form-control" onkeyup="return expirydate()" required>
+                                        <div class="text-danger" id="EXPERR"></div>
+                                        <div class="text-danger" id="couponError"></div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- Button trigger modal -->
+                <div class="col">
+                    <table class="table bg-white rounded shadow-sm  table-hover">
+
+                        <thead>
+                            <tr>
+                                <th scope="col" width="50">#</th>
+                                <th scope="col">Coupon ID</th>
+                                <th scope="col">Coupon Amount</th>
+                                <th scope="col">Coupon Created Date</th>
+                                <th scope="col">Coupon Expairy Date</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {{#each response}}
+                            <tr>
+
+
+
+                                <th scope="row">{{inc @index}}</th>
+                                <td class="shadow">{{this.couponID}}</td>
+                                <td class="shadow">₹{{this.couponAmount}}.00</td>
+                                <td class="shadow">{{this.CreatedDate}}</td>
+                                <td class="shadow">{{this.ExpairyDate}}</td>
+                                
+
+
+                {{!-- <br> <a href="/admin/edit_product" class="btn btn-primary btn-small ps-4 mt-2 pe-4">
+                    <center>Edit</center>
+                </a> </td> --}}
+                </tr>
+                {{/each}}
+
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+    <!-- /#page-content-wrapper -->
+    </div>
+    {{#each response}}
+    <!-- Modal -->
+    {{!-- <div class="modal fade" id="staticBackdrope" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Category offer(%)</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger ms-3" hidden> numbers between 0 to 75 </p>
+                    <form action="">
+                        <input type="number" class="form-control">
+                        <button type="submit" class="btn btn-primary mt-2">Update</button>
+                </div>
+                </form>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div> --}}
+    {{/each}}
+
+
+    <script>
+        var el = document.getElementById("wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+
+function couponoffer() {
+            let errdiv = document.getElementById('couponError')
+            if (!coupencheck()|| !coupenAmount()|| !expirydate()) {
+
+                return false
+                errdiv.innerHTML = "Please fill requierd data";
+            }
+            errdiv.innerHTML = ""
+            return true;
+
+        }
+
+
+        function coupencheck() {
+
+            let name_err = document.getElementById('Coupon_Error')
+            let name = document.getElementById('couponiD').value;
+
+
+            if (name.length == 0 || name == '') {
+                name_err.innerHTML = "Coupon ID cannot be empty";
+                return false;
+            }
+
+            
+            if (name.length <= 3 || name.length >= 5) {
+                name_err.innerHTML = "ID must be between 3 and 5 characters";
+                return false;
+            }
+
+
+
+            name_err.innerHTML = ""
+            return true;
+        }
+
+
+
+        
+
+
+
+function coupenAmount(){
+    let price = document.getElementById('CouponAmount').value
+    let error = document.getElementById('CouponError')
+    if(price.length<===0 || price.length ===''){
+        error.innerHTML = 'Enter proper Price'
+        return false;
+    }
+     if(price.value<=0 || price.value ==='' ){
+        error.innerHTML = 'Enter proper Price'
+        return false;
+    }
+    if(price>=500){
+        error.innerHTML = 'Enter amount Less than 500'
+        return false;
+    }
+    
+    error.innerHTML =''
+    return true;
+}
+
+ function expirydate(){
+    let exp = document.getElementById('expdate').value
+    let err =document.getElementById('EXPERR')
+    let now = new Date().toLocaleDateString()
+    if(exp<=now){
+         return false
+        err.innerHTML="Enter Proper date"
+    }else{
+        return true
+        err.innerHTML=" "
+       
+
+    }
+    
+ }
+
+      
+
+
+
+       
+
+
+    </script>
+    {{!-- data-bs-toggle="modal" data-bs-target="#staticBackdrope" --}}

@@ -21,7 +21,7 @@ return new Promise (async(resolve,reject)=>{
 })
     },
     deleteCategory:(categoryID)=>{
-        console.log(categoryID);
+        // console.log(categoryID);
         return new Promise((resolve,reject)=>{
 db.get().collection(collections.Category_Colloctions).deleteOne({ _id: ObjectId(categoryID)}).then((response)=>{
     resolve(response)

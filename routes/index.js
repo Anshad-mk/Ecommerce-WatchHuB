@@ -11,16 +11,13 @@ let productHelpers=require('../helpers/product-helpers')
 /* GET home page. */
 router.get("/", async(req, res, next)=> {
   if(req.session.user){
+   
     let Uname=req.session.userName 
     let products= await productHelpers.IndexProducts()
     let cat=await categoryHelpers.viewCategory()
     let cartCount =await cartHelpers.getItemCount(req.session.userID) 
     let Banner=await adminHelpers.BannerManage() 
-    
-      res.render("index",{products,Uname,cat,cartCount,Banner})
-  
-        
-  
+     res.render("index",{products,Uname,cat,cartCount,Banner})
   }else{
     const Uname=req.session.userName
     let products =await productHelpers.IndexProducts()
@@ -62,7 +59,7 @@ router.get('/catogarylisting/:id',(req,res,next)=>{
 })
 
 router.get('/listAllProducts/:catogary',async(req,res,next)=>{
-  console.log(req.params.catogary);
+  // console.log(req.params.catogary);
   let cartCount =await cartHelpers.getItemCount(req.session.userID) 
  let products= await categoryHelpers.productCatogerize(req.params.catogary)
  if(products){

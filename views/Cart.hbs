@@ -38,7 +38,7 @@
                 <td class="product-name shadow-lg">
                   <h2 class="h5 text-black">{{this.product.proName}}</h2>
                 </td>
-                <td class="shadow-lg"><span id="price{{this.product._id}}">{{this.offerPrice}} </span></td>
+                <td class="shadow-lg"><span id="price{{this.product._id}}">{{this.product.offerPrice}} </span></td>
                 <td class="shadow-lg">
 
                   <div class="input-group mb-3 " style="max-width: 120px;">
@@ -47,9 +47,10 @@
                         onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',-1)"
                         type="button">&minus;</button>
                     </div>
-                    <input type="text" class="form-control text-center" id="{{this.product._id}}"
+                    <input type="text" class="form-control text-center" readonly id="{{this.product._id}}"
                       value="{{this.quantity}}" placeholder="" aria-label="Example text with button addon"
                       aria-describedby="button-addon1">
+                      <input type="text" id="{{this.product._id}}og" value="{{this.product.proPrice}}" hidden>
                     <div class="input-group-append">
                       <button class="btn btn-outline-primary js-btn-plus"
                         onclick="ChangeQuantity('{{this._id}}','{{this.product._id}}',1)" type="button">&plus;</button>
@@ -57,18 +58,18 @@
                   </div>
 
                 </td>
-                <td class="shadow-lg"><span id="sum{{this.product._id}}">{{this.offerPrice}}</span></td>
+                <td class="shadow-lg"><span id="sum{{this.product._id}}">{{this.product.offerPrice}}</span> </td>
                 <td class="shadow-lg"><button onclick="removeProducts('{{this._id}}','{{this.product._id}}')"
-                    class="btn btn-primary btn-sm">X</button></td>
+                    class="btn  btn-sm"><i class="bi bi-trash"></i></button></td>
               </tr>
               {{/each}}
 
             </tbody>
 
           </table>
-          
+
           <span hidden> </span>
-          
+
         </div>
       </form>
     </div>
@@ -106,10 +107,20 @@
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
-                <span class="text-black">Subtotal</span>
+                <span class="text-black">Total Price</span>
               </div>
               <div class="col-md-6 text-right">
-                <strong class="text-black" id="subtotal">{{tottleCost.total}}.00</strong>
+                <strong class="text-black" id="subtotal">{{withoutoffer.total}}</strong><strong
+                  class="text-black">.00</strong>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <span class="text-black" id="Pdisc">Discount offer</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black" id="Discount">{{math withoutoffer.total "-" tottleCost.total}}</strong><strong
+                  class="text-black">.00</strong>
               </div>
             </div>
             <div class="row mb-5">
@@ -117,15 +128,16 @@
                 <span class="text-black">Total</span>
               </div>
               <div class="col-md-6 text-right">
-                <strong class="text-black" id="total">{{tottleCost.total}}.00</strong>
+                <strong class="text-black" id="total">{{tottleCost.total}}</strong><strong
+                  class="text-black">.00</strong>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12">
                 {{#if products}}
-                <a href="/users/checkout"><button class="btn btn-primary btn-lg py-3 btn-block"
-                    onclick="window.location='checkout.html'">Proceed To Checkout</button></a>
+                <a href="/users/checkout"><button class="btn btn-primary btn-lg py-3 btn-block">Proceed To
+                    Checkout</button></a>
                 {{/if}}
 
 
@@ -136,35 +148,33 @@
       </div>
     </div>
     {{else}}
-          <div class="container-fluid  mt-100  ">
-                        <div class="row">
+    <div class="container-fluid  mt-100  ">
+      <div class="row">
 
-                            <div class="col-md-12 ">
+        <div class="col-md-12 ">
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Cart</h5>
-                                    </div>
-                                    <div class="card-body cart mb-5">
-                                        <div class="col-sm-12 empty-cart-cls text-center">
-                                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130"
-                                                class="img-fluid mb-4 mr-3">
-                                            <h3><strong>Your Cart is Empty</strong></h3>
-                                            <h4>Add something to make me happy :)</h4>
-                                            <a href="/" class="btn btn-primary cart-btn-transform m-3 "
-                                                data-abc="true">continue shopping</a>
+          <div class="card">
+            <div class="card-header">
+              <h5>Cart</h5>
+            </div>
+            <div class="card-body cart mb-5">
+              <div class="col-sm-12 empty-cart-cls text-center">
+                <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                <h3><strong>Your Cart is Empty</strong></h3>
+                <h4>Add something to make me happy :)</h4>
+                <a href="/" class="btn btn-primary cart-btn-transform m-3 " data-abc="true">continue shopping</a>
 
 
-                                        </div>
-                                    </div>
-                                </div>
+              </div>
+            </div>
+          </div>
 
 
-                            </div>
+        </div>
 
-                        </div>
+      </div>
 
-                    </div>
-          {{/if}}
+    </div>
+    {{/if}}
   </div>
 </div>

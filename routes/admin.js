@@ -50,7 +50,7 @@ router.get("/",(req, res, next) =>{
 
 router.get("/addproduct",loginVerrify, function (req, res, next) {
   categoryHelpers.viewCategory().then((response)=>{
-    console.log(response);
+    // console.log(response);
     res.render("addProduct", {admin:true ,response});
   })
   
@@ -78,13 +78,13 @@ router.post("/addproduct", function (req, res, next) {
 router.get("/viewproducts",loginVerrify, (req, res, next) => {
   productHelpers.viewProducts().then((products) => {
     res.render("viewProduct", { admin: true, products });
-console.log(products);
+// console.log(products);
   });
 });
 
 router.get("/manageusers",loginVerrify, (req, res, next) => {
   userHelpers.listusers().then((response) => {
-     console.log(response.No);
+    //  console.log(response.No);
     res.render("viewUsers", { admin: true, response});
   });
 });
@@ -97,7 +97,7 @@ router.get("/categorymanage",loginVerrify, (req, res, next) => {
 });
 
 router.post('/addcategory',(req,res,next)=>{
-  console.log(req.files.catImg);
+  // console.log(req.files.catImg);
   categoryHelpers.addCategory(req.body).then((response)=>{
     let id = ObjectId(response.insertedId).toString()
     let CatImage=req.files.catImg;
@@ -109,7 +109,7 @@ router.post('/addcategory',(req,res,next)=>{
 })
 
 router.get('/delete-Category/:id',(req,res,next)=>{
-  console.log(req.params.id);
+  // console.log(req.params.id);
 categoryHelpers.deleteCategory(req.params.id).then((response)=>{
   res.redirect('/admin/categorymanage')
 })
@@ -247,7 +247,7 @@ router.get('/softfalse/:id',loginVerrify,(req,res,next)=>{
 })
 
 router.post('/addBanner',(req,res,next)=>{
-console.log(req.body);
+// console.log(req.body);
 adminHelpers.addBanner(req.body).then((response)=>{
   imageName=response.insertedId
   let Image=req.files.bannerimg;
@@ -265,13 +265,34 @@ adminHelpers.addBanner(req.body).then((response)=>{
 router.get('/addBanner',(req,res,next)=>{
 adminHelpers.BannerManage().then((response)=>{
   res.render('BannerManage',{response})
-  console.log(response);
+  // console.log(response);
 }).catch((err)=>{
   console.log(err);
   res.render('BannerManage')
 })
 
 
+})
+
+router.post('/offer',(req,res,next)=>{
+  
+  adminHelpers.categoryOffer(req.body).then((response)=>{
+    
+    response.status=true
+    res.json(response)
+  })
+})
+
+router.get('/coupon',(req,res,next)=>{
+  adminHelpers.displayCoupon().then((response)=>{
+    res.render('admin/addcupon',{response})
+  })
+  
+})
+router.post('/coupon',(req,res,next)=>{
+  adminHelpers.addcupon(req.body).then((resp)=>{
+    res.redirect('/admin/coupon')
+  })
 })
 
 

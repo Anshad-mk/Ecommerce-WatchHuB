@@ -27,6 +27,38 @@ module.exports = {
         });
     });
   },
+  userExist:(email)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.user_Collections).findOne({email:email}).then((exist)=>{
+        resolve(exist)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  },
+
+  
+  validreferal:(referal)=>{
+return new Promise((resolve,reject)=>{
+  db.get().collection(Mycollection.user_Collections).updateOne({referal:referal},
+    {$inc:{
+      Wallet:Number(50)
+    }
+  },{
+    $push:{
+"Wallettransactions":{
+  msg:"credited By Referal",
+  amount:Number(50)
+}
+    }
+  }
+  ).then((resp)=>{
+    resolve(resp)
+  }).catch((err)=>{
+    reject(err)
+  })
+})
+  },
   userLogin: (loguser) => {
     return new Promise(async (resolve, reject) => {
       const check = await db
@@ -203,7 +235,7 @@ module.exports = {
         },
         {
           $sort: {
-            Date: -1
+            date: -1
           }
         }
 
@@ -243,8 +275,8 @@ module.exports = {
 
   // razorPay Integration 
   generateRazorpay: (OrderID, totalAmount) => {
-    console.log("genarate pay", totalAmount.total,);
-    console.log(OrderID, totalAmount)
+    // console.log("genarate pay", totalAmount.total,);
+    // console.log(OrderID, totalAmount)
     return new Promise((resolve, reject) => {
       var options = {
         amount: totalAmount.total * 100,  // amount in the smallest currency unit
@@ -257,7 +289,7 @@ module.exports = {
           console.log("err", err);
 
         } else {
-          console.log("new order", order);
+          // console.log("new order", order);
           resolve(order)
         }
 
@@ -351,7 +383,7 @@ module.exports = {
 
   },
   deleteAddress: (date, userID) => {
-    console.log(date);
+    // console.log(date);
     return new Promise((resolve, reject) => {
 
       db.get().collection(Mycollection.address_Collection).updateOne({ user: ObjectId(userID) },
@@ -417,6 +449,7 @@ module.exports = {
 
 
   removewish: (ProID, userID) => {
+    console.log("remove");
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.user_Collections).updateOne(
         {
@@ -427,7 +460,7 @@ module.exports = {
           $pull: { wishlist: { item: ObjectId(ProID) } }
         }
       ).then((response) => {
-        console.log(response);
+        // console.log(response);
       resolve(response)
     }).catch((err) => {
       reject(err)
@@ -469,7 +502,7 @@ module.exports = {
           }
         }
       ]).toArray().then((response) => {
-          console.log(response);
+          // console.log(response);
           resolve(response)
         })
         .catch((err) => {

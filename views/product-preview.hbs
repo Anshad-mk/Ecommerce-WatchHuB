@@ -63,7 +63,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h1 class="h2">{{resProduct.proName}}</h1>
-                            <p class="h3 py-2">₹{{resProduct.proPrice}}/-</p>
+
+                            <p class="h3 py-2"><strike class="text-danger">₹{{resProduct.proPrice}}/-</strike> <br> <span class="text-warning h6"> You Save {{math resProduct.proPrice "-" resProduct.offerPrice}} Rupees </span> <br> <strong class="text-success">₹{{resProduct.offerPrice}}/-</strong> </p>
                             {{!-- <p class="py-2">
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
@@ -92,7 +93,7 @@
                         
                                 <div class="row pb-3 ">
                                     <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
+                                        <button  class="btn btn-success btn-lg" onclick="addToWishList('{{resProduct._id}}',{{Uname}})" name="submit" value="buy">Buy</button>
                                     </div>
                                     <div class="col d-grid">
                                         <a type="submit" class="btn btn-success btn-lg" onclick="addToCart('{{resProduct._id}}')" name="submit" value="addtocard">Add To Cart</a>
