@@ -21,7 +21,7 @@
 				<h6 class="fw-normal"><a href="/changepassword" class="text-secondary btn btn-outline-dark">Change
 						Password</a></h6>
 				<h6 class="fw-normal"><a class="text-secondary btn shadow-lg " data-bs-toggle="modal" data-bs-target="#wallet_modal">Wallet<span
-							class="ms-3 text-success btn fw-bold"> ₹ {{profileData.Wallet}}<span>.00</span></span></a></h6>
+							class="ms-3 text-success btn fw-bold"> ₹ {{profileData.Wallet.Balance}}<span>.00</span></span></a></h6>
 				<h6 class="fw-normal"><a class="text-secondary btn shadow-lg">Referal Cod<span
 							class="ms-1 text-dark btn fw-bold">:<span id="copybtn">{{profileData.referal}}</span> <i onclick="myFunction()" class="bi bi-clipboard" id="hh" ></i> </label> </span></a><span class="text-success" id="success_1"></span></h6>
 							
@@ -212,15 +212,36 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLabel">Wallet Summery</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+	  
       <div class="modal-body">
-        ...                          
+     <table class="table-info table table-bordered">
+		<thead>
+			<tr>
+			<th scope="col">#</th>
+			<th scope="col">transaction</th>
+			<th scope="col">Amount</th>
+		</tr>
+		</thead>
+		<tbody>
+			{{#each profileData.Wallet.transactions}}
+			<tr>
+				<td>{{inc @index}}</td>
+			<td>{{this.msg}}</td>
+			<td>{{this.amount}}</td>
+			</tr>
+			{{/each}}
+			</tbody>
+		
+
+	 </table>  
+
       </div>
-      <div class="modal-footer">
+      <span class="ms-3 text-success btn fw-bold">Balance: ₹  {{profileData.Wallet.Balance}}<span>.00</span></span>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+       
       </div>
     </div>
   </div>

@@ -54,6 +54,7 @@ router.get('/register', function(req, res, next) {
 
 
 router.post('/register',(req, res, next)=>{
+
   let user ={
     firstName:req.body.firstName,
     LastName:req.body.LastName,
@@ -61,8 +62,9 @@ router.post('/register',(req, res, next)=>{
     password:req.body.password,
     repassword:req.body.repassword,
     useReferal:req.body.Referal,
-    Wallet:parseInt(0),
-    referal:shortid.generate()
+    Wallet:{Balance:parseInt(0),
+      transactions:[]},
+      referal:shortid.generate()
   }
   
 userHelpers.userExist(user.email).then((excist)=>{

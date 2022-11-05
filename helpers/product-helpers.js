@@ -127,7 +127,7 @@ module.exports = {
   },
   IndexProducts: () => {
     return new Promise(async (resolve, reject) => {
-    let products = await db.get().collection(Mycollection.Product_Colloctions).find({}).toArray()
+    let products = await db.get().collection(Mycollection.Product_Colloctions).find({}).limit(4).toArray()
 //      db.get().collection(Mycollection.Product_Colloctions).aggregate([
 //   {
 //     '$lookup': {
@@ -167,6 +167,13 @@ module.exports = {
 //   }
 // ]).toArray()
 // console.log(products)
+    resolve(products);
+    }); 
+  },
+  AllProducts: () => {
+    return new Promise(async (resolve, reject) => {
+    let products = await db.get().collection(Mycollection.Product_Colloctions).find({}).toArray()
+//    
     resolve(products);
     }); 
   }

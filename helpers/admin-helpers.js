@@ -236,8 +236,7 @@ module.exports = {
 return new Promise((resolve,reject)=>{
   db.get().collection(Mycollection.Category_Colloctions).updateOne({_id:ObjectId(catId)},{
     $set:{
-      offer: parseInt(offerP) 
-      
+      offer: parseInt(offerP)
     }
   }).then(async(data)=>{
   let catproducts=await db.get().collection(Mycollection.Product_Colloctions).find({proCategory:CatName}).toArray()

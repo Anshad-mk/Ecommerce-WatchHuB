@@ -41,17 +41,23 @@ module.exports = {
   validreferal:(referal)=>{
 return new Promise((resolve,reject)=>{
   db.get().collection(Mycollection.user_Collections).updateOne({referal:referal},
-    {$inc:{
-      Wallet:Number(50)
-    }
-  },{
-    $push:{
-"Wallettransactions":{
-  msg:"credited By Referal",
-  amount:Number(50)
-}
-    }
-  }
+    {
+      $push:{
+        'Wallet.transactions':{
+          msg:"credited By Referal",
+          amount:Number(50)
+        },
+        
+          
+        
+
+      },
+      $inc:{
+        'Wallet.Balance':Number(50)
+      
+      }
+          }
+        
   ).then((resp)=>{
     resolve(resp)
   }).catch((err)=>{

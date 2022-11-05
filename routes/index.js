@@ -75,6 +75,11 @@ router.get('/listAllProducts/:catogary',async(req,res,next)=>{
   
 })
 
+router.get('/listAllProducts',async(req,res,next)=>{
+  let products= await productHelpers.AllProducts()
+  res.render('listProducts',{products})
+})
+
 
 
 
