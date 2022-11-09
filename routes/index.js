@@ -10,6 +10,7 @@ let productHelpers=require('../helpers/product-helpers')
 
 /* GET home page. */
 router.get("/", async(req, res, next)=> {
+ 
   if(req.session.user){
    
     let Uname=req.session.userName 

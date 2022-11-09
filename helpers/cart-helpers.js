@@ -103,7 +103,7 @@ module.exports = {
           ]
           )
         .toArray();
-      // console.log(CartItems);
+      
       resolve(CartItems);
     });
   },
@@ -156,6 +156,7 @@ module.exports = {
           .then((response) => {
             response.status = true
             resolve(response);
+           
           });
       }
     });
@@ -293,10 +294,9 @@ module.exports = {
           Zip: Orderdata.ZipCode,
           State: Orderdata.State,
           Phone: Orderdata.Phone,
-
-        },
+          },
         userID: ObjectId(Orderdata.userID),
-        TotelAmound: total.total,
+        TotelAmound: total,
         Date: newdate.slice(0, 10),
         createdAt: createdAt,
         date: new Date(),
@@ -304,15 +304,26 @@ module.exports = {
         products: products,
         status: status,
         orderCancel: false,
-        Timestamp: true
-
-
-
+        Timestamp: true,
+        orderCash:{
+          OriginalPrice:Orderdata.Total_Amount,
+          OfferPersentage:Orderdata.Percentage,
+          OfferAmount:Orderdata.OfferAmount,
+          UsedCoupen:Orderdata.CoupenCode,
+          CoupenAmount:Orderdata.CoupenValue,
+          PayableAmount:Orderdata.PayableAmount
+        }
       }
       db.get().collection(Mycollection.orders_Colloction).insertOne(orderOBJ).then((response) => {
+        db.get().collection(Mycollection.user_Collections).updateOne({_id:ObjectId(Orderdata.userID)},{
+
+          $push:{
+            UsedCoupen:Orderdata.CoupenCode
+          }
+        })
         db.get().collection(Mycollection.Cart_Colloctions).deleteOne({ user: ObjectId(Orderdata.userID) })
         resolve(response)
-        // console.log(response.insertedId);
+        
       })
 
     })
@@ -366,6 +377,35 @@ module.exports = {
 
 
 
+  },
+  checkoutdata:(cartData,proID)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.Cart_Colloctions).updateOne({user:ObjectId(proID)},
+      {
+        $set:{
+          UsedCoupen:cartData.UsedCoupen,
+          CoupenValue:parseInt(cartData.CoupenValue),
+          TottelAmount:parseInt(cartData.TottelAmount),
+          payableamount:parseInt(cartData.payableamount),
+          CategoryOffer:parseInt(cartData.CategoryOffer),
+          CategoryPersentage:parseInt(100*(cartData.TottelAmount - cartData.CategoryOffer) / cartData.TottelAmount),
+        }
+      }).then((response)=>{
+        resolve(response)
+      }).catch((err)=>{
+        reject(err)
+      })
+      // console.log(cartData);
+    })
+  },
+  cartdata:(userID)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.Cart_Colloctions).findOne({user:ObjectId(userID)}).then((result)=>{
+        resolve(result)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
   }
 
 

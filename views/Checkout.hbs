@@ -80,18 +80,33 @@
                             {{/each}}
 
                         </li>
-
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total Amount (Rupee)</span>
+                            <strong>₹{{originalCart.TottelAmount}}</strong>
+                        </li>
 
                         <li class="list-group-item d-flex justify-content-between bg-light">
                             <div class="text-success">
-                                <h6 class="my-0">Promo code</h6>
-                                <small>EXAMPLECODE</small>
+                                <h6 class="my-0">Category Offer</h6>
+                                <small>Percentage: {{originalCart.CategoryPersentage}}%</small>
                             </div>
-                            <span class="text-success">00</span>
+
+                            <span class="text-success">{{originalCart.CategoryOffer}}.00</span>
                         </li>
+
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Coupen code</h6>
+                                <small>Code: {{originalCart.UsedCoupen}}</small>
+
+                            </div>
+                            <span class="text-success">{{originalCart.CoupenValue}}.00</span>
+                        </li>
+
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (Rupee)</span>
-                            <strong>₹{{total}}</strong>
+                            <span>Payable Amount (Rupee)</span>
+                            <span><b>₹</b><strong id="payable">{{originalCart.payableamount}}</strong></span>
+
                         </li>
                     </ul>
 
@@ -127,8 +142,8 @@
 
                             <div class="col-sm-6">
                                 <label for="FName" class="form-label">First name</label>
-                                <input type="text" class="form-control" name="FirstName" id="FName" 
-                                    value="" onkeyup="return fname()">
+                                <input type="text" class="form-control" name="FirstName" id="FName" value=""
+                                    onkeyup="return fname()">
                                 <div class="text-danger" id="FNameErr"></div>
                             </div>
 
@@ -155,6 +170,17 @@
                                     onkeyup="return Validatemobile()">
                                 <div class="text-danger" id="phoneErr"></div>
                             </div>
+
+                            <div hidden>
+                                <input type="text" name="Total_Amount" value="{{originalCart.TottelAmount}}">
+                                <input type="text" name="Percentage" value="{{originalCart.CategoryPersentage}}">
+                                <input type="text" name="OfferAmount" value="{{originalCart.CategoryOffer}}">
+                                <input type="text" name="CoupenCode" value="{{originalCart.UsedCoupen}}">
+                                <input type="text" name="CoupenValue" value="{{originalCart.CoupenValue}}">
+                                <input type="text" name="PayableAmount" value="{{originalCart.payableamount}}">
+                            </div>
+
+
 
                             <div class="col-md-5">
                                 <label for="Post" class="form-label">Post</label>
@@ -224,8 +250,8 @@
                         <!-- Set up a container element for the button -->
                         <div id="paypal-button-container" hidden class="clr"></div>
                         <div id="checkout-button" class="clr">
-                            <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit"
-                                 hidden> Continue
+                            <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit" hidden>
+                                Continue
                                 to checkout</button>
                         </div>
                     </form>
@@ -240,72 +266,75 @@
                     return false;
                 } else {
                     return true;
-                    document.getElementById('FormErr').innerHTML =''
+                    document.getElementById('FormErr').innerHTML = ''
 
 
 
-                    
+
                 }
 
             }
-             $('#checkout-form').submit((e) => {
-                        e.preventDefault()
-     $.ajax({
-                            url: '/users/place-order',
-                            method: 'post',
-                            data: $('#checkout-form').serialize(),
-                            success: (response) => {
-                                console.c
-                                if (response.COD_Success) {
-                                    location.href = "/users/ordersuccess"
-                                } else if (response.Razorpay) {
-                                    razorpayPayment(response)
 
-                                } else if (response.paypal) {
-                                    location.href = "/users/ordersuccess"
-                                }
 
-                            }
+            $('#checkout-form').submit((e) => {
 
-                        })
- 
+                e.preventDefault()
+                $.ajax({
+                    url: '/users/place-order',
+                    method: 'post',
+                    data: $('#checkout-form').serialize(),
+                    success: (response) => {
+                        console.c
+                        if (response.COD_Success) {
+                            location.href = "/users/ordersuccess"
+                        } else if (response.Razorpay) {
+                            razorpayPayment(response)
 
-                       
-                    })
-
-           
-
-    function displayPaypal() {
-           let list1 = document.getElementById("checkoutSubmit").hidden = true
-        if(saveaddrFn()){
-                     
-
-    
-                        let list2 = document.getElementById("paypal-button-container").hidden = false
-
-}
-
+                        } else if (response.paypal) {
+                            location.href = "/users/ordersuccess"
+                        }
 
                     }
+
+                })
+
+
+
+            })
+
+
+
+            function displayPaypal() {
+                let list1 = document.getElementById("checkoutSubmit").hidden = true
+                if (saveaddrFn()) {
+
+
+
+                    let list2 = document.getElementById("paypal-button-container").hidden = false
+
+                }
+
+
+            }
 
 
 
 
 
             function displayCOD() {
-                if(saveaddrFn()){
+                if (saveaddrFn()) {
                     document.getElementById('checkoutSubmit').hidden = false
-                let list2 = document.getElementById("paypal-button-container").hidden = true
+                    let list2 = document.getElementById("paypal-button-container").hidden = true
                 }
-                
+
             }
             function displayrazorpay() {
-                 if(saveaddrFn()){
+                if (saveaddrFn()) {
                     document.getElementById('checkoutSubmit').hidden = false
-                let list2 = document.getElementById("paypal-button-container").hidden = true
-                 }
-                
-                 
+                    let list2 = document.getElementById("paypal-button-container").hidden = true
+                }
+
+
             }
 
 
@@ -381,24 +410,25 @@
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: {{ total }} // Can also reference a variable or function
-              }
-            }]
-          });
-        },
+                                value: parseInt(document.getElementById('payable').innerHTML / 81) // Can also reference a variable or function
+                            }
+                        }]
+                    });
+                },
 
 
-            onApprove: (data, actions) => {
-                return actions.order.capture().then(function (orderData) {
-                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                    const transaction = orderData.purchase_units[0].payments.captures[0];
-                    // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-                    $(document).ready(function () {
-                        $("#checkoutSubmit").trigger("click");
-                    })
-                });
-            }
-      }).render('#paypal-button-container');
+                onApprove: (data, actions) => {
+                    return actions.order.capture().then(function (orderData) {
+                        { { !--alert(orderData) --} }
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        const transaction = orderData.purchase_units[0].payments.captures[0];
+                        // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                        $(document).ready(function () {
+                            $("#checkoutSubmit").trigger("click");
+                        })
+                    });
+                }
+            }).render('#paypal-button-container');
 
 
 

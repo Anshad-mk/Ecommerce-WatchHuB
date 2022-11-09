@@ -269,11 +269,28 @@ return new Promise((resolve,reject)=>{
   },
   addcupon:(coupondata)=>{
 
+    function addDays(date, number) {
+      const newDate = new Date(date);
+      return new Date(newDate.setDate(newDate.getDate() + number));
+    }
+
+    let d=addDays(new Date(), coupondata.ExpairyDate)
+
+    console.log(addDays(new Date(), coupondata.ExpairyDate).toDateString);
+    console.log(addDays(new Date(), coupondata.ExpairyDate).toISOString);
+    console.log(addDays(new Date(), coupondata.ExpairyDate).toLocaleString);
+    console.log(addDays(new Date(), coupondata.ExpairyDate).toLocaleDateString);
+      //   var d = new Date();  
+  // d.setDate(d.getDate() + coupondata.ExpairyDate);
+  // var d = new Date();  
+  // d.setDate(new Date() + coupondata.ExpairyDate);
+  
+
 couponOBj={
   couponID:coupondata.couponID,
-  couponAmount:coupondata.couponAmount,
-  ExpairyDate:coupondata.ExpairyDate,
-  CreatedDate:new Date().toLocaleDateString()
+  couponAmount:parseInt(coupondata.couponAmount),
+  ExpairyDate:addDays(new Date(), parseInt(coupondata.ExpairyDate)),
+  CreatedDate:new Date()
 
 }
     return new Promise((resolve,reject)=>{
@@ -291,6 +308,25 @@ couponOBj={
       }).catch((err)=>{
         reject(err)
       })
+    })
+  },
+  offerExist:(NAME)=>{
+   return new Promise((resolve,reject)=>{
+    db.get().collection(Mycollection.couponCollection).findOne({couponID:NAME}).then((resp)=>{
+      resolve(resp)
+    }).catch((err)=>{
+      reject(err)
+    })
+   })
+  },
+  deleteCoupen:(id)=>{
+    return new Promise((resolve,reject)=>{
+      
+    db.get().collection(Mycollection.couponCollection).deleteOne({_id:ObjectId(id)}).then((response)=>{
+      resolve(response)
+    }).catch((err)=>{
+      reject(err)
+    })
     })
   }
 

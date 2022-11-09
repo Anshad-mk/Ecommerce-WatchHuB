@@ -285,7 +285,7 @@ return new Promise((resolve,reject)=>{
     // console.log(OrderID, totalAmount)
     return new Promise((resolve, reject) => {
       var options = {
-        amount: totalAmount.total * 100,  // amount in the smallest currency unit
+        amount: totalAmount * 100,  // amount in the smallest currency unit
         currency: "INR",
         receipt: OrderID.toString()
       };
@@ -347,6 +347,7 @@ return new Promise((resolve,reject)=>{
 
   },
   generatePaypal: (orderID, totalAmount) => {
+    console.log(totalAmount)
     parseInt(totalPrice).toFixed(2)
     return new promises((resolve, reject) => {
       const create_payment_json = {
@@ -363,14 +364,14 @@ return new Promise((resolve,reject)=>{
             "items": [{
               "name": "list added",
               "sku": "001",
-              "price": totalAmount,
+              "price": 25,
               "currency": "USD",
               "quantity": 1
             }]
           },
           "amount": {
             "currency": "USD",
-            "total": totalAmount
+            "total": 24
           },
           "description": "Hat "
         }]
@@ -437,18 +438,24 @@ return new Promise((resolve,reject)=>{
     })
   },
   addtowish:(ProId, userID) => {
-    return new Promise((resolve, reject) => {
-      db.get().collection(Mycollection.user_Collections).updateOne(
-        { _id: ObjectId(userID) },
-        {
-          $push: { wishlist: { item: ObjectId(ProId) } },
-        }
-      ).then((response) => {
-        
-        resolve(response)
-      }).catch((err) => {
-        reject(err)
-      })
+    return new Promise(async (resolve, reject) => {
+let exist= await db.get().collection(Mycollection.user_Collections).findOne({'wishlist.item':ObjectId(ProId)})
+if(!exist){
+  db.get().collection(Mycollection.user_Collections).updateOne(
+    { _id: ObjectId(userID) },
+    {
+      $push: { wishlist: { item: ObjectId(ProId) } },
+    }
+  ).then((response) => {
+    
+    resolve(response)
+  }).catch((err) => {
+    reject(err)
+  })
+
+}
+
+      
 
     })
   },
@@ -522,7 +529,29 @@ return new Promise((resolve,reject)=>{
      
 
   },
+  checkcoapen:(coupen)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.couponCollection).findOne({couponID:coupen}).then((resp)=>{
+        console.log(resp);
+        resolve(resp)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  },
+  usedCoupen:(coupen,userId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(Mycollection.user_Collections).findOne({$and:[{_id:ObjectId(userId)},{UsedCoupen:{$in:[coupen]}}]}).then((exist)=>{
+        resolve(exist)
+      }).catch((err)=>{
+        reject(err)
 
+      })
+      
+      
+    })
+  }
+  
  
 
 }

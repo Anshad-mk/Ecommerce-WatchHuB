@@ -172,10 +172,17 @@
                     data-bs-target="#staticBackdrop">
                     Add Coupon
                 </button>
+                {{#if existcoupen}}
+                    <div class="text-danger">{{existcoupen}}</div>
+                {{/if}}
+                 
+
+
+
 
                 <!-- Modal -->
                 <form action="/admin/coupon" method="post" enctype="multipart/form-data"
-                    onsubmit="return couponoffer()">
+                    onsubmit="return couponvalidate()">
                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -189,19 +196,33 @@
 
                                     <div class="container">
                                         <label for="text">Coupon ID</label>
-                                        <input type="text" name="couponID" id="couponiD" class="form-control"
-                                            onkeyup="return coupencheck()">
+
+
+
+
+
+                                        <input type="text" name="couponID" id="couponid" class="form-control"
+                                            onkeyup="return CouponName()">
+
                                         <div class="text-danger" id="Coupon_Error"></div>
+
+
 
                                         <label for="text">Coupon Amount</label>
                                         <input type="number" name="couponAmount" id="CouponAmount" class="form-control"
-                                            onkeyup="return coupenAmount()">
-                                        <div class="text-danger" id="CouponError"></div>
+                                            onkeyup="return copenPrice()">
+                                        <div class="text-danger" id="CouponCashError"></div>
 
-                                        <label for="text">Expiry Date</label>
-                                        <input type="Date"  name="ExpairyDate" id="expdate" class="form-control" onkeyup="return expirydate()" required>
+
+
+                                        <label for="text">Limit In Days (eg:-'5' Days)</label>
+
+                                        <input type="number" name="ExpairyDate" id="Coupenexpdate" class="form-control"
+                                            onkeyup="return Cuopenexpirydate()" required>
                                         <div class="text-danger" id="EXPERR"></div>
-                                        <div class="text-danger" id="couponError"></div>
+
+
+                                        <div class="text-danger" id="coupon_dateError"></div>
 
                                     </div>
                                 </div>
@@ -215,6 +236,12 @@
                     </div>
                 </form>
                 <!-- Button trigger modal -->
+
+
+
+
+
+
                 <div class="col">
                     <table class="table bg-white rounded shadow-sm  table-hover">
 
@@ -225,6 +252,7 @@
                                 <th scope="col">Coupon Amount</th>
                                 <th scope="col">Coupon Created Date</th>
                                 <th scope="col">Coupon Expairy Date</th>
+                                 <th scope="col">DELETE</th>
 
 
                             </tr>
@@ -241,50 +269,29 @@
                                 <td class="shadow">₹{{this.couponAmount}}.00</td>
                                 <td class="shadow">{{this.CreatedDate}}</td>
                                 <td class="shadow">{{this.ExpairyDate}}</td>
-                                
+                                <td class=""><i class="bi bi-trash btn" onclick="deleteCoupen('{{this._id}}')"></i></td>
 
 
-                {{!-- <br> <a href="/admin/edit_product" class="btn btn-primary btn-small ps-4 mt-2 pe-4">
-                    <center>Edit</center>
-                </a> </td> --}}
-                </tr>
-                {{/each}}
 
-                </tbody>
-                </table>
+                                {{!-- <br> <a href="/admin/edit_product"
+                                    class="btn btn-primary btn-small ps-4 mt-2 pe-4">
+                                    <center>Edit</center>
+                                </a> </td> --}}
+                            </tr>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
     </div>
 
     <!-- /#page-content-wrapper -->
     </div>
-    {{#each response}}
-    <!-- Modal -->
-    {{!-- <div class="modal fade" id="staticBackdrope" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Category offer(%)</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-danger ms-3" hidden> numbers between 0 to 75 </p>
-                    <form action="">
-                        <input type="number" class="form-control">
-                        <button type="submit" class="btn btn-primary mt-2">Update</button>
-                </div>
-                </form>
-                <div class="modal-footer">
-
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    {{/each}}
+    
 
 
     <script>
@@ -295,90 +302,130 @@
             el.classList.toggle("toggled");
         };
 
-function couponoffer() {
-            let errdiv = document.getElementById('couponError')
-            if (!coupencheck()|| !coupenAmount()|| !expirydate()) {
 
-                return false
-                errdiv.innerHTML = "Please fill requierd data";
+function deleteCoupen(id){
+		Swal.fire({
+			title: 'Do you want to Delete ?',
+			showCancelButton: true,
+			confirmButtonText: 'Delete',
+
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+
+				$.ajax({
+					url: `/admin/coupen/${id}`,
+					method: 'get',
+					success: (response) => {
+						Swal.fire('Deleted !', '', 'success')
+						location.reload();
+					}
+				})
+
+			} else {
+				Swal.fire('Canceled', '', 'info')
+			}
+		})
+
+
+
+}
+
+
+
+
+
+{{!-- var d = new Date();
+
+  console.log('Today is: ' + d.toLocaleString())
+  
+  d.setDate(d.getDate() - 30);
+
+  console.log('<br>5 days ago was: ' + d.toLocaleString())
+   --}}
+
+
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        function CouponName() {
+
+
+            let Coupon_err = document.getElementById('Coupon_Error')
+            let coupon = document.getElementById('couponid').value;
+
+            console.log(Coupon_err, coupon)
+
+
+            if (coupon.length == 0 || coupon == '') {
+                Coupon_err.innerHTML = "Coupon ID cannot be empty";
+                return false;
             }
-            errdiv.innerHTML = ""
+
+
+            if (coupon.length <= 3 || coupon.length >= 9) {
+                Coupon_err.innerHTML = "ID must be between 3 and 8 characters";
+                return false;
+            }
+
+
+
+            Coupon_err.innerHTML = ""
             return true;
+
 
         }
 
 
-        function coupencheck() {
-
-            let name_err = document.getElementById('Coupon_Error')
-            let name = document.getElementById('couponiD').value;
-
-
-            if (name.length == 0 || name == '') {
-                name_err.innerHTML = "Coupon ID cannot be empty";
+        function copenPrice() {
+            let amount = document.getElementById('CouponAmount').value
+            let Casherror = document.getElementById('CouponCashError')
+            if (amount.length <= 0 || amount.length == '' || amount == 0) {
+                Casherror.innerHTML = 'Enter proper Price'
                 return false;
             }
-
-            
-            if (name.length <= 3 || name.length >= 5) {
-                name_err.innerHTML = "ID must be between 3 and 5 characters";
+            if (amount >= 1000) {
+                Casherror.innerHTML = 'Enter less than 1000'
                 return false;
             }
-
-
-
-            name_err.innerHTML = ""
+            Casherror.innerHTML = ''
             return true;
         }
 
 
-
+        function Cuopenexpirydate() {
+            let expire = document.getElementById('Coupenexpdate').value
+             let couponerr = document.getElementById('EXPERR')
+             
+            if (expire.length <= 0 || expire.length == '' || expire == 0 ) {
+                
+                couponerr.innerHTML = "Enter Proper Day"
+                    return false
+                    
+            } else{
+                 couponerr.innerHTML = " "
+                    return true
+            }
+                
+                
+               
         
 
 
-
-function coupenAmount(){
-    let price = document.getElementById('CouponAmount').value
-    let error = document.getElementById('CouponError')
-    if(price.length<===0 || price.length ===''){
-        error.innerHTML = 'Enter proper Price'
-        return false;
-    }
-     if(price.value<=0 || price.value ==='' ){
-        error.innerHTML = 'Enter proper Price'
-        return false;
-    }
-    if(price>=500){
-        error.innerHTML = 'Enter amount Less than 500'
-        return false;
-    }
-    
-    error.innerHTML =''
-    return true;
-}
-
- function expirydate(){
-    let exp = document.getElementById('expdate').value
-    let err =document.getElementById('EXPERR')
-    let now = new Date().toLocaleDateString()
-    if(exp<=now){
-         return false
-        err.innerHTML="Enter Proper date"
-    }else{
-        return true
-        err.innerHTML=" "
-       
-
-    }
-    
- }
-
-      
+                 
 
 
+            
 
-       
+        }
 
+
+        function couponvalidate() {
+            if (!Cuopenexpirydate() || !copenPrice() || !CouponName()) {
+                document.getElementById('coupon_dateError').innerHTML = 'Fill All data'
+                return false;
+            }
+            return true;
+        }
 
     </script>
-    {{!-- data-bs-toggle="modal" data-bs-target="#staticBackdrope" --}}
