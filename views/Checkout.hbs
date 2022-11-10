@@ -259,82 +259,79 @@
             </div>
         </main>
 
-        <script>
+         <script>
             function saveaddrFn() {
                 if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn()) {
                     document.getElementById('FormErr').innerHTML = 'Fill All data First'
                     return false;
                 } else {
                     return true;
-                    document.getElementById('FormErr').innerHTML = ''
+                    document.getElementById('FormErr').innerHTML =''
 
 
 
-
+                    
                 }
 
             }
+             $('#checkout-form').submit((e) => {
+                        e.preventDefault()
+     $.ajax({
+                            url: '/users/place-order',
+                            method: 'post',
+                            data: $('#checkout-form').serialize(),
+                            success: (response) => {
+                                console.c
+                                if (response.COD_Success) {
+                                    location.href = "/users/ordersuccess"
+                                } else if (response.Razorpay) {
+                                    razorpayPayment(response)
 
+                                } else if (response.paypal) {
+                                    location.href = "/users/ordersuccess"
+                                }
 
-            $('#checkout-form').submit((e) => {
+                            }
 
-                e.preventDefault()
-                $.ajax({
-                    url: '/users/place-order',
-                    method: 'post',
-                    data: $('#checkout-form').serialize(),
-                    success: (response) => {
-                        console.c
-                        if (response.COD_Success) {
-                            location.href = "/users/ordersuccess"
-                        } else if (response.Razorpay) {
-                            razorpayPayment(response)
+                        })
+ 
 
-                        } else if (response.paypal) {
-                            location.href = "/users/ordersuccess"
-                        }
+                       
+                    })
+
+           
+
+    function displayPaypal() {
+           let list1 = document.getElementById("checkoutSubmit").hidden = true
+        if(saveaddrFn()){
+                     
+
+    
+                        let list2 = document.getElementById("paypal-button-container").hidden = false
+
+}
+
 
                     }
-
-                })
-
-
-
-            })
-
-
-
-            function displayPaypal() {
-                let list1 = document.getElementById("checkoutSubmit").hidden = true
-                if (saveaddrFn()) {
-
-
-
-                    let list2 = document.getElementById("paypal-button-container").hidden = false
-
-                }
-
-
-            }
 
 
 
 
 
             function displayCOD() {
-                if (saveaddrFn()) {
+                if(saveaddrFn()){
                     document.getElementById('checkoutSubmit').hidden = false
-                    let list2 = document.getElementById("paypal-button-container").hidden = true
+                let list2 = document.getElementById("paypal-button-container").hidden = true
                 }
-
+                
             }
             function displayrazorpay() {
-                if (saveaddrFn()) {
+                 if(saveaddrFn()){
                     document.getElementById('checkoutSubmit').hidden = false
-                    let list2 = document.getElementById("paypal-button-container").hidden = true
-                }
-
-
+                let list2 = document.getElementById("paypal-button-container").hidden = true
+                 }
+                
+                 
             }
 
 
@@ -411,24 +408,23 @@
                         purchase_units: [{
                             amount: {
                                 value: parseInt(document.getElementById('payable').innerHTML / 81) // Can also reference a variable or function
-                            }
-                        }]
-                    });
-                },
+              }
+            }]
+          });
+        },
 
 
-                onApprove: (data, actions) => {
-                    return actions.order.capture().then(function (orderData) {
-                        { { !--alert(orderData) --} }
-                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                        const transaction = orderData.purchase_units[0].payments.captures[0];
-                        // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-                        $(document).ready(function () {
-                            $("#checkoutSubmit").trigger("click");
-                        })
-                    });
-                }
-            }).render('#paypal-button-container');
+            onApprove: (data, actions) => {
+                return actions.order.capture().then(function (orderData) {
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    const transaction = orderData.purchase_units[0].payments.captures[0];
+                    // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                    $(document).ready(function () {
+                        $("#checkoutSubmit").trigger("click");
+                    })
+                });
+            }
+      }).render('#paypal-button-container');
 
 
 

@@ -1,30 +1,530 @@
- <!-- custom js -->
-    <script src="/static/javascripts/landing.js"></script>
-      <section>
-        <%bannerdata.forEach((element)=>{%>
-        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+<section>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+
+
+
+    <div class="container">
+        <main class="mt-5 mb-5">
+            <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-primary">Your cart</span>
+                        <span class="badge bg-primary rounded-pill">₹</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        {{#each products}}
+
+
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">{{this.product.proName}}</h6>
+                                <small class="text-muted">{{this.product.proCategory}}</small>
+                            </div>
+
+                            <span class="text-muted">{{this.quantity}}* {{this.product.proPrice}}</span>
+
+                            {{/each}}
+
+                        </li>
+
+
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Promo code</h6>
+                                <small>EXAMPLECODE</small>
+                            </div>
+                            <span class="text-success">00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (Rupee)</span>
+                            <strong>₹{{total}}</strong>
+                        </li>
+                    </ul>
+
+                    {{!-- offer form --}}
+                    {{!-- <form class="card p-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                        </div>
+                    </form> --}}
+                    {{!-- offer form --}}
+                    <div class="mt-4">
+                        <h2 class="shadow-lg">Saved Address</h2>
+                        {{#each savedAddress.Address}}
+                        <input type="radio"
+                            value="`{{this.Fname}}``{{this.Lname}}`,`{{this.Address}}`,`{{this.post}}`,` {{this.pin}}`,`{{this.state}}`, `{{this.phone}}`"
+                            name="Saved_address" id="{{@index}}"
+                            onclick="selectAddress('{{this.Fname}}','{{this.Lname}}','{{this.Address}}','{{this.post}}','{{this.pin}}','{{this.state}}','{{this.phone}}')">
+                        <label for="{{@index}}">{{this.Fname}} {{this.Lname}} {{this.Address}},{{this.post}},
+                            {{this.pin}},
+                            {{this.state}},{{this.phone}}</label>
+                        {{/each}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Billing address</h4>
+
+                    <form class="needs-validation border p-4" id="checkout-form" onsubmit="return saveaddrFn()">
+                        <div class="row g-3">
+
+
+                            <div class="col-sm-6">
+                                <label for="FName" class="form-label">First name</label>
+                                <input type="text" class="form-control" name="FirstName" id="FName" 
+                                    value="" onkeyup="return fname()">
+                                <div class="text-danger" id="FNameErr"></div>
+                            </div>
+
+
+
+                            <div class="col-sm-6">
+                                <label for="LName" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="LName" name="LastName" value=""
+                                    onkeyup="return lname()">
+                                <div class="text-danger" id="LNameErr"></div>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="addressValue" name="Address" value=""
+                                    onkeyup="return Addressfn()">
+                                <div class="text-danger" id="AddressErr"></div>
+                            </div>
+                            <input type="text" value="{{user}}" name="userID" hidden>
+
+                            <div class="col-12">
+                                <label for="address2" class="form-label"> Mobile Number <span
+                                        class="text-muted"></span></label>
+                                <input type="tel" value="" class="form-control" name="Phone" id="phoneNo" maxlength="10"
+                                    onkeyup="return Validatemobile()">
+                                <div class="text-danger" id="phoneErr"></div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="Post" class="form-label">Post</label>
+                                <input type="text" value="" class="form-control" name="Post" id="Post" placeholder=""
+                                    onkeyup="return postfn()">
+                                <div class="text-danger" id="postErr"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="zip" class="form-label">Zip Code</label>
+                                <input type="number" value="" name="ZipCode" class="form-control" id="zip"
+                                    placeholder="" onkeyup="return checkpinCode()">
+                                <div class="text-danger" id="zipErr"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="State" class="form-label">State</label>
+                                <input type="text" value="" class="form-control" name="State" id="StatE" placeholder=""
+                                    onkeyup="return StateFn()">
+                                <div class="text-danger" id="StateErr"></div>
+                            </div>
+                        </div>
+                        {{!-- <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="same-address">
+                            <label class="form-check-label" for="same-address">Shipping address is the same as my
+                                billing address</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="save-info">
+                            <label class="form-check-label" for="save-info">Save this information for next
+                                time</label>
+                        </div> --}}
+                        <div id="FormErr" class="text-danger"></div>
+                        <hr class="my-4">
+
+                        <h4 class="mb-3">Payment</h4>
+
+                        <div class="my-3">
+                            <div class="form-check">
+                                <input id="credit" name="paymentMethod" onclick="displayCOD()" type="radio" value="COD"
+                                    class="form-check-input" required>
+                                <label class="form-check-label" for="credit">Cash on Delivery</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="debit" name="paymentMethod" onclick="displayrazorpay()" type="radio"
+                                    value="razorpay" class="form-check-input" required>
+                                <label class="form-check-label" for="debit">razorpay</label>
+                            </div>
+
+
+                            <div class="form-check">
+                                <input id="paypal" name="paymentMethod" onclick="displayPaypal()" type="radio"
+                                    value="PayPal" class="form-check-input" required>
+                                <label class="form-check-label" for="paypal">PayPal</label>
+                            </div>
+                            <div id="placeorder"></div>
+
+                        </div>
+                        <script src="/javascripts/paypal.js"></script>
+                        <hr class="my-4">
+                        <!-- Replace "test" with your own sandbox Business account app client ID -->
+                        <script
+                            src="https://www.paypal.com/sdk/js?client-id=ASVAT4RqsGB4WwcfuVT2NpKbt0seSFXUW3ic6R5K0oevO6WKB0XoYeWBiwXA75DRi0HvBH_XBQd94qZb&currency=USD"
+                            data-namespace="paypal_sdk"></script>
+
+                        <!-- Set up a container element for the button -->
+                        <div id="paypal-button-container" hidden class="clr"></div>
+                        <div id="checkout-button" class="clr">
+                            <button class="w-100 btn btn-primary btn-lg" id="checkoutSubmit" type="submit"
+                                 hidden> Continue
+                                to checkout</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="carousel-inner" >
-              <div class="carousel-item active">
-                <img src="/static/bannerImg/<%=element._id%>.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption  d-md-block">
-                    <h5 style="letter-spacing: 3px;"><%=element.header%></h5>
-                    <h1 ><%=element.description%></h1>
-                    <a href="/products/categories/<%=element.category%>" class="btn btn-primary btn-blue smoothScroll">Checkout Products</a>
-                  </div>
-              </div>
-                <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button> -->
-          </div>
-          <%})%>
-        </section>
+        </main>
+
+       
+
+
+        <script>
+            function saveaddrFn() {
+                if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn()) {
+                    document.getElementById('FormErr').innerHTML = 'Fill All data First'
+                    return false;
+                } else {
+                    return true;
+                    document.getElementById('FormErr').innerHTML = ''
+
+
+
+
+                }
+
+            }
+
+
+            $('#checkout-form').submit((e) => {
+
+                e.preventDefault()
+                $.ajax({
+                    url: '/users/place-order',
+                    method: 'post',
+                    data: $('#checkout-form').serialize(),
+                    success: (response) => {
+                        console.c
+                        if (response.COD_Success) {
+                            location.href = "/users/ordersuccess"
+                        } else if (response.Razorpay) {
+                            razorpayPayment(response)
+
+                        } else if (response.paypal) {
+                            location.href = "/users/ordersuccess"
+                        }
+
+                    }
+
+                })
+
+
+
+            })
+
+
+
+            function displayPaypal() {
+                let list1 = document.getElementById("checkoutSubmit").hidden = true
+                if (saveaddrFn()) {
+
+
+
+                    let list2 = document.getElementById("paypal-button-container").hidden = false
+
+                }
+
+
+
+            }
+
+
+
+
+
+            function displayCOD() {
+                if (saveaddrFn()) {
+                    document.getElementById('checkoutSubmit').hidden = false
+                    let list2 = document.getElementById("paypal-button-container").hidden = true
+                }
+
+            }
+            function displayrazorpay() {
+                if (saveaddrFn()) {
+                    document.getElementById('checkoutSubmit').hidden = false
+                    let list2 = document.getElementById("paypal-button-container").hidden = true
+                }
+
+
+            }
+
+
+
+            function razorpayPayment(order) {
+
+                var options = {
+                    "key": "rzp_test_3FXgnN9RmxDnjy", // Enter the Key ID generated from the Dashboard
+                    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "currency": "INR",
+                    "name": "Anshad M K",
+                    "description": "Test Transaction",
+                    "image": "https://example.com/your_logo",
+                    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "handler": function (response) {
+                        //  alert(response.razorpay_payment_id);
+                        //alert(response.razorpay_order_id);
+                        // alert(response.razorpay_signature)
+                        verifyPayment(response, order)
+                    },
+                    "prefill": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9999999999"
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+
+            function verifyPayment(paymentdata, order) {
+                $.ajax({
+                    url: '/users/verify-payment',
+                    data: {
+                        paymentdata,
+                        order
+                    },
+                    method: 'post',
+                    success: (response) => {
+                        if (response.status) {
+                            location.href = '/users/ordersuccess'
+                        } else {
+                            alert('Payment Failed')
+                        }
+                    }
+                })
+            }
+
+            function selectAddress(Fname, Lname, HouseName, post, pin, state, phone) {
+
+                document.getElementById('FName').value = Fname
+                document.getElementById('LName').value = Lname
+                document.getElementById('addressValue').value = HouseName
+                document.getElementById('phoneNo').value = phone
+                document.getElementById('Post').value = post
+                document.getElementById('zip').value = pin
+                document.getElementById('StatE').value = state
+            }
+
+            //paypal
+
+
+
+            paypal_sdk.Buttons({
+                // Sets up the transaction when a payment button is clicked
+                createOrder: (data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: parseInt(document.getElementById('payable').innerHTML / 81) // Can also reference a variable or function
+                            }
+                        }]
+                    });
+                },
+
+
+                onApprove: (data, actions) => {
+                    return actions.order.capture().then(function (orderData) {
+                        { { !--alert(orderData) --} }
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        const transaction = orderData.purchase_units[0].payments.captures[0];
+                        // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                        $(document).ready(function () {
+                            $("#checkoutSubmit").trigger("click");
+                        })
+                    });
+                }
+            }).render('#paypal-button-container');
+
+
+
+
+            function Addressfn() {
+                let street = document.getElementById('addressValue').value
+                let streetErr = document.getElementById('AddressErr')
+                if (street.length <= 3 || street == '') {
+                    streetErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                streetErr.innerHTML = ''
+                return true;
+            }
+
+            function postfn() {
+                let street = document.getElementById('Post').value
+                let streetErr = document.getElementById('postErr')
+                if (street.length <= 3 || street == '') {
+                    streetErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                streetErr.innerHTML = ''
+                return true;
+            }
+
+            function StateFn() {
+                let street = document.getElementById('StatE').value
+                let countryErr = document.getElementById('StateErr')
+                if (street.length <= 3 || street == '') {
+                    countryErr.innerHTML = 'Enter valid details'
+                    return false;
+                }
+                countryErr.innerHTML = ''
+                return true;
+            }
+
+            function checkpinCode() {
+                let street = document.getElementById('zip').value
+                let pinErr = document.getElementById('zipErr')
+                if (street.length > 7 || street == '') {
+                    pinErr.innerHTML = 'Minimum 6 Number'
+                    return false;
+                }
+                pinErr.innerHTML = ''
+                return true;
+            }
+            function Validatemobile() {
+                let mob = document.getElementById('phoneNo').value
+                let mob_err = document.getElementById('phoneErr')
+
+                if (mob.length != 10) {
+                    mob_err.innerHTML = 'Enter Proper Number'
+                    return false;
+                }
+
+                mob_err.innerHTML = ''
+                return true;
+            }
+            function fname() {
+                let name_err = document.getElementById('FNameErr')
+                let name = document.getElementById('FName').value;
+
+                if (name.length == 0 || name == '') {
+                    name_err.innerHTML = "Name cannot be empty";
+                    return false;
+                }
+
+                if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+                    name_err.innerHTML = "Write Proper name";
+                    return false;
+                }
+
+                if (name.length <= 3 || name.length >= 25) {
+                    name_err.innerHTML = "Name must be between 3 and 25 characters";
+                    return false;
+                }
+
+                name_err.innerHTML = ""
+                return true;
+            }
+            function lname() {
+                let name_err = document.getElementById('LNameErr')
+                let name = document.getElementById('LName').value;
+
+                if (name.length == 0 || name == '') {
+                    name_err.innerHTML = "Name cannot be empty";
+                    return false;
+                }
+
+                if (!name.match(/^[A-Za-z]*\s{0,1}?[A-Za-z]*\s{0,1}?[A-Za-z]*$/)) {
+                    name_err.innerHTML = "Write Proper name";
+                    return false;
+                }
+
+                if (name.length <= 1 || name.length >= 25) {
+                    name_err.innerHTML = "Name must be between 1 and 25 characters";
+                    return false;
+                }
+
+                name_err.innerHTML = ""
+                return true;
+            }
+
+            function saveaddrFn() {
+                if (!lname() || !fname() || !Validatemobile() || !checkpinCode() || !StateFn() || !postfn() || !Addressfn()) {
+                    document.getElementById('FormErr').innerHTML = 'Fill All data First'
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
+
+
+
+
+
+
+
+        </script>
