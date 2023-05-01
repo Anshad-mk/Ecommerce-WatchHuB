@@ -398,13 +398,14 @@ return new Promise((resolve,reject)=>{
         { $pull: { Address: { uniqId: date } } }
 
       ).then((data) => {
+        
         resolve(data)
       }).catch((err) => {
         reject(err)
       })
     })
   },
-  EditAddress: (userID, index) => {
+    EditAddress: (userID, index) => {
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.address_Collection).findOne({ user: ObjectId(userID) }).then((response) => {
         resolve(response.Address[parseInt(index)])
@@ -416,6 +417,8 @@ return new Promise((resolve,reject)=>{
   updateAddress: (date, userID) => {
     // console.log(date.uniquedate);
     // console.log(userID);
+
+    
     return new Promise((resolve, reject) => {
       db.get().collection(Mycollection.address_Collection).findOneAndUpdate({ user: ObjectId(userID), "Address.uniqId": date.uniquedate },
         {

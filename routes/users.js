@@ -10,13 +10,18 @@ const shortid = require('shortid');
 const { Db } = require('mongodb');
 const { TaskRouterGrant } = require('twilio/lib/jwt/AccessToken');
 let cartcount = 0
+const urlfinder=(req, res, next)=>{
+console.log(req.session);
+}
 
 
 const userVerrify = (req, res, next) => {
   let cartcount = 0
   if (req.session.user) {
-    next()
+    req.session.url = req.url
+     next()
   } else {
+    
     res.redirect('/users/login')
   }
 }
@@ -114,10 +119,11 @@ router.post('/login', (req, res, next) => {
       // console.log(response._id);
       console.log('login successfully')
       res.redirect('/')
+      
     }
 
   }).catch((err) => {
-
+ 
     res.render('userlogin', { err })
     console.log(err);
 
@@ -189,6 +195,7 @@ router.get('/cart', userVerrify, async (req, res, next) => {
 router.get('/addToCart/:id', (req, res, next) => {
 
   if (req.session.loggedIn) {
+    
     cartHelpers.AddtoCart(req.params.id, req.session.userID).then((response) => {
       if (req.session.user) {
         res.json({ status: true })
@@ -422,6 +429,7 @@ router.get('/EditAddress/:index', userVerrify, (req, res, next) => {
   })
 
 })
+
 
 router.post('/UpdateAddress', userVerrify, (req, res, next) => {
   userHelpers.updateAddress(req.body, req.session.userID).then((response) => {

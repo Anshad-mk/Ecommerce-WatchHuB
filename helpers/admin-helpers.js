@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const Mycollection = require("../config/collections");
 const collections = require("../config/collections");
 
+
 module.exports = {
   adminLogin: (admin_credentials) => {
     return new Promise(async (resolve, reject) => {
