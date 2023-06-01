@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
 const { handlebars } = require('hbs');
 const Handlebars = require('handlebars');
+
 db.connect((err)=>{
   if(err){
 console.log(err);
@@ -46,6 +47,7 @@ app.use(session({
   
 }) )  
  
+
 
 
 // view engine setup
@@ -87,6 +89,7 @@ Handlebars.registerHelper("inc", function(value, options)
   
 });
 app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -116,6 +119,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error',{er:true});
 });
+
+
 
 
 module.exports = app;
