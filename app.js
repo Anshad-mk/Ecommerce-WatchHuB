@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let hbs=require('express-handlebars')
 let session = require('express-session')
+
 let db=require('./config/connection')
 let fileUpload=require('express-fileupload')
 const indexRouter = require('./routes/index');
@@ -83,13 +84,15 @@ helpers: {
 }
 
 }))
+
 Handlebars.registerHelper("inc", function(value, options)
 {
     return parseInt(value) + 1;
   
 });
-app.use(logger('dev'));
 
+
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
